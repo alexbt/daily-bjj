@@ -1,0 +1,4 @@
+<resources>
+    <integer name="default_notification_time_hours">8</integer>
+    <integer name="default_notification_time_minutes">0</integer>
+</resources>

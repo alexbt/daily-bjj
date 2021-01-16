@@ -1,0 +1,16 @@
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="preference_key"
+        android:title="">
+
+        <com.alexbt.bjj.dailybjj.settings.TimePreference
+            android:key="notificationTime"
+            android:summary="..."
+            android:title="Daily notification time"/>
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

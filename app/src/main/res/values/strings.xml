@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Daily BJJ</string>
+    <string name="cache_dir">DailyBJJ</string>
+    <string name="settings">Settings</string>
+    <string name="videos">Videos</string>
+    <string name="notificationTime">Daily notification time</string>
+    <string name="settings_content">Settings Content</string>
+    <string name="hello_world">hello</string>
+</resources>
