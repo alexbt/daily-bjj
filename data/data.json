@@ -1,25 +1,138 @@
-{"version": "20210114_01", "dailyEntries":{
-	"2021-01-26": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-25": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-24": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-23": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-22": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-21": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-20": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-19": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-18": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-17": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-16": {"master": "Andre Galvao", "desc": "Best way to mount from side control", "youtubeId": "dI44-xSintY", "tags": ["gi", "andre-galvao", "side-control", "mount"]},
-	"2021-01-15": {"master": "The Grappling Academy", "desc": "Preventing Side Control", "youtubeId": "7U8dThjTZLU", "tags": ["gi", "grappling-academy", "side-control", "defense"]},
-	"2021-01-14": {"master": "GracieBarraTx", "desc": "Triangle from guard when you have collar grip", "youtubeId": "izgA34mYiKU", "tags": ["gi", "gracie-barra-tx", "guard", "triangle", "submission"]},
-	"2021-01-13": {"master": "John Danaher & Bernardo Faria", "desc": "Perfect BJJ Side Control Escape","youtubeId": "cuXq-k__9lQ","tags": ["gi", "john-danaher", "bernardo-faria",
-"side-control", "escape"]},
-	"2021-01-12": {"master": "The Grappling Academy", "desc": "A Simple But Awesome Armbar - From Guard!", "youtubeId": "clZeVyUb9mY", "tags": ["gi", "grapping-academy", "guard", "armbar", "submission"]},
-	"2021-01-11": {"master": "Jason Scully", "desc": "42 BJJ Half Guard Bottom Techniques", "youtubeId": "OUMLNDO32zw","tags": ["gi", "jason-scully", "half-guard", "bottom"]},
-	"2021-01-10": {"master": "Stephan Kesting", "desc": "Adv. Details Escaping Side Control", "youtubeId": "-9Kf1javraQ","tags": ["gi", "stephan-kesting", "side-control", "escape"]},
-	"2021-01-09": {"master": "John Danaher & Bernardo Faria", "desc": "Perfect BJJ Side Control Escape","youtubeId": "cuXq-k__9lQ","tags": ["gi", "john-danaher", "bernardo-faria",
-"side-control", "escape"]},
-	"2021-01-08": {"master": "Stephan Kesting", "desc": "Adv. Details Escaping Side Control", "youtubeId": "-9Kf1javraQ","tags": ["gi", "stephan-kesting", "side-control", "escape"]}
-
-}
+{
+  "version": "20210116_01",
+  "videoPrefix": "https://www.youtube.com/watch?v\u003d",
+  "imagePrefix": "https://img.youtube.com/vi/",
+  "imageSuffix": "/0.jpg",
+  "dailyEntries": {
+    "2021-01-13": {
+      "master": "Jason Scully",
+      "notificationDate": "2021-01-13",
+      "videoDate": "2011-12-27",
+      "title": "42 BJJ Half Guard Bottom Techniques",
+      "description": "42 BJJ Half Guard Bottom Techniques in Just 6 Minutes",
+      "youtubeId": "OUMLNDO32zw",
+      "tags": [
+        "half-guard",
+        "bottom"
+      ]
+    },
+    "2021-01-14": {
+      "master": "Stephan Kesting",
+      "notificationDate": "2021-01-14",
+      "videoDate": "2019-12-27",
+      "title": "Adv. Details Escaping Side Control",
+      "description": "Advanced Details and Concepts for Escaping Side Control",
+      "youtubeId": "-9Kf1javraQ",
+      "tags": [
+        "side-control",
+        "escape"
+      ]
+    },
+    "2021-01-11": {
+      "master": "Keenan Cornelius",
+      "notificationDate": "2021-01-11",
+      "videoDate": "2020-06-10",
+      "title": "The Toreando Pass",
+      "description": "The Toreando - America\u0027s Professor of Ground-Fighting Adds Dozens Of Laser-Accurate Passing Details",
+      "youtubeId": "vKOVqfzYqFc",
+      "tags": [
+        "guard-pass"
+      ]
+    },
+    "2021-01-12": {
+      "master": "John Danaher \u0026 Bernardo Faria",
+      "notificationDate": "2021-01-12",
+      "videoDate": "2019-04-10",
+      "title": "Perfect BJJ Side Control Escape",
+      "description": "How To Do The Perfect BJJ Side Control Escape",
+      "youtubeId": "cuXq-k__9lQ",
+      "tags": [
+        "side-control",
+        "escape"
+      ]
+    },
+    "2021-01-10": {
+      "master": "Andre Galvao",
+      "notificationDate": "2021-01-10",
+      "videoDate": "2020-01-04",
+      "title": "Mount from Side Control",
+      "description": "The best way to mount from side control - white to black belt - Concepts, Details \u0026 Submissions",
+      "youtubeId": "dI44-xSintY",
+      "tags": [
+        "side-control",
+        "mount"
+      ]
+    },
+    "2021-01-08": {
+      "master": "Draculino \u0026 GracieBarraTx",
+      "notificationDate": "2021-01-08",
+      "videoDate": "2015-09-03",
+      "title": "Triangle from guard w/ collar grip",
+      "description": "Triangle from guard when you have collar grip",
+      "youtubeId": "izgA34mYiKU",
+      "tags": [
+        "guard",
+        "triangle",
+        "submission"
+      ]
+    },
+    "2021-01-09": {
+      "master": "The Grappling Academy",
+      "notificationDate": "2021-01-09",
+      "videoDate": "2019-06-23",
+      "title": "Preventing Side Control",
+      "description": "Preventing Side Control",
+      "youtubeId": "7U8dThjTZLU",
+      "tags": [
+        "side-control",
+        "defense"
+      ]
+    },
+    "2021-01-17": {
+      "master": "The Grappling Academy",
+      "notificationDate": "2021-01-17",
+      "videoDate": "2019-05-19",
+      "title": "The Mount 101 - The Essentials",
+      "description": "The Mount 101 - The Essentials",
+      "youtubeId": "u_bMy3mQjro",
+      "tags": [
+        "mount"
+      ]
+    },
+    "2021-01-18": {
+      "master": "Gracie Ohio Jiu-Jitsu Academy",
+      "notificationDate": "2021-01-18",
+      "videoDate": "2020-11-09",
+      "title": "Rear Naked Choke Defense",
+      "description": "Rear Naked Choke Defense. Early Prevention to Late Stage Escape.",
+      "youtubeId": "xf9u7dAdN5U",
+      "tags": [
+        "rear-naked-choke",
+        "defense"
+      ]
+    },
+    "2021-01-15": {
+      "master": "Marcelo Garcia \u0026 Bernardo Faria",
+      "notificationDate": "2021-01-15",
+      "videoDate": "2020-01-30",
+      "title": "BJJ Butterfly Guard - Principles",
+      "description": "BJJ Butterfly Guard - Most Important Principles",
+      "youtubeId": "0WG1MYvgXAM",
+      "tags": [
+        "butterfly-guard"
+      ]
+    },
+    "2021-01-16": {
+      "master": "Instinct \u0026 Intellect",
+      "notificationDate": "2021-01-16",
+      "videoDate": "2015-10-22",
+      "title": "Maximizing Pressure from Side Mount",
+      "description": "Maximizing Pressure from Side Mount",
+      "youtubeId": "lsvf-wY-plI",
+      "tags": [
+        "side-control",
+        "pressure"
+      ]
+    }
+  }
 }

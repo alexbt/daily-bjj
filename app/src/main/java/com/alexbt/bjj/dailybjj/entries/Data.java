@@ -1,14 +1,15 @@
 package com.alexbt.bjj.dailybjj.entries;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
 
 public class Data {
-    @SerializedName(value = "version")
+    @Expose
     private String version;
 
-    @SerializedName(value = "dailyEntries")
+    @Expose
     Map<String, DailyEntry> dailyEntries;
 
     public String getVersion() {
