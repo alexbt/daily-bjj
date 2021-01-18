@@ -28,7 +28,7 @@ public class SwipeViewerFragment extends Fragment {
     private View root;
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 7;
+        public static int NUM_ITEMS = 8;
         Map<Integer, SwipeImageFragment> map = new HashMap<>();
 
         public MyPagerAdapter(Activity activity, FragmentManager fragmentManager) {
@@ -92,7 +92,7 @@ public class SwipeViewerFragment extends Fragment {
 
         MyPagerAdapter adapterViewPager = new MyPagerAdapter(getActivity(), getChildFragmentManager());
         vpPager.setAdapter(adapterViewPager);
-        vpPager.setCurrentItem(6);
+        vpPager.setCurrentItem(MyPagerAdapter.NUM_ITEMS-1);
         return root;
     }
 }

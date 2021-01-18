@@ -7,7 +7,7 @@
         android:title="">
 
         <com.alexbt.bjj.dailybjj.settings.TimePreference
-            android:key="notificationTime"
+            android:key="notification_time"
             android:summary="..."
             android:title="Daily notification time"/>
 

@@ -2,8 +2,6 @@ package com.alexbt.bjj.dailybjj.swipe;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -54,7 +52,7 @@ public class SwipeImageFragment extends Fragment implements Observer<ImageData>,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_image, container, false);
-        ImageButton left = root.findViewById(R.id.left_nav);
+       /* ImageButton left = root.findViewById(R.id.left_nav);
         ImageButton right = root.findViewById(R.id.right_nav);
         if (getArguments().getInt("someInt", 0) == 0) {
             left.setVisibility(View.INVISIBLE);
@@ -62,11 +60,13 @@ public class SwipeImageFragment extends Fragment implements Observer<ImageData>,
             left.setVisibility(View.VISIBLE);
         }
 
-        if (getArguments().getInt("someInt", 0) == 6) {
+        if (getArguments().getInt("someInt", 0) == SwipeViewerFragment.MyPagerAdapter.NUM_ITEMS-1) {
             right.setVisibility(View.INVISIBLE);
         } else {
             right.setVisibility(View.VISIBLE);
         }
+        */
+
         TextView notificationDate = root.findViewById(R.id.date);
         notificationDate.setText(localDate.toString());
 
@@ -79,23 +79,24 @@ public class SwipeImageFragment extends Fragment implements Observer<ImageData>,
                 //.transform(new CropTransformation(480,300,  CropTransformation.GravityHorizontal.CENTER, CropTransformation.GravityVertical.TOP))
                 .into(imageView);
         TextView desc = root.findViewById(R.id.description);
-        desc.setText(dailyEntry.getDescription() + " ("+dailyEntry.getVideoDate()+")");
+        desc.setText(dailyEntry.getDescription() + " (" + dailyEntry.getVideoDate() + ")");
 
         TextView title = root.findViewById(R.id.title);
         title.setText(dailyEntry.getTitle());
 
-        ImageView imageview = root.findViewById(R.id.left_nav);
+        TextView dDay = root.findViewById(R.id.dDay);
+        if (page == 7) {
+            dDay.setText("");
+        } else {
+            dDay.setText("D-" + (7 - page));
+        }
+
+        /*ImageView imageview = root.findViewById(R.id.left_nav);
         imageview.setBackgroundColor(getResources().getColor(R.color.white));
-
-        //ColorMatrix matrix = new ColorMatrix();
-        //matrix.setSaturation(0);
-
-        //ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-        //imageView.setColorFilter(filter);
-
 
         imageview = root.findViewById(R.id.right_nav);
         imageview.setBackgroundColor(getResources().getColor(R.color.white));
+        */
 
         TextView master = root.findViewById(R.id.masterName);
         master.setText(dailyEntry.getMaster());
@@ -126,7 +127,7 @@ public class SwipeImageFragment extends Fragment implements Observer<ImageData>,
         ImageView listView = root.findViewById(R.id.image_view);
         listView.setImageBitmap(imageData.getImage());
         TextView textView = root.findViewById(R.id.description);
-        textView.setText(imageData.getToday().getDescription() + " ("+dailyEntry.getVideoDate()+")");
+        textView.setText(imageData.getToday().getDescription() + " (" + dailyEntry.getVideoDate() + ")");
 
         textView = root.findViewById(R.id.title);
         textView.setText(imageData.getToday().getTitle());

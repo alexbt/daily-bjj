@@ -1,5 +1,7 @@
 package com.alexbt.bjj.dailybjj.util;
 
+import android.util.Log;
+
 import com.alexbt.bjj.dailybjj.entries.DailyEntry;
 import com.alexbt.bjj.dailybjj.entries.Data;
 import com.google.common.io.ByteStreams;
@@ -20,9 +22,11 @@ import java.util.Map;
 import java.util.Optional;
 
 public class EntryHelper {
+    private static final String TAG = EntryHelper.class.getName();
     private static final Gson GSON = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapter(LocalDate.class, new MyDateDeserializer())
+            .registerTypeAdapter(LocalDate.class, new MyDateSerializer())
             .create();
 
     private static final String WEBVIDEO_PREFIX = "https://www.youtube.com/watch?v=";
@@ -32,12 +36,12 @@ public class EntryHelper {
     private static final String IMAGE_SUFFIX = "/0.jpg";
     private static EntryHelper INSTANCE = new EntryHelper();
 
-
     public static EntryHelper getInstance() {
         return INSTANCE;
     }
 
     public Data loadData(String cacheDir) {
+        Log.i(TAG, String.format("Entering 'loadData' with cacheDir={}", cacheDir));
         Data data = loadFromCache(cacheDir);
         if (data != null) {
             if (isDataVersionLatest(data) && hasVideoForNextWeek(data)) {
@@ -46,6 +50,7 @@ public class EntryHelper {
         }
         data = fetchFromRemote();
         saveCacheData(data, cacheDir);
+        Log.i(TAG, String.format("Exiting 'loadData' with data={}", data));
         return data;
     }
 
@@ -60,29 +65,46 @@ public class EntryHelper {
     }
 
     private boolean isDataVersionLatest(Data data) {
+        Log.e(TAG, String.format("Entering 'isDataVersionLatest'"));
         String currentVersion = fetchCurrentVersion();
-        return data.getVersion().compareTo(currentVersion) == 0;
+        boolean comparedResult = data.getVersion().compareTo(currentVersion) == 0;
+
+        Log.i(TAG, String.format("Exiting 'isDataVersionLatest' with comparedResult={}", comparedResult));
+        return comparedResult;
     }
 
     private boolean hasVideoForNextWeek(Data data) {
-        return getVideo(data, DateHelper.getNextWeek()) != null;
+        Log.i(TAG, String.format("Entering 'hasVideoForNextWeek'"));
+        boolean hasVideo = getVideo(data, DateHelper.getNextWeek()) != null;
+
+        Log.i(TAG, String.format("Exiting 'hasVideoForNextWeek'"));
+        return hasVideo;
     }
 
     private Data loadFromCache(String cacheDir) {
-        File f = new File(cacheDir, cacheDir + DATA_FILE);
+        Data data = null;
+        Log.i(TAG, String.format("Entering 'loadFromCache'"));
+        File f = new File(cacheDir, DATA_FILE);
         if (!f.exists()) {
-            return null;
+            Log.e(TAG, String.format("Exiting 'loadFromCache' with cacheDir={} not exist", cacheDir));
+            return data;
         }
         try {
             FileInputStream fileInputStream = new FileInputStream(f);
             String jsonContent = new String(ByteStreams.toByteArray(fileInputStream));
-            return GSON.fromJson(jsonContent, Data.class);
+            data = GSON.fromJson(jsonContent, Data.class);
+            return data;
         } catch (Exception e) {
-            return null;
+            Log.e(TAG, String.format("Error 'loadFromCache'"), e);
         }
+
+        Log.e(TAG, String.format("Exiting 'loadFromCache' with data={}}", data));
+        return data;
     }
 
     private Data fetchFromRemote() {
+        Data data = null;
+        Log.i(TAG, String.format("Entering 'fetchFromRemote'"));
         try {
             URL url = new URL("https://raw.githubusercontent.com/alexbt/daily-bjj/master/data/data.json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -90,38 +112,44 @@ public class EntryHelper {
             connection.connect();
             String jsonContent = new String(ByteStreams.toByteArray(connection.getInputStream()));
 
-            Data data = GSON.fromJson(jsonContent, Data.class);
-            return data;
+            data = GSON.fromJson(jsonContent, Data.class);
+            Log.i(TAG, String.format("Exiting 'fetchFromRemote' with data={}", data));
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(TAG, String.format("Error when 'fetchFromRemote'"), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, String.format("Error when 'fetchFromRemote'"), e);
         }
-        return null;
+        Log.i(TAG, String.format("Exiting 'fetchFromRemote' with data={}", data));
+        return data;
     }
 
     private String fetchCurrentVersion() {
+        Log.i(TAG, String.format("Entering 'fetchCurrentVersion'"));
+        String currentVersion = null;
         try {
             URL url = new URL("https://raw.githubusercontent.com/alexbt/daily-bjj/master/data/current_version.txt");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.connect();
-            return new String(ByteStreams.toByteArray(connection.getInputStream()));
+            currentVersion = new String(ByteStreams.toByteArray(connection.getInputStream()));
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(TAG, String.format("Error when 'fetchCurrentVersion'"), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, String.format("Error when 'fetchCurrentVersion'"), e);
         }
-        return null;
+
+        Log.i(TAG, String.format("Exiting 'fetchCurrentVersion' with currentVersion={}", currentVersion));
+        return currentVersion;
     }
 
     private void saveCacheData(Data data, String cacheDir) {
+        Log.i(TAG, String.format("Entering 'saveCacheData' with cacheDir={}", cacheDir));
         try {
-            String content = new Gson().toJson(data);
-            File cachedDataFile = new File(cacheDir, cacheDir + DATA_FILE);
+            String content = GSON.toJson(data);
+            File cachedDataFile = new File(cacheDir,  DATA_FILE);
             if (cachedDataFile.exists() && cachedDataFile.isDirectory()) {
                 cachedDataFile.delete();
-                cachedDataFile = new File(cacheDir, cacheDir + DATA_FILE);
+                cachedDataFile = new File(cacheDir,  DATA_FILE);
             }
             Files.createDirectories(Paths.get(cachedDataFile.getParentFile().getPath()));
             FileWriter fw = new FileWriter(cachedDataFile, false);
@@ -129,8 +157,9 @@ public class EntryHelper {
             fw.flush();
             fw.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Failed to save cache", e);
         }
+        Log.i(TAG, String.format("Exiting 'saveCacheData'"));
     }
 
     public String getImageUrl(String videoId) {

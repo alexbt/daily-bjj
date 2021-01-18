@@ -3,6 +3,7 @@ package com.alexbt;
 import com.alexbt.bjj.dailybjj.entries.DailyEntryStatus;
 import com.alexbt.bjj.dailybjj.entries.Data;
 import com.alexbt.bjj.dailybjj.util.MyDateDeserializer;
+import com.alexbt.bjj.dailybjj.util.MyDateSerializer;
 import com.google.common.io.ByteStreams;
 import com.google.gson.GsonBuilder;
 
@@ -102,8 +103,6 @@ public class GenerateJson {
                 .registerTypeAdapter(LocalDate.class, new MyDateDeserializer())
                 .create().fromJson(s, Data.class);
         System.out.println(parsed);
-
-
     }
 
     private DailyEntryStatus toEnum(Class<DailyEntryStatus> dailyEntryStatusClass, String s) {

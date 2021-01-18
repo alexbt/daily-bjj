@@ -14,28 +14,22 @@ import com.alexbt.bjj.dailybjj.R;
 
 class TimePreference extends DialogPreference {
     private static final int MINUTES_ONE_HOUR = 60;
-    private static int DEFAULT_HOUR = R.integer.default_notification_time_hours;
-    private static int DEFAULT_MINUTES = R.integer.default_notification_time_minutes;
-    private static int DEFAULT_MINUTES_FROM_MIDNIGHT = toMinutesFromMidnight(DEFAULT_HOUR, DEFAULT_MINUTES);
-
-    private static int toMinutesFromMidnight(int hours, int minutes) {
-        return hours * MINUTES_ONE_HOUR + minutes;
-    }
+    private final int DEFAULT_HOUR;
+    private final int DEFAULT_MINUTES;
+    private final int DEFAULT_MINUTES_FROM_MIDNIGHT;
 
     public TimePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        DEFAULT_HOUR = context.getResources().getInteger(R.integer.default_notification_time_hours);
+        DEFAULT_MINUTES = context.getResources().getInteger(R.integer.default_notification_time_minutes);
+        DEFAULT_MINUTES_FROM_MIDNIGHT = toMinutesFromMidnight(DEFAULT_HOUR, DEFAULT_MINUTES);
+
         int minutesFromMidnight = getPersistedInt(DEFAULT_MINUTES_FROM_MIDNIGHT);
         updateSummary(minutesFromMidnight);
     }
 
-    public int getHours() {
-        int minutesFromMidnight = getPersistedInt(DEFAULT_MINUTES_FROM_MIDNIGHT);
-        return minutesFromMidnight / MINUTES_ONE_HOUR;
-    }
-
-    public int getMinutes() {
-        int minutesFromMidnight = getPersistedInt(DEFAULT_MINUTES_FROM_MIDNIGHT);
-        return minutesFromMidnight % MINUTES_ONE_HOUR;
+    private static int toMinutesFromMidnight(int hours, int minutes) {
+        return hours * MINUTES_ONE_HOUR + minutes;
     }
 
     public void persistMinutesFromMidnight(int minutesFromMidnight) {
@@ -47,7 +41,7 @@ class TimePreference extends DialogPreference {
     private void updateSummary(int minutesFromMidnight) {
         int hour = minutesFromMidnight / MINUTES_ONE_HOUR;
         int minutes = minutesFromMidnight % MINUTES_ONE_HOUR;
-        setSummary(String.format("%02d", hour) + ":" + String.format("%02d", minutes));
+        setSummary(String.format("%02dh%02d %s", hour, minutes, hour <= 11 ? "AM" : "PM"));
         notifyChanged();
     }
 

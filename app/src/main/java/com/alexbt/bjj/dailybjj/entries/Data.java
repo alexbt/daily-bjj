@@ -27,4 +27,12 @@ public class Data {
     public void setDailyEntries(Map<String, DailyEntry> dailyEntries) {
         this.dailyEntries = dailyEntries;
     }
+
+    @Override
+    public String toString() {
+        return "Data{" +
+                "version='" + version + '\'' +
+                ", dailyEntries=" + dailyEntries +
+                '}';
+    }
 }

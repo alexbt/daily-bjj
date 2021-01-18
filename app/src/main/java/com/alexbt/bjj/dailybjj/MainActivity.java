@@ -1,8 +1,5 @@
 package com.alexbt.bjj.dailybjj;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,11 +10,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.alexbt.bjj.dailybjj.notification.NotificationReceiver;
-import com.alexbt.bjj.dailybjj.util.DateHelper;
+import com.alexbt.bjj.dailybjj.util.NotificationHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     //TODO
@@ -40,24 +34,21 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        SharedPreferences preferences = getSharedPreferences("DailyBjjPreference", MODE_PRIVATE);
-        if (!preferences.getBoolean("isFirstTime", false)) {
-            showNotification(R.integer.default_notification_time_hours, R.integer.default_notification_time_minutes);
-
-            final SharedPreferences pref = getSharedPreferences("DailyBjjPreference", MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putBoolean("isFirstTime", true);
+        SharedPreferences preferences = getSharedPreferences("com.alexbt.DailyNotificationPreference", MODE_PRIVATE);
+        if (!preferences.contains("notification_time")) {
+            SharedPreferences.Editor editor = preferences.edit();
+            int hours = getApplicationContext().getResources().getInteger(R.integer.default_notification_time_hours);
+            editor.putInt("notification_time", hours * 60);
             editor.commit();
+            NotificationHelper.scheduleNotification(getApplicationContext(), preferences);
         }
-    }
 
-    public void showNotification(int hour, int minutes) {
-        Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
-        PendingIntent pending = PendingIntent.getBroadcast(getApplicationContext(), 42, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager manager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-
-        Calendar notificationTime = DateHelper.getNotificationTime(hour, minutes);
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, notificationTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pending);
+        /*MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        */
     }
 
     @Override

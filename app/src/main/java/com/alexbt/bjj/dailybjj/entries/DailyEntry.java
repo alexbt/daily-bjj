@@ -83,4 +83,17 @@ public class DailyEntry {
     public void setVideoDate(LocalDate videoDate) {
         this.videoDate = videoDate;
     }
+
+    @Override
+    public String toString() {
+        return "DailyEntry{" +
+                "master='" + master + '\'' +
+                ", notificationDate=" + notificationDate +
+                ", videoDate=" + videoDate +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", youtubeId='" + youtubeId + '\'' +
+                ", tags=" + tags +
+                '}';
+    }
 }

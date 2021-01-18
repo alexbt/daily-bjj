@@ -6,18 +6,18 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.alexbt.bjj.dailybjj.R;
 import com.alexbt.bjj.dailybjj.entries.DailyEntry;
-import com.alexbt.bjj.dailybjj.entries.Data;
 import com.alexbt.bjj.dailybjj.util.EntryHelper;
 import com.alexbt.bjj.dailybjj.util.FileSystemHelper;
 
@@ -26,25 +26,33 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private static final int NOTIFICATION_ID = 1;
     private static final int PENDING_INTENT_REQUEST_CODE = 0;
+    private static final String TAG = NotificationReceiver.class.getName();
 
     @Override
     public void onReceive(final Context context, Intent intent) {
+        Log.i(TAG, "Entering 'onReceive'");
         new Thread() {
             @Override
             public void run() {
                 displayNotification(context);
             }
         }.start();
+        Log.i(TAG, "Exiting 'onReceive'");
     }
 
     private void displayNotification(Context context) {
+        Log.i(TAG, "Entering 'displayNotification'");
         String cacheDir = FileSystemHelper.getCacheDir(context);
+        Log.i(TAG, String.format("cacheDir={}", cacheDir));
         DailyEntry today = EntryHelper.getInstance().getTodayVideo(cacheDir);
+        Log.i(TAG, String.format("today's DailyEntry={}", today));
         if (today == null) {
+            Log.w(TAG, "Exiting 'displayNotification' with today's DailyEntry={}");
             return;
         }
 
@@ -55,7 +63,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         final String videoUrl = EntryHelper.getInstance().getWebVideoUrl(videoId);
         final String imageUrl = EntryHelper.getInstance().getImageUrl(videoId);
         resultIntent.setData(Uri.parse(videoUrl));
+        Log.i(TAG, String.format("Created resultIntent"));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, PENDING_INTENT_REQUEST_CODE, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Log.i(TAG, String.format("Created pendingIntent"));
 
         Bitmap youtubeImage = getBitmapFromUrl(imageUrl);
         String channelId = createNotificationChannel(context);
@@ -73,32 +83,47 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        Log.i(TAG, String.format("Before notifying pendingIntent"));
         notificationManager.notify(NOTIFICATION_ID, builder.build());
+
+        SharedPreferences.Editor edit = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", 0).edit();
+        edit.putString("last_notification_day", LocalDate.now().toString());
+        edit.commit();
+
+        Log.i(TAG, String.format("Notified pendingIntent"));
+        Log.i(TAG, "Exiting 'displayNotification'");
     }
 
 
     private Bitmap getBitmapFromUrl(String url) {
+        Log.i(TAG, String.format("Entering 'getBitmapFromUrl'"));
+        Bitmap myBitmap = null;
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(TAG, String.format("error 'getBitmapFromUrl'"), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, String.format("error 'getBitmapFromUrl'"), e);
         }
-        return null;
+
+        Log.i(TAG, String.format("Exiting 'getBitmapFromUrl'"));
+        return myBitmap;
     }
 
     private String createNotificationChannel(Context context) {
+        Log.i(TAG, String.format("Entering 'createNotificationChannel'"));
+
+        String channelId = null;
         // NotificationChannels are required for Notifications on O (API 26) and above.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String appName = context.getResources().getString(R.string.app_name);
             // The id of the channel.
-            String channelId = appName + "_ChannelId";
+            channelId = appName + "_ChannelId";
 
             // The user-visible name of the channel.
             CharSequence channelName = appName;
@@ -122,9 +147,9 @@ public class NotificationReceiver extends BroadcastReceiver {
             notificationManager.createNotificationChannel(notificationChannel);
 
             return channelId;
-        } else {
-            // Returns null for pre-O (26) devices.
-            return null;
         }
+
+        Log.i(TAG, String.format("Exiting 'createNotificationChannel' with channelId={}", channelId));
+        return channelId;
     }
 }
