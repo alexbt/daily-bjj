@@ -64,7 +64,10 @@ public class GenerateJson {
         List<Element> elements = rows.size() > 1 ? rows.subList(1, rows.size()) : Collections.emptyList();
         Map<String, DailyEntryJson> dailyEntries = elements.stream()
                 .map(e -> e.getElementsByTag("td").eachText())
-                .filter(s -> !s.get(COLUMN_INDEX_STATUS).isEmpty())
+                .filter(s -> {
+                    DailyEntryStatus dailyEntryStatus = toEnum(DailyEntryStatus.class, s.get(COLUMN_INDEX_STATUS));
+                    return dailyEntryStatus == DailyEntryStatus.OK;
+                })
                 .map(s -> {
                     DailyEntryJson dailyEntry = new DailyEntryJson();
                     dailyEntry.setStatus(toEnum(DailyEntryStatus.class, s.get(COLUMN_INDEX_STATUS)));
@@ -89,7 +92,7 @@ public class GenerateJson {
         String s = new GsonBuilder()
                 .setPrettyPrinting()
                 .excludeFieldsWithoutExposeAnnotation()
-        .registerTypeAdapter(LocalDate.class, new MyDateSerializer())
+                .registerTypeAdapter(LocalDate.class, new MyDateSerializer())
                 .create().toJson(data);
 
         file = new File("../data/data.json");

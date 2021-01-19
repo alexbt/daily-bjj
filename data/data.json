@@ -51,6 +51,17 @@
         "escape"
       ]
     },
+    "2021-01-20": {
+      "master": "Knight JiuJitsu",
+      "notificationDate": "2021-01-20",
+      "videoDate": "2019-01-24",
+      "title": "4 Sweeps You Need To Know",
+      "description": "The First 4 Sweeps You Need To Know | Jiu-Jitsu Basics",
+      "youtubeId": "qp5AXBHxQec",
+      "tags": [
+        "sweeps"
+      ]
+    },
     "2021-01-10": {
       "master": "Andre Galvao",
       "notificationDate": "2021-01-10",
@@ -63,17 +74,28 @@
         "mount"
       ]
     },
-    "2021-01-08": {
-      "master": "Draculino \u0026 GracieBarraTx",
-      "notificationDate": "2021-01-08",
-      "videoDate": "2015-09-03",
-      "title": "Triangle from guard w/ collar grip",
-      "description": "Triangle from guard when you have collar grip",
-      "youtubeId": "izgA34mYiKU",
+    "2021-01-21": {
+      "master": "Firas Zahabi",
+      "notificationDate": "2021-01-21",
+      "videoDate": "2015-02-02",
+      "title": "Fast and easy Side Control Escape",
+      "description": "Fast and easy Side Control Escape",
+      "youtubeId": "Q3dMhE793g4",
       "tags": [
-        "guard",
-        "triangle",
-        "submission"
+        "side-control",
+        "escape"
+      ]
+    },
+    "2021-01-19": {
+      "master": "TeachMeGrappling Coach Brian",
+      "notificationDate": "2021-01-19",
+      "videoDate": "2018-10-04",
+      "title": "Butterfly Guard Pass",
+      "description": "Butterfly Guard Pass",
+      "youtubeId": "9AvaC5vF6dU",
+      "tags": [
+        "butterfly-guard",
+        "pass"
       ]
     },
     "2021-01-09": {
@@ -92,7 +114,7 @@
       "master": "The Grappling Academy",
       "notificationDate": "2021-01-17",
       "videoDate": "2019-05-19",
-      "title": "The Mount 101 - The Essentials",
+      "title": "The Mount 101",
       "description": "The Mount 101 - The Essentials",
       "youtubeId": "u_bMy3mQjro",
       "tags": [
