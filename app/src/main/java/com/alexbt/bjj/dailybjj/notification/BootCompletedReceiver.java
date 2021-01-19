@@ -21,7 +21,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         Log.i(TAG, "Entering 'onReceive'");
         if (BOOT_COMPLETED.equals(intent.getAction())) {
             SharedPreferences preferences = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", 0);
-            NotificationHelper.scheduleNotification(context, preferences);
+            NotificationHelper.scheduleNotification(context, preferences, false);
         }
         Log.i(TAG, "Exiting 'onReceive'");
     }

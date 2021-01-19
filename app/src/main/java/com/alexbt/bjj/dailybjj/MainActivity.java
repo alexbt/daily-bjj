@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             int hours = getApplicationContext().getResources().getInteger(R.integer.default_notification_time_hours);
             editor.putInt("notification_time", hours * 60);
             editor.commit();
-            NotificationHelper.scheduleNotification(getApplicationContext(), preferences);
+            NotificationHelper.scheduleNotification(getApplicationContext(), preferences, true);
         }
 
         /*MobileAds.initialize(this, new OnInitializationCompleteListener() {

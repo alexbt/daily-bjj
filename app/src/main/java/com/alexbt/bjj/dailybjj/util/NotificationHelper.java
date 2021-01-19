@@ -22,7 +22,7 @@ public class NotificationHelper {
         new NotificationReceiver().onReceive(context, null);
     }
 
-    public static void scheduleNotification(Context context, SharedPreferences sharedPreferences) {
+    public static void scheduleNotification(Context context, SharedPreferences sharedPreferences, boolean showToast) {
         LocalDate today = LocalDate.now();
         LocalDateTime now = LocalDateTime.now();
         int currentMinutes = now.getHour() * MINUTES_ONE_HOUR + now.getMinute();
@@ -33,17 +33,21 @@ public class NotificationHelper {
         String hours = String.format("%02d", getHours(minutesFromMidnight));
         String minutes = String.format("%02d", getMinutes(minutesFromMidnight));
 
+        String toastMessage;
         if (isNotificationTimePassed(currentMinutes, minutesFromMidnight) && !isAlreadyNotifiedForToday(today, lastNotificationDay)) {
             NotificationHelper.showNotification(context);
             minutesFromMidnight += MINUTES_ONE_DAY;
-            Toast.makeText(context, String.format("Notification now and next tomorrow at %sh%s", hours, minutes), Toast.LENGTH_LONG).show();
+            toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %sh%s", hours, minutes);
+
         } else if (isAlreadyNotifiedForToday(today, lastNotificationDay)) {
             minutesFromMidnight += MINUTES_ONE_DAY;
-            Toast.makeText(context, String.format("Next notification tomorrow at %sh%s", hours, minutes), Toast.LENGTH_LONG).show();
+            toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %sh%s", hours, minutes);
         } else{
-            Toast.makeText(context, String.format("Next notification in %d minutes at %sh%s", minutesFromMidnight, hours, minutes), Toast.LENGTH_LONG).show();
+            toastMessage = String.format("Next Daily BJJ scheduled in %d minutes at %sh%s", minutesFromMidnight, hours, minutes);
         }
-
+        if(showToast) {
+            Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
+        }
         Intent intent = new Intent(context, NotificationReceiver.class);
         PendingIntent pending = PendingIntent.getBroadcast(context, 42, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

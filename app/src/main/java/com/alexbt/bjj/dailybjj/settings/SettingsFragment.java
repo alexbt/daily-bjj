@@ -40,7 +40,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        NotificationHelper.scheduleNotification(preference.getContext(), preference.getSharedPreferences());
+        NotificationHelper.scheduleNotification(preference.getContext(), preference.getSharedPreferences(), true);
         return true;
     }
 }
