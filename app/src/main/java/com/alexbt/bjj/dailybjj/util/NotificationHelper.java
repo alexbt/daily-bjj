@@ -42,10 +42,10 @@ public class NotificationHelper {
         } else if (isAlreadyNotifiedForToday(today, lastNotificationDay)) {
             minutesFromMidnight += MINUTES_ONE_DAY;
             toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %sh%s", hours, minutes);
-        } else{
+        } else {
             toastMessage = String.format("Next Daily BJJ scheduled in %d minutes at %sh%s", minutesFromMidnight, hours, minutes);
         }
-        if(showToast) {
+        if (showToast) {
             Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
         }
         Intent intent = new Intent(context, NotificationReceiver.class);

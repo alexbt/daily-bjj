@@ -1,19 +1,13 @@
 package com.alexbt.bjj.dailybjj.settings;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import com.alexbt.bjj.dailybjj.MainActivity;
 import com.alexbt.bjj.dailybjj.R;
-import com.alexbt.bjj.dailybjj.notification.BootCompletedReceiver;
 import com.alexbt.bjj.dailybjj.util.NotificationHelper;
-
-import java.time.LocalDate;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 

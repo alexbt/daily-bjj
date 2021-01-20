@@ -1,7 +1,6 @@
 package com.alexbt.bjj.dailybjj.entries;
 
 public enum DailyEntryStatus {
-    OK,
-    PASSED
-
+    ACTIVE,
+    ARCHIVED
 }

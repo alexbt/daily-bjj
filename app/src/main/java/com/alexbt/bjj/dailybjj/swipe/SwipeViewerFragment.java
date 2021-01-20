@@ -19,7 +19,6 @@ import com.alexbt.bjj.dailybjj.util.DateHelper;
 import com.alexbt.bjj.dailybjj.util.EntryHelper;
 import com.alexbt.bjj.dailybjj.util.FileSystemHelper;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,7 +91,7 @@ public class SwipeViewerFragment extends Fragment {
 
         MyPagerAdapter adapterViewPager = new MyPagerAdapter(getActivity(), getChildFragmentManager());
         vpPager.setAdapter(adapterViewPager);
-        vpPager.setCurrentItem(MyPagerAdapter.NUM_ITEMS-1);
+        vpPager.setCurrentItem(MyPagerAdapter.NUM_ITEMS - 1);
         return root;
     }
 }

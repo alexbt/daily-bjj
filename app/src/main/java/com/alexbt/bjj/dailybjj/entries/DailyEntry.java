@@ -1,7 +1,6 @@
 package com.alexbt.bjj.dailybjj.entries;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -22,9 +22,12 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class GenerateJson {
@@ -62,11 +65,14 @@ public class GenerateJson {
         Document doc = Jsoup.parse(content);
         Elements rows = doc.getElementsByTag("tr");
         List<Element> elements = rows.size() > 1 ? rows.subList(1, rows.size()) : Collections.emptyList();
+
+        Supplier<TreeMap<String, DailyEntryJson>> myMapSupplier = (() -> new TreeMap<>(Comparator.reverseOrder()));
+
         Map<String, DailyEntryJson> dailyEntries = elements.stream()
                 .map(e -> e.getElementsByTag("td").eachText())
                 .filter(s -> {
                     DailyEntryStatus dailyEntryStatus = toEnum(DailyEntryStatus.class, s.get(COLUMN_INDEX_STATUS));
-                    return dailyEntryStatus == DailyEntryStatus.OK;
+                    return dailyEntryStatus == DailyEntryStatus.ACTIVE;
                 })
                 .map(s -> {
                     DailyEntryJson dailyEntry = new DailyEntryJson();
@@ -81,7 +87,10 @@ public class GenerateJson {
                     dailyEntry.setYoutubeId(s.get(COLUMN_INDEX_YOUTUBE_ID));
                     dailyEntry.setImageUrl(s.get(COLUMN_INDEX_IMAGE_URL));
                     return dailyEntry;
-                }).collect(Collectors.toMap(d -> d.getNotificationDate().toString(), Function.identity()));
+                }).collect(Collectors.toMap(d -> d.getNotificationDate().toString(), Function.identity(),
+                        (v1,v2) ->{ throw new RuntimeException(String.format("Duplicate key for values %s and %s", v1, v2));},
+                        myMapSupplier));
+
 
         DataJson data = new DataJson();
         data.setDailyEntries(dailyEntries);
@@ -110,7 +119,7 @@ public class GenerateJson {
 
     private DailyEntryStatus toEnum(Class<DailyEntryStatus> dailyEntryStatusClass, String s) {
         if (s == null || s.isEmpty()) {
-            return null;
+            throw new AssertionError();
         }
         return Enum.valueOf(dailyEntryStatusClass, s);
     }

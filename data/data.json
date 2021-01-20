@@ -4,48 +4,82 @@
   "imagePrefix": "https://img.youtube.com/vi/",
   "imageSuffix": "/0.jpg",
   "dailyEntries": {
-    "2021-01-13": {
-      "master": "Jason Scully",
-      "notificationDate": "2021-01-13",
-      "videoDate": "2011-12-27",
-      "title": "42 BJJ Half Guard Bottom Techniques",
-      "description": "42 BJJ Half Guard Bottom Techniques in Just 6 Minutes",
-      "youtubeId": "OUMLNDO32zw",
-      "tags": [
-        "half-guard",
-        "bottom"
-      ]
-    },
-    "2021-01-14": {
-      "master": "Stephan Kesting",
-      "notificationDate": "2021-01-14",
-      "videoDate": "2019-12-27",
-      "title": "Adv. Details Escaping Side Control",
-      "description": "Advanced Details and Concepts for Escaping Side Control",
-      "youtubeId": "-9Kf1javraQ",
+    "2021-01-27": {
+      "master": "Cyborg",
+      "notificationDate": "2021-01-27",
+      "videoDate": "2018-09-23",
+      "title": "Side control or 100 kilos",
+      "description": "Cyborg teaches \"Side control or 100 kilos.\"",
+      "youtubeId": "z14O-qkK5XQ",
       "tags": [
         "side-control",
-        "escape"
+        "pressure"
       ]
     },
-    "2021-01-11": {
-      "master": "Keenan Cornelius",
-      "notificationDate": "2021-01-11",
-      "videoDate": "2020-06-10",
-      "title": "The Toreando Pass",
-      "description": "The Toreando - America\u0027s Professor of Ground-Fighting Adds Dozens Of Laser-Accurate Passing Details",
-      "youtubeId": "vKOVqfzYqFc",
+    "2021-01-26": {
+      "master": "Dentinho",
+      "notificationDate": "2021-01-26",
+      "videoDate": "2020-03-18",
+      "title": "Half Guard concept and Techniques",
+      "description": "Half Guard concept and Techniques",
+      "youtubeId": "eQuUex7-mqA",
       "tags": [
-        "guard-pass"
+        "half-guard"
       ]
     },
-    "2021-01-12": {
+    "2021-01-25": {
+      "master": "Chad The Beast Hardy",
+      "notificationDate": "2021-01-25",
+      "videoDate": "2017-06-23",
+      "title": "8 BJJ solo drills to improve your guard",
+      "description": "8 BJJ solo drills to improve your guard",
+      "youtubeId": "57Nfby-P9m8",
+      "tags": [
+        "guard",
+        "solo-drill"
+      ]
+    },
+    "2021-01-24": {
       "master": "John Danaher \u0026 Bernardo Faria",
-      "notificationDate": "2021-01-12",
-      "videoDate": "2019-04-10",
-      "title": "Perfect BJJ Side Control Escape",
-      "description": "How To Do The Perfect BJJ Side Control Escape",
-      "youtubeId": "cuXq-k__9lQ",
+      "notificationDate": "2021-01-24",
+      "videoDate": "2020-08-20",
+      "title": "Best Takedowns For BJJ",
+      "description": "Best Takedowns For BJJ",
+      "youtubeId": "Swoni-e1CFg",
+      "tags": [
+        "takedown"
+      ]
+    },
+    "2021-01-23": {
+      "master": "Lachlan Giles \u0026 Ariel Tabak",
+      "notificationDate": "2021-01-23",
+      "videoDate": "2020-09-21",
+      "title": "Improve your guard retention",
+      "description": "5 tips to improve your guard retention",
+      "youtubeId": "zIsvigk3CZQ",
+      "tags": [
+        "guard-retention"
+      ]
+    },
+    "2021-01-22": {
+      "master": "The Grappling Academy",
+      "notificationDate": "2021-01-22",
+      "videoDate": "2017-08-25",
+      "title": "Collar Drag Then Take The Back!",
+      "description": "Collar Drag Then Take The Back!",
+      "youtubeId": "Awp9Ds8aqqs",
+      "tags": [
+        "back-control",
+        "collar-drag"
+      ]
+    },
+    "2021-01-21": {
+      "master": "Firas Zahabi",
+      "notificationDate": "2021-01-21",
+      "videoDate": "2015-02-02",
+      "title": "Fast and easy Side Control Escape",
+      "description": "Fast and easy Side Control Escape",
+      "youtubeId": "Q3dMhE793g4",
       "tags": [
         "side-control",
         "escape"
@@ -62,30 +96,6 @@
         "sweeps"
       ]
     },
-    "2021-01-10": {
-      "master": "Andre Galvao",
-      "notificationDate": "2021-01-10",
-      "videoDate": "2020-01-04",
-      "title": "Mount from Side Control",
-      "description": "The best way to mount from side control - white to black belt - Concepts, Details \u0026 Submissions",
-      "youtubeId": "dI44-xSintY",
-      "tags": [
-        "side-control",
-        "mount"
-      ]
-    },
-    "2021-01-21": {
-      "master": "Firas Zahabi",
-      "notificationDate": "2021-01-21",
-      "videoDate": "2015-02-02",
-      "title": "Fast and easy Side Control Escape",
-      "description": "Fast and easy Side Control Escape",
-      "youtubeId": "Q3dMhE793g4",
-      "tags": [
-        "side-control",
-        "escape"
-      ]
-    },
     "2021-01-19": {
       "master": "TeachMeGrappling Coach Brian",
       "notificationDate": "2021-01-19",
@@ -96,29 +106,6 @@
       "tags": [
         "butterfly-guard",
         "pass"
-      ]
-    },
-    "2021-01-09": {
-      "master": "The Grappling Academy",
-      "notificationDate": "2021-01-09",
-      "videoDate": "2019-06-23",
-      "title": "Preventing Side Control",
-      "description": "Preventing Side Control",
-      "youtubeId": "7U8dThjTZLU",
-      "tags": [
-        "side-control",
-        "defense"
-      ]
-    },
-    "2021-01-17": {
-      "master": "The Grappling Academy",
-      "notificationDate": "2021-01-17",
-      "videoDate": "2019-05-19",
-      "title": "The Mount 101",
-      "description": "The Mount 101 - The Essentials",
-      "youtubeId": "u_bMy3mQjro",
-      "tags": [
-        "mount"
       ]
     },
     "2021-01-18": {
@@ -133,15 +120,15 @@
         "defense"
       ]
     },
-    "2021-01-15": {
-      "master": "Marcelo Garcia \u0026 Bernardo Faria",
-      "notificationDate": "2021-01-15",
-      "videoDate": "2020-01-30",
-      "title": "BJJ Butterfly Guard - Principles",
-      "description": "BJJ Butterfly Guard - Most Important Principles",
-      "youtubeId": "0WG1MYvgXAM",
+    "2021-01-17": {
+      "master": "The Grappling Academy",
+      "notificationDate": "2021-01-17",
+      "videoDate": "2019-05-19",
+      "title": "The Mount 101",
+      "description": "The Mount 101 - The Essentials",
+      "youtubeId": "u_bMy3mQjro",
       "tags": [
-        "butterfly-guard"
+        "mount"
       ]
     },
     "2021-01-16": {
@@ -154,6 +141,76 @@
       "tags": [
         "side-control",
         "pressure"
+      ]
+    },
+    "2021-01-15": {
+      "master": "Marcelo Garcia \u0026 Bernardo Faria",
+      "notificationDate": "2021-01-15",
+      "videoDate": "2020-01-30",
+      "title": "BJJ Butterfly Guard - Principles",
+      "description": "BJJ Butterfly Guard - Most Important Principles",
+      "youtubeId": "0WG1MYvgXAM",
+      "tags": [
+        "butterfly-guard"
+      ]
+    },
+    "2021-01-14": {
+      "master": "Stephan Kesting",
+      "notificationDate": "2021-01-14",
+      "videoDate": "2019-12-27",
+      "title": "Adv. Details Escaping Side Control",
+      "description": "Advanced Details and Concepts for Escaping Side Control",
+      "youtubeId": "-9Kf1javraQ",
+      "tags": [
+        "side-control",
+        "escape"
+      ]
+    },
+    "2021-01-13": {
+      "master": "Jason Scully",
+      "notificationDate": "2021-01-13",
+      "videoDate": "2011-12-27",
+      "title": "42 BJJ Half Guard Bottom Techniques",
+      "description": "42 BJJ Half Guard Bottom Techniques in Just 6 Minutes",
+      "youtubeId": "OUMLNDO32zw",
+      "tags": [
+        "half-guard",
+        "bottom"
+      ]
+    },
+    "2021-01-12": {
+      "master": "John Danaher \u0026 Bernardo Faria",
+      "notificationDate": "2021-01-12",
+      "videoDate": "2019-04-10",
+      "title": "Perfect BJJ Side Control Escape",
+      "description": "How To Do The Perfect BJJ Side Control Escape",
+      "youtubeId": "cuXq-k__9lQ",
+      "tags": [
+        "side-control",
+        "escape"
+      ]
+    },
+    "2021-01-11": {
+      "master": "Keenan Cornelius",
+      "notificationDate": "2021-01-11",
+      "videoDate": "2020-06-10",
+      "title": "The Toreando Pass",
+      "description": "The Toreando - America\u0027s Professor of Ground-Fighting Adds Dozens Of Laser-Accurate Passing Details",
+      "youtubeId": "vKOVqfzYqFc",
+      "tags": [
+        "guard-pass"
+      ]
+    },
+    "2021-01-10": {
+      "master": "Andre Galvao",
+      "notificationDate": "2021-01-10",
+      "videoDate": "2020-01-04",
+      "title": "Mount from Side Control",
+      "description": "The best way to mount from side control - white to black belt - Concepts, Details \u0026 Submissions",
+      "youtubeId": "dI44-xSintY",
+      "tags": [
+        "side-control",
+        "mount"
       ]
     }
   }

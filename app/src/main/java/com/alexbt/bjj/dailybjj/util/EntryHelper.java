@@ -146,10 +146,10 @@ public class EntryHelper {
         Log.i(TAG, String.format("Entering 'saveCacheData' with cacheDir={}", cacheDir));
         try {
             String content = GSON.toJson(data);
-            File cachedDataFile = new File(cacheDir,  DATA_FILE);
+            File cachedDataFile = new File(cacheDir, DATA_FILE);
             if (cachedDataFile.exists() && cachedDataFile.isDirectory()) {
                 cachedDataFile.delete();
-                cachedDataFile = new File(cacheDir,  DATA_FILE);
+                cachedDataFile = new File(cacheDir, DATA_FILE);
             }
             Files.createDirectories(Paths.get(cachedDataFile.getParentFile().getPath()));
             FileWriter fw = new FileWriter(cachedDataFile, false);
