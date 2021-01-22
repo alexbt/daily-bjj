@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 public class NotificationHelper {
 
+    private static Object MUTEX = new Object();
     private static final int MINUTES_ONE_HOUR = 60;
     private static final int MINUTES_ONE_DAY = 24 * 60;
 
@@ -22,40 +23,42 @@ public class NotificationHelper {
         new NotificationReceiver().onReceive(context, null);
     }
 
-    public static void scheduleNotification(Context context, SharedPreferences sharedPreferences, boolean showToast) {
-        LocalDate today = LocalDate.now();
-        LocalDateTime now = LocalDateTime.now();
-        int currentMinutes = now.getHour() * MINUTES_ONE_HOUR + now.getMinute();
+    public static void scheduleNotification(Context context, boolean showToast) {
+        synchronized (MUTEX) {
+            LocalDate today = LocalDate.now();
+            LocalDateTime now = LocalDateTime.now();
+            int currentMinutes = now.getHour() * MINUTES_ONE_HOUR + now.getMinute();
 
-        String lastNotificationDay = sharedPreferences.getString("last_notification_day", null);
-        int minutesFromMidnight = sharedPreferences.getInt("notification_time", 0);
+            SharedPreferences sharedPreferences = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
+            String lastNotificationDay = sharedPreferences.getString("last_notification_day", null);
+            int minutesFromMidnight = sharedPreferences.getInt("notification_time", 0);
 
-        String hours = String.format("%02d", getHours(minutesFromMidnight));
-        String minutes = String.format("%02d", getMinutes(minutesFromMidnight));
+            String hours = String.format("%02d", getHours(minutesFromMidnight));
+            String minutes = String.format("%02d", getMinutes(minutesFromMidnight));
 
-        String toastMessage;
-        if (isNotificationTimePassed(currentMinutes, minutesFromMidnight) && !isAlreadyNotifiedForToday(today, lastNotificationDay)) {
-            NotificationHelper.showNotification(context);
-            minutesFromMidnight += MINUTES_ONE_DAY;
-            toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %sh%s", hours, minutes);
+            String toastMessage;
+            if (isNotificationTimePassed(currentMinutes, minutesFromMidnight) && !isAlreadyNotifiedForToday(today, lastNotificationDay)) {
+                NotificationHelper.showNotification(context);
+                minutesFromMidnight += MINUTES_ONE_DAY;
+                toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %sh%s", hours, minutes);
 
-        } else if (isAlreadyNotifiedForToday(today, lastNotificationDay)) {
-            minutesFromMidnight += MINUTES_ONE_DAY;
-            toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %sh%s", hours, minutes);
-        } else {
-            toastMessage = String.format("Next Daily BJJ scheduled in %d minutes at %sh%s", minutesFromMidnight, hours, minutes);
+            } else if (isAlreadyNotifiedForToday(today, lastNotificationDay)) {
+                minutesFromMidnight += MINUTES_ONE_DAY;
+                toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %sh%s", hours, minutes);
+            } else {
+                toastMessage = String.format("Next Daily BJJ scheduled in %d minutes at %sh%s", minutesFromMidnight, hours, minutes);
+            }
+            if (showToast) {
+                Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
+            }
+            Intent intent = new Intent(context, NotificationReceiver.class);
+            PendingIntent pending = PendingIntent.getBroadcast(context, 42, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+            Calendar notificationTime = DateHelper.getNextNotificationCalendar(minutesFromMidnight);
+
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, notificationTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pending);
         }
-        if (showToast) {
-            Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
-        }
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        PendingIntent pending = PendingIntent.getBroadcast(context, 42, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        Calendar notificationTime = DateHelper.getNextNotificationCalendar(minutesFromMidnight);
-
-
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, notificationTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pending);
     }
 
     private static boolean isAlreadyNotifiedForToday(LocalDate today, String lastNotificationDay) {

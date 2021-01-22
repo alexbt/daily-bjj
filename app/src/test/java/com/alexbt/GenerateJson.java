@@ -1,6 +1,5 @@
 package com.alexbt;
 
-import com.alexbt.bjj.dailybjj.entries.DailyEntryStatus;
 import com.alexbt.bjj.dailybjj.entries.Data;
 import com.alexbt.bjj.dailybjj.util.MyDateDeserializer;
 import com.alexbt.bjj.dailybjj.util.MyDateSerializer;
@@ -31,31 +30,32 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class GenerateJson {
-
-
-    public static final String IMAGE_PREFIX = "https://img.youtube.com/vi/";
-    public static final String IMAGE_SUFFIX = "/0.jpg";
-    public static final String VIDEO_PREFIX = "https://www.youtube.com/watch?v=";
+    private static final String IMAGE_PREFIX = "https://img.youtube.com/vi/";
+    private static final String IMAGE_SUFFIX = "/0.jpg";
+    private static final String VIDEO_PREFIX = "https://www.youtube.com/watch?v=";
+    private static final String DATA_CURRENT_VERSION_TXT = "../data/current_version.txt";
+    private static final String DATA_DATA_JSON = "../data/data.json";
+    private static final String VERSION_DEFAULT_SUFFIX = "_01";
 
     @Test
     public void test() throws IOException {
         int i = 0;
         final int COLUMN_INDEX_STATUS = i++;
+        final int COLUMN_INDEX_IS_VIDEO_UNIQUE = i++;
+        final int COLUMN_INDEX_IS_DATE_UNIQUE = i++;
+        final int COLUMN_INDEX_IS_ACTIVE = i++;
         final int COLUMN_INDEX_NOTIFICATION_DATE = i++;
-        final int COLUMN_INDEX_VIDEO_DATE = i++;
         final int COLUMN_INDEX_VIDEO_URL = i++;
+        final int COLUMN_INDEX_VIDEO_DATE = i++;
         final int COLUMN_INDEX_MASTER = i++;
         final int COLUMN_INDEX_TAGS = i++;
-        final int COLUMN_INDEX_TITLE = i++;
         final int COLUMN_INDEX_DESCRIPTION = i++;
+        final int COLUMN_INDEX_SHORT_TITLE = i++;
         final int COLUMN_INDEX_YOUTUBE_ID = i++;
         final int COLUMN_INDEX_IMAGE_URL = i++;
 
-        File file = new File("../data/current_version.txt");
-        FileInputStream fileInputStream = new FileInputStream(file);
-        String currentVersion = new String(ByteStreams.toByteArray(fileInputStream));
-
-        String urlStr = "https://docs.google.com/spreadsheets/u/0/d/18OQBKtzy-Fk5mf5fLEbbey72R1x-AcBeAVe7dwRbYvw/gviz/tq?tqx=out:HTML&tq=select+*";
+        String urlStr = "https://docs.google.com/spreadsheets/u/0/d/18OQBKtzy-Fk5mf5fLEbbey72R1x-AcBeAVe7dwRbYvw/gviz/tq?tqx=out:HTML&tq=" +
+                "select+*+where+D%3dTRUE";
 
         URL url = new URL(urlStr);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -70,27 +70,39 @@ public class GenerateJson {
 
         Map<String, DailyEntryJson> dailyEntries = elements.stream()
                 .map(e -> e.getElementsByTag("td").eachText())
-                .filter(s -> {
-                    DailyEntryStatus dailyEntryStatus = toEnum(DailyEntryStatus.class, s.get(COLUMN_INDEX_STATUS));
-                    return dailyEntryStatus == DailyEntryStatus.ACTIVE;
-                })
                 .map(s -> {
                     DailyEntryJson dailyEntry = new DailyEntryJson();
-                    dailyEntry.setStatus(toEnum(DailyEntryStatus.class, s.get(COLUMN_INDEX_STATUS)));
                     dailyEntry.setNotificationDate(LocalDate.parse(s.get(COLUMN_INDEX_NOTIFICATION_DATE)));
                     dailyEntry.setVideoDate(LocalDate.parse(s.get(COLUMN_INDEX_VIDEO_DATE)));
                     dailyEntry.setVideoUrl(s.get(COLUMN_INDEX_VIDEO_URL));
                     dailyEntry.setMaster(s.get(COLUMN_INDEX_MASTER));
                     dailyEntry.setTags(Arrays.asList(s.get(COLUMN_INDEX_TAGS).replaceAll(" ", "").split(",")));
-                    dailyEntry.setTitle(s.get(COLUMN_INDEX_TITLE));
+                    dailyEntry.setTitle(s.get(COLUMN_INDEX_SHORT_TITLE));
                     dailyEntry.setDescription(s.get(COLUMN_INDEX_DESCRIPTION));
                     dailyEntry.setYoutubeId(s.get(COLUMN_INDEX_YOUTUBE_ID));
                     dailyEntry.setImageUrl(s.get(COLUMN_INDEX_IMAGE_URL));
                     return dailyEntry;
                 }).collect(Collectors.toMap(d -> d.getNotificationDate().toString(), Function.identity(),
-                        (v1,v2) ->{ throw new RuntimeException(String.format("Duplicate key for values %s and %s", v1, v2));},
+                        (v1, v2) -> {
+                            throw new RuntimeException(String.format("Duplicate key for values %s and %s", v1, v2));
+                        },
                         myMapSupplier));
 
+
+        File file = new File(DATA_CURRENT_VERSION_TXT);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        String currentVersion = new String(ByteStreams.toByteArray(fileInputStream));
+
+        String latestVersion = dailyEntries.keySet().stream().sorted(Comparator.reverseOrder()).findFirst().get();
+        latestVersion = latestVersion.replace("-", "") + VERSION_DEFAULT_SUFFIX;
+        if (!latestVersion.equals(currentVersion)) {
+            file = new File(DATA_CURRENT_VERSION_TXT);
+            FileWriter fileWriter = new FileWriter(file, false);
+            fileWriter.write(latestVersion);
+            fileWriter.flush();
+            fileWriter.close();
+            currentVersion = latestVersion;
+        }
 
         DataJson data = new DataJson();
         data.setDailyEntries(dailyEntries);
@@ -104,7 +116,7 @@ public class GenerateJson {
                 .registerTypeAdapter(LocalDate.class, new MyDateSerializer())
                 .create().toJson(data);
 
-        file = new File("../data/data.json");
+        file = new File(DATA_DATA_JSON);
         FileWriter fileWriter = new FileWriter(file, false);
         fileWriter.write(s);
         fileWriter.flush();
@@ -115,12 +127,5 @@ public class GenerateJson {
                 .registerTypeAdapter(LocalDate.class, new MyDateDeserializer())
                 .create().fromJson(s, Data.class);
         System.out.println(parsed);
-    }
-
-    private DailyEntryStatus toEnum(Class<DailyEntryStatus> dailyEntryStatusClass, String s) {
-        if (s == null || s.isEmpty()) {
-            throw new AssertionError();
-        }
-        return Enum.valueOf(dailyEntryStatusClass, s);
     }
 }

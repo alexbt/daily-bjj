@@ -1,9 +1,224 @@
 {
-  "version": "20210116_01",
+  "version": "20210214_01",
   "videoPrefix": "https://www.youtube.com/watch?v\u003d",
   "imagePrefix": "https://img.youtube.com/vi/",
   "imageSuffix": "/0.jpg",
   "dailyEntries": {
+    "2021-02-14": {
+      "master": "Keenan Cornelius",
+      "notificationDate": "2021-02-14",
+      "videoDate": "2020-05-26",
+      "title": "The Longstep Pass",
+      "description": "The early 2000\u0027s revolutionized jiu-jitsu with The Longstep Pass. Lets find out how it works.",
+      "youtubeId": "cs84OhtG3Mw",
+      "tags": [
+        "longstep-pass",
+        "guard-pass"
+      ]
+    },
+    "2021-02-13": {
+      "master": "Lachlan Giles",
+      "notificationDate": "2021-02-13",
+      "videoDate": "2021-01-21",
+      "title": "Over under pass",
+      "description": "Over under pass",
+      "youtubeId": "hKZgRdnj4s4",
+      "tags": [
+        "over-under-pass",
+        "guard-pass"
+      ]
+    },
+    "2021-02-12": {
+      "master": "Xande Ribeiro \u0026 Bernardo Faria",
+      "notificationDate": "2021-02-12",
+      "videoDate": "2019-07-31",
+      "title": "How To Never Get Your BJJ Guard Passed",
+      "description": "How To Never Get Your BJJ Guard Passed",
+      "youtubeId": "e86MOTgrzgs",
+      "tags": [
+        "guard-retention"
+      ]
+    },
+    "2021-02-11": {
+      "master": "Lachlan Giles",
+      "notificationDate": "2021-02-11",
+      "videoDate": "2016-03-29",
+      "title": "Knee on Belly Escapes",
+      "description": "Knee on Belly Escapes",
+      "youtubeId": "zKFDRsLkN34",
+      "tags": [
+        "knee-on-belly",
+        "escape"
+      ]
+    },
+    "2021-02-10": {
+      "master": "Keenan Cornelius",
+      "notificationDate": "2021-02-10",
+      "videoDate": "2020-06-28",
+      "title": "The Butter Flip Pass",
+      "description": "The Butter Flip Pass | How to Stunt on that one cocky 20 year old with the guard you secretly hate",
+      "youtubeId": "vH4e3AgWCac",
+      "tags": [
+        "guard-pass",
+        "butter-flip-pass"
+      ]
+    },
+    "2021-02-09": {
+      "master": "Knight Jiu-Jitsu",
+      "notificationDate": "2021-02-09",
+      "videoDate": "2020-08-20",
+      "title": "Guard Retention \u0026 Pass Prevention",
+      "description": "Guard Retention \u0026 Pass Prevention | Jiu-Jitsu Strategies \u0026 Principles",
+      "youtubeId": "hMssoqADMeo",
+      "tags": [
+        "guard-retention"
+      ]
+    },
+    "2021-02-08": {
+      "master": "Renzo Gracie",
+      "notificationDate": "2021-02-08",
+      "videoDate": "2020-11-14",
+      "title": "Escape From Knee on Belly",
+      "description": "Renzo Gracie\u0027s Favorite Escape From Knee on Belly",
+      "youtubeId": "uwtS5GipbRA",
+      "tags": [
+        "knee-on-belly",
+        "escape"
+      ]
+    },
+    "2021-02-07": {
+      "master": "Keenan Cornelius",
+      "notificationDate": "2021-02-07",
+      "videoDate": "2020-11-14",
+      "title": "Ultimate Knee On Belly Counter",
+      "description": "The Ultimate Get-Out-Of-Jail-Free Knee On Belly Counter (Its Dumb Easy)",
+      "youtubeId": "cOiwKYGDFMQ",
+      "tags": [
+        "knee-on-belly",
+        "escape"
+      ]
+    },
+    "2021-02-06": {
+      "master": "Andre Galvao",
+      "notificationDate": "2021-02-06",
+      "videoDate": "2021-02-05",
+      "title": "Easy Way to Open the Closed Guard",
+      "description": "Easy Way to Open the Closed Guard",
+      "youtubeId": "nsOOTaHCvJI",
+      "tags": [
+        "guard-pass",
+        "closed-guard"
+      ]
+    },
+    "2021-02-05": {
+      "master": "Bernardo Faria \u0026 Mikey Musumeci",
+      "notificationDate": "2021-02-05",
+      "videoDate": "2021-01-20",
+      "title": "Underneath A Bigger And Stronger Opponent",
+      "description": "How To Get Underneath A Bigger And Stronger Opponent",
+      "youtubeId": "XJhxNdtk_BE",
+      "tags": [
+        "guard",
+        "bigger-opponent",
+        "bottom"
+      ]
+    },
+    "2021-02-04": {
+      "master": "Jedi",
+      "notificationDate": "2021-02-04",
+      "videoDate": "2020-05-15",
+      "title": "The 4 best side control submissions",
+      "description": "the 4 best side control submissions",
+      "youtubeId": "5Ad4VbM4NXo",
+      "tags": [
+        "side-control",
+        "submission"
+      ]
+    },
+    "2021-02-03": {
+      "master": "Chewjitsu",
+      "notificationDate": "2021-02-03",
+      "videoDate": "2018-12-26",
+      "title": "Armbar Deceptive Setup",
+      "description": "Fix this White Belt Armbar Problem with a Deceptive Setup",
+      "youtubeId": "JWIn6TC16vk",
+      "tags": [
+        "closed-guard",
+        "armbar"
+      ]
+    },
+    "2021-02-02": {
+      "master": "Firas Zahabi \u0026 Karel Pravec",
+      "notificationDate": "2021-02-02",
+      "videoDate": "2017-01-30",
+      "title": "Getting out of Side control",
+      "description": "Getting out of Side control",
+      "youtubeId": "WqXwqNlPydY",
+      "tags": [
+        "side-control",
+        "escape"
+      ]
+    },
+    "2021-02-01": {
+      "master": "Chewjitsu",
+      "notificationDate": "2021-02-01",
+      "videoDate": "2021-01-13",
+      "title": "Double Under Pass Against Flexible People",
+      "description": "Blue Belt Struggling with Guard Passing Against Flexible People in BJJ",
+      "youtubeId": "6EoctGSQ2k0",
+      "tags": [
+        "guard-pass",
+        "double-under-pass"
+      ]
+    },
+    "2021-01-31": {
+      "master": "TeachMeGrappling Coach Brian",
+      "notificationDate": "2021-01-31",
+      "videoDate": "2021-01-17",
+      "title": "The Knee Pull Takedown!",
+      "description": "The Knee Pull Takedown!",
+      "youtubeId": "cjyDhnpAuDo",
+      "tags": [
+        "takedown"
+      ]
+    },
+    "2021-01-30": {
+      "master": "Jedi",
+      "notificationDate": "2021-01-30",
+      "videoDate": "2020-05-04",
+      "title": "The 5 best mount submissions",
+      "description": "The 5 best mount submissions",
+      "youtubeId": "0dUyJyIUOao",
+      "tags": [
+        "mount"
+      ]
+    },
+    "2021-01-29": {
+      "master": "Stephan Kesting \u0026 Rob Biernacki",
+      "notificationDate": "2021-01-29",
+      "videoDate": "2017-05-20",
+      "title": "Crucifix to Control and Attack the Back",
+      "description": "A Better Crucifix for Controlling and Attacking the Back",
+      "youtubeId": "OjkgpO0Aq5s",
+      "tags": [
+        "crucifix",
+        "submission",
+        "back-control"
+      ]
+    },
+    "2021-01-28": {
+      "master": "Stephan Kesting \u0026 Thomas Lisboa",
+      "notificationDate": "2021-01-28",
+      "videoDate": "2019-05-06",
+      "title": "The Crucifix Submission",
+      "description": "How to Do the Crucifix Submission in BJJ and No Gi",
+      "youtubeId": "7TcoNNl4Z6Q",
+      "tags": [
+        "crucifix",
+        "submission",
+        "back-control"
+      ]
+    },
     "2021-01-27": {
       "master": "Cyborg",
       "notificationDate": "2021-01-27",
@@ -100,8 +315,8 @@
       "master": "TeachMeGrappling Coach Brian",
       "notificationDate": "2021-01-19",
       "videoDate": "2018-10-04",
-      "title": "Butterfly Guard Pass",
-      "description": "Butterfly Guard Pass",
+      "title": "Butterfly Guard Head Stand Pass",
+      "description": "Butterfly Guard Pass... JUMP to Head Stand!",
       "youtubeId": "9AvaC5vF6dU",
       "tags": [
         "butterfly-guard",

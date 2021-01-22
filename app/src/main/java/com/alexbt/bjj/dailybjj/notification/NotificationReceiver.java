@@ -86,7 +86,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         Log.i(TAG, String.format("Before notifying pendingIntent"));
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
-        SharedPreferences.Editor edit = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", 0).edit();
+        SharedPreferences.Editor edit = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE).edit();
         edit.putString("last_notification_day", LocalDate.now().toString());
         edit.commit();
 

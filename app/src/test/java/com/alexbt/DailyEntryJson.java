@@ -1,8 +1,6 @@
 package com.alexbt;
 
-import com.alexbt.bjj.dailybjj.entries.DailyEntryStatus;
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,9 +9,6 @@ public class DailyEntryJson {
 
     @Expose
     private String master;
-
-    @Expose(serialize = false)
-    private DailyEntryStatus status;
 
     @Expose
     private LocalDate notificationDate;
@@ -93,14 +88,6 @@ public class DailyEntryJson {
 
     public void setVideoDate(LocalDate videoDate) {
         this.videoDate = videoDate;
-    }
-
-    public void setStatus(DailyEntryStatus status) {
-        this.status = status;
-    }
-
-    public DailyEntryStatus getStatus() {
-        return status;
     }
 
     public void setImageUrl(String imageUrl) {

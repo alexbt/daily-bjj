@@ -1,5 +1,6 @@
 package com.alexbt.bjj.dailybjj;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        SharedPreferences preferences = getSharedPreferences("com.alexbt.DailyNotificationPreference", MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
         if (!preferences.contains("notification_time")) {
             SharedPreferences.Editor editor = preferences.edit();
             int hours = getApplicationContext().getResources().getInteger(R.integer.default_notification_time_hours);
             editor.putInt("notification_time", hours * 60);
             editor.commit();
-            NotificationHelper.scheduleNotification(getApplicationContext(), preferences, true);
+            NotificationHelper.scheduleNotification(getApplicationContext(), true);
         }
 
         /*MobileAds.initialize(this, new OnInitializationCompleteListener() {
