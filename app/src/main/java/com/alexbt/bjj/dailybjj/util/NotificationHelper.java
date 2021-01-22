@@ -46,7 +46,7 @@ public class NotificationHelper {
                 minutesFromMidnight += MINUTES_ONE_DAY;
                 toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %sh%s", hours, minutes);
             } else {
-                toastMessage = String.format("Next Daily BJJ scheduled in %d minutes at %sh%s", minutesFromMidnight, hours, minutes);
+                toastMessage = String.format("Next Daily BJJ scheduled today at %sh%s", minutesFromMidnight, hours, minutes);
             }
             if (showToast) {
                 Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
