@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 
-public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final Logger LOG = Logger.getLogger(SettingsFragment.class);
 
@@ -35,6 +35,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         Preference button = findPreference("myCoolButton");
         button.setOnPreferenceClickListener(preference -> {
             SharedPreferences sharedPreferences = preferenceManager.getSharedPreferences();
+
+            sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+
             String scheduledNotification = PreferenceUtil.getScheduledNotificationText(sharedPreferences);
             String lastNotification = PreferenceUtil.getLastNotificationText(sharedPreferences);
             String nextNotification = PreferenceUtil.getNextNotificationText(sharedPreferences);
@@ -120,5 +124,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             updateNextNotificationField();
         }
         return true;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("scheduled_notification_time")) {
+            //TODO
+            updateNextNotificationField();
+        } else if (key.equals("last_notification_time")) {
+            updateLastNotification();
+            updateNextNotificationField();
+        } else if (key.equals("next_notification_time")) {
+            updateNextNotificationField();
+        }
     }
 }
