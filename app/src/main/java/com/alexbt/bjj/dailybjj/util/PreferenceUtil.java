@@ -47,9 +47,11 @@ public class PreferenceUtil {
         int hours = PreferenceUtil.getScheduledNotificationHours(sharedPreferences);
         int minutes = PreferenceUtil.getScheduledNotificationMinutes(sharedPreferences);
         LocalDateTime lastNotification = PreferenceUtil.getLastNotification(sharedPreferences);
-        String day = "Today";
 
-        if (lastNotification.getDayOfYear() == LocalDate.now().getDayOfYear()) {
+        String day = "Today";
+        if ((lastNotification!=null
+                && lastNotification.getDayOfYear() == LocalDate.now().getDayOfYear())
+                || DateHelper.getNow().isAfter(DateHelper.getNow().withHour(hours).withMinute(minutes))) {
             day = "Tomorrow";
         }
 
@@ -58,6 +60,9 @@ public class PreferenceUtil {
 
     public static String getLastNotificationText(SharedPreferences sharedPreferences) {
         LocalDateTime lastNotification = PreferenceUtil.getLastNotification(sharedPreferences);
+        if(lastNotification==null){
+            return "Never";
+        }
 
         String day;
         int nbDays = LocalDate.now().getDayOfYear() - lastNotification.getDayOfYear();
