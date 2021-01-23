@@ -1,6 +1,7 @@
 package com.alexbt.bjj.dailybjj.settings;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -33,13 +34,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
         Preference button = findPreference("myCoolButton");
         button.setOnPreferenceClickListener(preference -> {
+            SharedPreferences sharedPreferences = preferenceManager.getSharedPreferences();
+            String scheduledNotification = PreferenceUtil.getScheduledNotificationText(sharedPreferences);
+            String lastNotification = PreferenceUtil.getLastNotificationText(sharedPreferences);
+            String nextNotification = PreferenceUtil.getNextNotificationText(sharedPreferences);
+            String buildVersion = getContext().getResources().getString(R.string.build_version);
+            LOG.info(String.format("Sending email with logs for buildVersion=%s, scheduledNotification=%s, lastNotification=%s, nextNotification=%s",
+                    buildVersion, scheduledNotification, lastNotification, nextNotification));
             try {
-                String buildVersion = getContext().getResources().getString(R.string.build_version);
-                File logFile = new File(FileSystemHelper.getCacheDir(getContext()) + "/myapp.log");
-                String jsonContent = new String(ByteStreams.toByteArray(new FileInputStream(logFile)));
-                File tempFile = File.createTempFile(String.format("DailyBjj-%s_", buildVersion), ".log", getContext().getExternalCacheDir());
+                File logFile = new File(FileSystemHelper.getCacheDir(getContext()) + "/dailybjj.log");
+                String logContent = new String(ByteStreams.toByteArray(new FileInputStream(logFile)));
+                File tempFile = File.createTempFile(String.format("DailyBJJ-%s_", buildVersion), ".log", getContext().getExternalCacheDir());
                 FileWriter fw = new FileWriter(tempFile);
-                fw.write(jsonContent);
+                fw.write(logContent);
                 fw.flush();
                 fw.close();
 
@@ -51,13 +58,22 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                 intent.setData(Uri.parse("mailto:"));
                 intent.putExtra(Intent.EXTRA_SUBJECT, "DailyBJJ Logs");
                 intent.putExtra(Intent.EXTRA_STREAM, logFileUri);
-                intent.putExtra(Intent.EXTRA_TEXT, String.format("Hi Alex,\n\nPlease find attached my DailyBJJ logs!\n\n%s: %s\n\nRegards,",
-                        getContext().getResources().getString(R.string.build_version_title),
-                        buildVersion));
+                intent.putExtra(Intent.EXTRA_TEXT, String.format("Hi Alex,"
+                                + "\n\nPlease find attached my DailyBJJ logs!\n"
+                                + "\n%s: %s"
+                                + "\n%s: %s"
+                                + "\n%s: %s"
+                                + "\n\nRegards,",
+                        "Scheduled Notification", scheduledNotification,
+                        "Last Notification", lastNotification,
+                        "Next Notification", nextNotification,
+                        getContext().getResources().getString(R.string.build_version_title), buildVersion
+                ));
                 //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivityForResult(intent, 1);
 
             } catch (Exception e) {
+                LOG.error("Unexpected error", e);
             }
 
             return true;
