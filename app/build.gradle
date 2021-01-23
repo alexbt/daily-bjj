@@ -2,6 +2,7 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
 
+    def buildVersion = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date())
 
 android {
     compileSdkVersion 29
@@ -28,6 +29,9 @@ android {
             storePassword PASSWORD
             keyAlias "signFiles"
             keyPassword PASSWORD
+
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
         debug {
             storeFile file("alexbt.keystore")
@@ -40,8 +44,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
         }
     }
+
+//    applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            outputFileName = "DailyBJJ_${variant.buildType.name}_${buildVersion}.apk"
+//        }
+//    }
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -64,8 +75,17 @@ android {
 task generateVersion() {
     new File(projectDir, "src/main/res/values/version.xml").text =
             """<resources>
-    <string name="build_version">${new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date())}</string>
+    <string name="build_version">${buildVersion}</string>
 </resources>"""
+}
+
+task copyReport(dependsOn: build, type: Copy) {
+    project.logger.lifecycle("blah: $buildDir/outputs/apk/release/DailyBJJ_debug_${buildVersion}.apk")
+    from file("$buildDir/outputs/apk/build/DailyBJJ_debug_${buildVersion}.apk")
+    into file("../release")
+    rename { String fileName ->
+        fileName.replace("DailyBJJ_debug_${buildVersion}.apk", "DailyBJJ.apk")
+    }
 }
 
 allprojects {
