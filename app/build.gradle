@@ -62,8 +62,8 @@ android {
 }
 
 task generateVersion() {
-        new File(projectDir, "src/main/res/values/version.xml").text =
-                """<resources>
+    new File(projectDir, "src/main/res/values/version.xml").text =
+            """<resources>
     <string name="build_version">${new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date())}</string>
 </resources>"""
 }
@@ -82,6 +82,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //implementation 'com.google.android.gms:play-services-ads:19.6.0'
     //implementation 'com.google.android.gms:play-services-ads-base:19.6.0'
+    implementation 'de.mindpipe.android:android-logging-log4j:1.0.3'
+    implementation 'log4j:log4j:1.2.17'
+    //implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'jp.wasabeef:picasso-transformations:2.2.0'
     implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'

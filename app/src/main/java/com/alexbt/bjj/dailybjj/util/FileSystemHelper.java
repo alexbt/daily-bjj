@@ -10,4 +10,5 @@ public class FileSystemHelper {
         String cacheDir = context.getResources().getString(R.string.cache_dir);
         return context.getCacheDir().getAbsolutePath() + "/" + cacheDir;
     }
+
 }

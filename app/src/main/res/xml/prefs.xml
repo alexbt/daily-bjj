@@ -7,24 +7,38 @@
         <com.alexbt.bjj.dailybjj.settings.TimePreference
             android:key="scheduled_notification_time"
             android:summary="..."
-            android:title="Daily Notification Time" />
+            android:title="Daily Notification Time"
+            android:icon="@drawable/ic_baseline_alarm_24"
+            />
 
         <EditTextPreference
             android:key="next_notification_time"
             android:enabled="false"
             android:title="Next Notification"
-            android:summary="..." />
+            android:summary="..."
+            android:icon="@drawable/ic_baseline_access_time_24"
+            />
 
         <EditTextPreference
             android:key="last_notification_time"
             android:enabled="false"
             android:title="Last Notification"
-            android:summary="..." />
+            android:summary="..."
+            android:icon="@drawable/ic_baseline_alarm_on_24"
+            />
 
         <EditTextPreference
             android:enabled="false"
             android:title="@string/build_version_title"
-            android:summary="@string/build_version" />
+            android:summary="@string/build_version"
+            android:icon="@drawable/ic_baseline_build_24"
+            />
+
+        <Preference
+            android:title="Send logs"
+            android:key="myCoolButton"
+            android:summary=""
+            android:icon="@drawable/ic_baseline_attach_email_24"/>
 
     </PreferenceCategory>
 

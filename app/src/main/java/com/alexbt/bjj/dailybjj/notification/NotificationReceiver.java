@@ -11,48 +11,49 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.alexbt.bjj.dailybjj.R;
 import com.alexbt.bjj.dailybjj.entries.DailyEntry;
+import com.alexbt.bjj.dailybjj.util.DateHelper;
 import com.alexbt.bjj.dailybjj.util.EntryHelper;
 import com.alexbt.bjj.dailybjj.util.FileSystemHelper;
+
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDateTime;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private static final int NOTIFICATION_ID = 1;
     private static final int PENDING_INTENT_REQUEST_CODE = 0;
-    private static final String TAG = NotificationReceiver.class.getName();
+    private final Logger LOG = Logger.getLogger(NotificationReceiver.class);
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        Log.i(TAG, "Entering 'onReceive'");
+        LOG.info("Entering 'onReceive'");
         new Thread() {
             @Override
             public void run() {
                 displayNotification(context);
             }
         }.start();
-        Log.i(TAG, "Exiting 'onReceive'");
+        LOG.info("Exiting 'onReceive'");
     }
 
     private void displayNotification(Context context) {
-        Log.i(TAG, "Entering 'displayNotification'");
+        LOG.info("Entering 'displayNotification'");
         String cacheDir = FileSystemHelper.getCacheDir(context);
-        Log.i(TAG, String.format("cacheDir={}", cacheDir));
+        LOG.info(String.format("cacheDir={}", cacheDir));
         DailyEntry today = EntryHelper.getInstance().getTodayVideo(cacheDir);
-        Log.i(TAG, String.format("today's DailyEntry={}", today));
+        LOG.info(String.format("today's DailyEntry={}", today));
         if (today == null) {
-            Log.w(TAG, "Exiting 'displayNotification' with today's DailyEntry={}");
+            LOG.warn("Exiting 'displayNotification' with today's DailyEntry={}");
             return;
         }
 
@@ -63,9 +64,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         final String videoUrl = EntryHelper.getInstance().getWebVideoUrl(videoId);
         final String imageUrl = EntryHelper.getInstance().getImageUrl(videoId);
         resultIntent.setData(Uri.parse(videoUrl));
-        Log.i(TAG, String.format("Created resultIntent"));
+        LOG.info(String.format("Created resultIntent"));
         PendingIntent pendingIntent = PendingIntent.getActivity(context, PENDING_INTENT_REQUEST_CODE, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Log.i(TAG, String.format("Created pendingIntent"));
+        LOG.info(String.format("Created pendingIntent"));
 
         Bitmap youtubeImage = getBitmapFromUrl(imageUrl);
         String channelId = createNotificationChannel(context);
@@ -83,20 +84,20 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        Log.i(TAG, String.format("Before notifying pendingIntent"));
+        LOG.info(String.format("Before notifying pendingIntent"));
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
         SharedPreferences.Editor edit = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE).edit();
-        edit.putString("last_notification_time", LocalDateTime.now().toString());
+        edit.putString("last_notification_time", DateHelper.getNow().toString());
         edit.commit();
 
-        Log.i(TAG, String.format("Notified pendingIntent"));
-        Log.i(TAG, "Exiting 'displayNotification'");
+        LOG.info(String.format("Notified pendingIntent"));
+        LOG.info("Exiting 'displayNotification'");
     }
 
 
     private Bitmap getBitmapFromUrl(String url) {
-        Log.i(TAG, String.format("Entering 'getBitmapFromUrl'"));
+        LOG.info(String.format("Entering 'getBitmapFromUrl'"));
         Bitmap myBitmap = null;
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -106,17 +107,17 @@ public class NotificationReceiver extends BroadcastReceiver {
             myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
         } catch (MalformedURLException e) {
-            Log.e(TAG, String.format("error 'getBitmapFromUrl'"), e);
+            LOG.error(String.format("error 'getBitmapFromUrl'"), e);
         } catch (IOException e) {
-            Log.e(TAG, String.format("error 'getBitmapFromUrl'"), e);
+            LOG.error(String.format("error 'getBitmapFromUrl'"), e);
         }
 
-        Log.i(TAG, String.format("Exiting 'getBitmapFromUrl'"));
+        LOG.info(String.format("Exiting 'getBitmapFromUrl'"));
         return myBitmap;
     }
 
     private String createNotificationChannel(Context context) {
-        Log.i(TAG, String.format("Entering 'createNotificationChannel'"));
+        LOG.info(String.format("Entering 'createNotificationChannel'"));
 
         String channelId = null;
         // NotificationChannels are required for Notifications on O (API 26) and above.
@@ -149,7 +150,7 @@ public class NotificationReceiver extends BroadcastReceiver {
             return channelId;
         }
 
-        Log.i(TAG, String.format("Exiting 'createNotificationChannel' with channelId={}", channelId));
+        LOG.info(String.format("Exiting 'createNotificationChannel' with channelId={}", channelId));
         return channelId;
     }
 }

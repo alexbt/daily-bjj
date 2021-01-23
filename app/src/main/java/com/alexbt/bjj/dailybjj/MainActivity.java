@@ -15,12 +15,17 @@ import com.alexbt.bjj.dailybjj.util.NotificationHelper;
 import com.alexbt.bjj.dailybjj.util.PreferenceUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.apache.log4j.Logger;
+
 public class MainActivity extends AppCompatActivity {
     //TODO
     //private Map<Class, Object> cache = new HashMap<>();
 
+    private final Logger LOG = Logger.getLogger(MainActivity.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LOG.info("Entering 'onCreate'");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -43,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
             PreferenceUtil.saveNotificationTime(preferences, hours, minutes);
             NotificationHelper.scheduleNotification(getApplicationContext(), true);
         }
+
+        LOG.info("Exiting 'onCreate'");
 
         /*MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override

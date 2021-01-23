@@ -2,18 +2,25 @@ package com.alexbt.bjj.dailybjj.util;
 
 import android.content.SharedPreferences;
 
+import org.apache.log4j.Logger;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class PreferenceUtil {
+    private static final Logger LOG = Logger.getLogger(PreferenceUtil.class);
+
 
     public static int getScheduledNotificationHours(SharedPreferences sharedPreferences) {
+        LOG.info("Entering 'getScheduledNotificationHours'");
         int hours = sharedPreferences.getInt("scheduled_notification_hours", 8);
+        LOG.info("Exiting 'getScheduledNotificationHours'");
         return hours;
     }
 
     public static LocalDateTime getLastNotification(SharedPreferences sharedPreferences) {
+        LOG.info("Entering 'getLastNotification'");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String lastNotificationTimeStr = sharedPreferences.getString("last_notification_time", null);
         if (lastNotificationTimeStr != null) {
@@ -23,16 +30,17 @@ public class PreferenceUtil {
     }
 
     public static int getScheduledNotificationMinutes(SharedPreferences sharedPreferences) {
+        LOG.info("Entering 'getScheduledNotificationMinutes'");
         int minutes = sharedPreferences.getInt("scheduled_notification_minutes", 0);
         return minutes;
     }
 
     public static void saveNotificationTime(SharedPreferences sharedPreferences, int hour, int minutes) {
+        LOG.info("Entering 'saveNotificationTime'");
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("scheduled_notification_hours", hour);
         editor.putInt("scheduled_notification_minutes", minutes);
         editor.commit();
-
     }
 
     public static String getNextNotificationText(SharedPreferences sharedPreferences) {

@@ -1,6 +1,7 @@
 package com.alexbt.bjj.dailybjj.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class DateHelper {
@@ -35,5 +36,13 @@ public class DateHelper {
         //    date.add(Calendar.DAY_OF_MONTH, 1);
         //}
         return date;
+    }
+
+    public static LocalDateTime getNow() {
+        return LocalDateTime.now();
+    }
+
+    public static LocalDateTime getNowWithBuffer() {
+        return LocalDateTime.now().plusMinutes(2);
     }
 }
