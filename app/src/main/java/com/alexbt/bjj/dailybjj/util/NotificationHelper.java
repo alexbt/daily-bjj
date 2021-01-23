@@ -11,7 +11,7 @@ import com.alexbt.bjj.dailybjj.notification.NotificationReceiver;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.time.ZoneId;
 
 public class NotificationHelper {
 
@@ -26,27 +26,25 @@ public class NotificationHelper {
     public static void scheduleNotification(Context context, boolean showToast) {
         synchronized (MUTEX) {
             LocalDate today = LocalDate.now();
-            LocalDateTime now = LocalDateTime.now();
-            int currentMinutes = now.getHour() * MINUTES_ONE_HOUR + now.getMinute();
+            LocalDateTime now = LocalDateTime.now().plusMinutes(2);
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
-            String lastNotificationDay = sharedPreferences.getString("last_notification_day", null);
-            int minutesFromMidnight = sharedPreferences.getInt("notification_time", 0);
-
-            String hours = String.format("%02d", getHours(minutesFromMidnight));
-            String minutes = String.format("%02d", getMinutes(minutesFromMidnight));
+            LocalDateTime lastNotificationTime = PreferenceUtil.getLastNotification(sharedPreferences);
+            int hours = PreferenceUtil.getScheduledNotificationHours(sharedPreferences);
+            int minutes = PreferenceUtil.getScheduledNotificationMinutes(sharedPreferences);
 
             String toastMessage;
-            if (isNotificationTimePassed(currentMinutes, minutesFromMidnight) && !isAlreadyNotifiedForToday(today, lastNotificationDay)) {
+            LocalDateTime notificationTime = LocalDate.now().atStartOfDay().withHour(hours).withMinute(minutes);
+            if (isNotificationTimePassed(now, notificationTime) && !isAlreadyNotifiedForToday(today, lastNotificationTime)) {
                 NotificationHelper.showNotification(context);
-                minutesFromMidnight += MINUTES_ONE_DAY;
-                toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %sh%s", hours, minutes);
+                notificationTime = notificationTime.plusDays(1);
+                toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceUtil.formatTime(hours, minutes));
 
-            } else if (isAlreadyNotifiedForToday(today, lastNotificationDay)) {
-                minutesFromMidnight += MINUTES_ONE_DAY;
-                toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %sh%s", hours, minutes);
+            } else if (isAlreadyNotifiedForToday(today, lastNotificationTime)) {
+                notificationTime = notificationTime.plusDays(1);
+                toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %s", PreferenceUtil.formatTime(hours, minutes));
             } else {
-                toastMessage = String.format("Next Daily BJJ scheduled today at %sh%s", minutesFromMidnight, hours, minutes);
+                toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceUtil.formatTime(hours, minutes));
             }
             if (showToast) {
                 Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
@@ -55,14 +53,12 @@ public class NotificationHelper {
             PendingIntent pending = PendingIntent.getBroadcast(context, 42, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-            Calendar notificationTime = DateHelper.getNextNotificationCalendar(minutesFromMidnight);
-
-            manager.setRepeating(AlarmManager.RTC_WAKEUP, notificationTime.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pending);
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, notificationTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), AlarmManager.INTERVAL_DAY, pending);
         }
     }
 
-    private static boolean isAlreadyNotifiedForToday(LocalDate today, String lastNotificationDay) {
-        return today.toString().equals(lastNotificationDay);
+    private static boolean isAlreadyNotifiedForToday(LocalDate today, LocalDateTime lastNotificationDay) {
+        return today.equals(lastNotificationDay != null ? lastNotificationDay.toLocalDate() : null);
     }
 
     private static int getHours(int minutesFromMidnight) {
@@ -73,7 +69,7 @@ public class NotificationHelper {
         return minutesFromMidnight % MINUTES_ONE_HOUR;
     }
 
-    private static boolean isNotificationTimePassed(int currentMinutes, int minutesFromMidnight) {
-        return currentMinutes >= (minutesFromMidnight - 2);
+    private static boolean isNotificationTimePassed(LocalDateTime now, LocalDateTime notificationTime) {
+        return now.isAfter(notificationTime);
     }
 }

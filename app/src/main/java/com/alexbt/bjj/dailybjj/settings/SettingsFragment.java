@@ -8,6 +8,7 @@ import androidx.preference.PreferenceManager;
 
 import com.alexbt.bjj.dailybjj.R;
 import com.alexbt.bjj.dailybjj.util.NotificationHelper;
+import com.alexbt.bjj.dailybjj.util.PreferenceUtil;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
@@ -17,14 +18,28 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         preferenceManager.setSharedPreferencesName("com.alexbt.DailyNotificationPreference");
 
         setPreferencesFromResource(R.xml.prefs, rootKey);
-        Preference preferenceTime = preferenceManager.findPreference("notification_time");
-        preferenceTime.setOnPreferenceChangeListener(this);
+        preferenceManager.findPreference("scheduled_notification_time").setOnPreferenceChangeListener(this);
+        //preferenceManager.findPreference("last_notification_time").setOnPreferenceChangeListener(this);
+        //preferenceManager.findPreference("next_notification_time").setOnPreferenceChangeListener(this);
+
+        updateLastNotification();
+        updateNextNotification();
+    }
+
+    private void updateNextNotification() {
+        String message = PreferenceUtil.getNextNotificationText(getPreferenceManager().getSharedPreferences());
+        getPreferenceManager().findPreference("next_notification_time").setSummary(message);
+    }
+
+    private void updateLastNotification() {
+        String message = PreferenceUtil.getLastNotificationText(getPreferenceManager().getSharedPreferences());
+        getPreferenceManager().findPreference("last_notification_time").setSummary(message);
     }
 
     @Override
     public void onDisplayPreferenceDialog(Preference preference) {
-        if (preference instanceof TimePreference) {
-            TimePreference.TimePreferenceDialogFragmentCompat timepickerdialog = new TimePreference.TimePreferenceDialogFragmentCompat("notification_time");
+        if (preference.getKey().equals("scheduled_notification_time")) {
+            TimePreference.TimePreferenceDialogFragmentCompat timepickerdialog = new TimePreference.TimePreferenceDialogFragmentCompat("scheduled_notification_time");
             timepickerdialog.setTargetFragment(this, 0);
             timepickerdialog.show(getFragmentManager(), getTag());
         } else {
@@ -34,7 +49,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        NotificationHelper.scheduleNotification(preference.getContext(),true);
+        if (preference.getKey().equals("scheduled_notification_time")) {
+            NotificationHelper.scheduleNotification(preference.getContext(), true);
+            updateNextNotification();
+        }
         return true;
     }
 }

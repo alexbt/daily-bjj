@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private static final int NOTIFICATION_ID = 1;
@@ -87,7 +87,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
         SharedPreferences.Editor edit = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE).edit();
-        edit.putString("last_notification_day", LocalDate.now().toString());
+        edit.putString("last_notification_time", LocalDateTime.now().toString());
         edit.commit();
 
         Log.i(TAG, String.format("Notified pendingIntent"));

@@ -1,6 +1,7 @@
 package com.alexbt.bjj.dailybjj.settings;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
@@ -11,44 +12,43 @@ import androidx.preference.DialogPreference;
 import androidx.preference.PreferenceDialogFragmentCompat;
 
 import com.alexbt.bjj.dailybjj.R;
+import com.alexbt.bjj.dailybjj.util.PreferenceUtil;
 
 class TimePreference extends DialogPreference {
     private static final int MINUTES_ONE_HOUR = 60;
     private final int DEFAULT_HOUR;
     private final int DEFAULT_MINUTES;
-    private final int DEFAULT_MINUTES_FROM_MIDNIGHT;
 
     public TimePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         DEFAULT_HOUR = context.getResources().getInteger(R.integer.default_notification_time_hours);
         DEFAULT_MINUTES = context.getResources().getInteger(R.integer.default_notification_time_minutes);
-        DEFAULT_MINUTES_FROM_MIDNIGHT = toMinutesFromMidnight(DEFAULT_HOUR, DEFAULT_MINUTES);
 
-        int minutesFromMidnight = getPersistedInt(DEFAULT_MINUTES_FROM_MIDNIGHT);
-        updateSummary(minutesFromMidnight);
+        update(context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE));
     }
 
     private static int toMinutesFromMidnight(int hours, int minutes) {
         return hours * MINUTES_ONE_HOUR + minutes;
     }
 
-    public void persistMinutesFromMidnight(int minutesFromMidnight) {
-        super.persistInt(minutesFromMidnight);
-        updateSummary(minutesFromMidnight);
-        callChangeListener(minutesFromMidnight);
+    public void update(SharedPreferences sharedPreferences) {
+        int hours = PreferenceUtil.getScheduledNotificationHours(sharedPreferences);
+        int minutes = PreferenceUtil.getScheduledNotificationMinutes(sharedPreferences);
+
+        super.persistInt(hours * 60 + minutes);
+        updateSummary(sharedPreferences);
+        callChangeListener(hours * 60 + minutes);
     }
 
-    private void updateSummary(int minutesFromMidnight) {
-        int hour = minutesFromMidnight / MINUTES_ONE_HOUR;
-        int minutes = minutesFromMidnight % MINUTES_ONE_HOUR;
-        setSummary(String.format("%02dh%02d %s", hour, minutes, hour <= 11 ? "AM" : "PM"));
+    private void updateSummary(SharedPreferences sharedPreferences) {
+        String message = PreferenceUtil.getScheduledNotificationText(sharedPreferences);
+        setSummary(message);
         notifyChanged();
     }
 
     @Override
     protected void onSetInitialValue(@Nullable Object defaultValue) {
-        int minutesFromMidnight = getPersistedInt(DEFAULT_MINUTES_FROM_MIDNIGHT);
-        updateSummary(minutesFromMidnight);
+        update(getSharedPreferences());
     }
 
     public static class TimePreferenceDialogFragmentCompat extends PreferenceDialogFragmentCompat {
@@ -63,6 +63,11 @@ class TimePreference extends DialogPreference {
         @Override
         protected View onCreateDialogView(Context context) {
             timePicker = new TimePicker(context);
+            //SharedPreferences sharedPreferences = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
+            //int hours = PreferenceUtil.getScheduledNotificationHours(sharedPreferences);
+            //int minutes = PreferenceUtil.getScheduledNotificationMinutes(sharedPreferences);
+            //timePicker.setHour(hours);
+            //timePicker.setMinute(minutes);
             return timePicker;
         }
 
@@ -71,8 +76,9 @@ class TimePreference extends DialogPreference {
             if (!positiveResult) {
                 return;
             }
-            int minutesAfterMidnight = toMinutesFromMidnight(timePicker.getHour(), timePicker.getMinute());
-            ((TimePreference) getPreference()).persistMinutesFromMidnight(minutesAfterMidnight);
+            PreferenceUtil.saveNotificationTime(getPreference().getSharedPreferences(), timePicker.getHour(), timePicker.getMinute());
+            ((TimePreference) getPreference()).update(getPreference().getSharedPreferences());
+
         }
 
         @Override

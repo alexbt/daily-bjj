@@ -12,6 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.alexbt.bjj.dailybjj.util.NotificationHelper;
+import com.alexbt.bjj.dailybjj.util.PreferenceUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,11 +37,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         SharedPreferences preferences = getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
-        if (!preferences.contains("notification_time")) {
-            SharedPreferences.Editor editor = preferences.edit();
-            int hours = getApplicationContext().getResources().getInteger(R.integer.default_notification_time_hours);
-            editor.putInt("notification_time", hours * 60);
-            editor.commit();
+        if (!preferences.contains("scheduled_notification_hours")) {
+            int hours = PreferenceUtil.getScheduledNotificationHours(preferences);
+            int minutes = PreferenceUtil.getScheduledNotificationMinutes(preferences);
+            PreferenceUtil.saveNotificationTime(preferences, hours, minutes);
             NotificationHelper.scheduleNotification(getApplicationContext(), true);
         }
 

@@ -1,15 +1,30 @@
-<androidx.preference.PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         android:key="preference_key"
         android:title="">
 
         <com.alexbt.bjj.dailybjj.settings.TimePreference
-            android:key="notification_time"
+            android:key="scheduled_notification_time"
             android:summary="..."
-            android:title="Daily notification time"/>
+            android:title="Daily Notification Time" />
+
+        <EditTextPreference
+            android:key="next_notification_time"
+            android:enabled="false"
+            android:title="Next Notification"
+            android:summary="..." />
+
+        <EditTextPreference
+            android:key="last_notification_time"
+            android:enabled="false"
+            android:title="Last Notification"
+            android:summary="..." />
+
+        <EditTextPreference
+            android:enabled="false"
+            android:title="@string/build_version_title"
+            android:summary="@string/build_version" />
 
     </PreferenceCategory>
 

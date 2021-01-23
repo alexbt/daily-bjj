@@ -130,7 +130,7 @@
                 ads:adSize="BANNER"
                 ads:adUnitId="ca-app-pub-3940256099942544/6300978111" >
             </com.google.android.gms.ads.AdView -->
-                <!-- ads:adUnitId="ca-app-pub-8813301567480654~3433513209"-->
+            <!-- ads:adUnitId="ca-app-pub-8813301567480654~3433513209"-->
 
         </LinearLayout>
 
@@ -158,21 +158,21 @@
             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
             tools:ignore="MissingConstraints" / -->
 
-    <TextView
-        android:id="@+id/dummyAd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="2sp"
-        android:layout_marginRight="10sp"
-        android:layout_marginBottom="60sp"
-        android:background="@color/lighter_gray"
-        android:gravity="center"
-        android:lines="5"
-        android:textAlignment="gravity"
-        android:text="Insert Ad here"
-        android:textSize="14sp"
-        tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/dummyAd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="2sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginBottom="60sp"
+            android:background="@color/lighter_gray"
+            android:gravity="center"
+            android:lines="5"
+            android:textAlignment="gravity"
+            android:text="Insert Ad here"
+            android:textSize="14sp"
+            tools:ignore="MissingConstraints" />
     </FrameLayout>
 
 
