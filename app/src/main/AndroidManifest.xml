@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:name="com.alexbt.bjj.dailybjj.MyApplication"
+        android:name="com.alexbt.bjj.dailybjj.DailyBjjApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,7 +23,7 @@
             android:value="ca-app-pub-8813301567480654~3433513209" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".DailyBjjActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

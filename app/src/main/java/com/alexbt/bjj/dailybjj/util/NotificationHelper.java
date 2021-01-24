@@ -19,15 +19,8 @@ import java.time.ZonedDateTime;
 public class NotificationHelper {
     private static final Logger LOG = Logger.getLogger(NotificationHelper.class);
 
-    private static Object MUTEX = new Object();
+    private static final Object MUTEX = new Object();
     private static final int MINUTES_ONE_HOUR = 60;
-    private static final int MINUTES_ONE_DAY = 24 * 60;
-
-    private static void showNotification(Context context) {
-        LOG.info("Entering 'showNotification'");
-        new NotificationReceiver().onReceive(context, null);
-        LOG.info("Exiting 'showNotification'");
-    }
 
     public static void scheduleNotification(Context context, boolean showToast) {
         synchronized (MUTEX) {
@@ -35,9 +28,9 @@ public class NotificationHelper {
             LocalDateTime now = DateHelper.getNowWithBuffer();
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
-            LocalDateTime lastNotificationTime = PreferenceUtil.getLastNotification(sharedPreferences);
-            int hours = PreferenceUtil.getScheduledNotificationHours(sharedPreferences);
-            int minutes = PreferenceUtil.getScheduledNotificationMinutes(sharedPreferences);
+            LocalDateTime lastNotificationTime = PreferenceHelper.getLastNotification(sharedPreferences);
+            int hours = PreferenceHelper.getScheduledNotificationHours(sharedPreferences);
+            int minutes = PreferenceHelper.getScheduledNotificationMinutes(sharedPreferences);
 
             String toastMessage;
             LocalDateTime notificationTime = LocalDate.now().atStartOfDay().withHour(hours).withMinute(minutes);
@@ -49,15 +42,15 @@ public class NotificationHelper {
             if (notificationTimePassed && !alreadyNotifiedForToday) {
                 LOG.info("Schedule time is in the past, showing notification now and scheduling for tomorrow");
                 notificationTime = notificationTime.plusDays(1);
-                toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceUtil.formatTime(hours, minutes));
+                toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
 
             } else if (alreadyNotifiedForToday) {
                 LOG.info("Notification was already sent to user, scheduling for tomorrow");
                 notificationTime = notificationTime.plusDays(1);
-                toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %s", PreferenceUtil.formatTime(hours, minutes));
+                toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
             } else {
                 LOG.info("Schedule time is in the future, scheduling for later today");
-                toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceUtil.formatTime(hours, minutes));
+                toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceHelper.formatTime(hours, minutes));
             }
             if (showToast) {
                 LOG.info(String.format("Showing toast=%s", toastMessage));

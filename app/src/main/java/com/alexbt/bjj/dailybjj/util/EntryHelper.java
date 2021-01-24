@@ -25,8 +25,8 @@ public class EntryHelper {
     private final Logger LOG = Logger.getLogger(EntryHelper.class);
     private static final Gson GSON = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
-            .registerTypeAdapter(LocalDate.class, new MyDateDeserializer())
-            .registerTypeAdapter(LocalDate.class, new MyDateSerializer())
+            .registerTypeAdapter(LocalDate.class, new DateDeserializer())
+            .registerTypeAdapter(LocalDate.class, new DateSerializer())
             .create();
 
     private static final String WEBVIDEO_PREFIX = "https://www.youtube.com/watch?v=";

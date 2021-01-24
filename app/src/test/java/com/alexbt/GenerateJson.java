@@ -1,8 +1,8 @@
 package com.alexbt;
 
 import com.alexbt.bjj.dailybjj.entries.Data;
-import com.alexbt.bjj.dailybjj.util.MyDateDeserializer;
-import com.alexbt.bjj.dailybjj.util.MyDateSerializer;
+import com.alexbt.bjj.dailybjj.util.DateDeserializer;
+import com.alexbt.bjj.dailybjj.util.DateSerializer;
 import com.google.common.io.ByteStreams;
 import com.google.gson.GsonBuilder;
 
@@ -113,7 +113,7 @@ public class GenerateJson {
         String s = new GsonBuilder()
                 .setPrettyPrinting()
                 .excludeFieldsWithoutExposeAnnotation()
-                .registerTypeAdapter(LocalDate.class, new MyDateSerializer())
+                .registerTypeAdapter(LocalDate.class, new DateSerializer())
                 .create().toJson(data);
 
         file = new File(DATA_DATA_JSON);
@@ -124,7 +124,7 @@ public class GenerateJson {
 
         Data parsed = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
-                .registerTypeAdapter(LocalDate.class, new MyDateDeserializer())
+                .registerTypeAdapter(LocalDate.class, new DateDeserializer())
                 .create().fromJson(s, Data.class);
         System.out.println(parsed);
     }

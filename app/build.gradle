@@ -2,7 +2,7 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
 
-    def buildVersion = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date())
+def buildVersion = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date())
 
 android {
     compileSdkVersion 29
