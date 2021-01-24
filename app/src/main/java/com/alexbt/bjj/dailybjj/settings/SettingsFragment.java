@@ -46,10 +46,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
         SharedPreferences sharedPreferences = preferenceManager.getSharedPreferences();
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
-        Preference button = findPreference("myCoolButton");
+        Preference button = findPreference("sendLogsByEmail");
         button.setOnPreferenceClickListener(preference -> {
-
-
             String scheduledNotification = PreferenceHelper.getScheduledNotificationText(sharedPreferences);
             String lastNotification = PreferenceHelper.getLastNotificationText(sharedPreferences);
             String nextNotification = PreferenceHelper.getNextNotificationText(sharedPreferences);

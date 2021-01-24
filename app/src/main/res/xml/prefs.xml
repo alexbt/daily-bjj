@@ -4,7 +4,6 @@
         android:key="preference_key"
         android:title="">
 
-
         <com.alexbt.bjj.dailybjj.settings.CustomTimePreference
             android:key="scheduled_notification_time_2"
             android:summary="..."
@@ -25,17 +24,17 @@
             android:summary="..."
             android:icon="@drawable/ic_baseline_alarm_on_24" />
 
+        <Preference
+            android:title="Send Logs"
+            android:key="sendLogsByEmail"
+            android:summary=""
+            android:icon="@drawable/ic_baseline_attach_email_24" />
+
         <EditTextPreference
             android:enabled="false"
             android:title="@string/build_version_title"
             android:summary="@string/build_version"
             android:icon="@drawable/ic_baseline_build_24" />
-
-        <Preference
-            android:title="Send logs"
-            android:key="myCoolButton"
-            android:summary=""
-            android:icon="@drawable/ic_baseline_attach_email_24" />
 
     </PreferenceCategory>
 
