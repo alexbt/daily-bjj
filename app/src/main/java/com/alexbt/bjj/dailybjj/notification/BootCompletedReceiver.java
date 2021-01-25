@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.alexbt.bjj.dailybjj.util.NotificationHelper;
-
 import org.apache.log4j.Logger;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
@@ -14,11 +12,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         LOG.info("Entering 'onReceive'");
-        try {
-            NotificationHelper.scheduleNotification(context, false);
-        } catch (Exception e) {
-            LOG.error("Unexpected error", e);
-        }
+        context.startService(new Intent(context, BroadcastService.class));
         LOG.info("Exiting 'onReceive'");
     }
 }

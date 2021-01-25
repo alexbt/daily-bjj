@@ -141,7 +141,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("scheduled_notification_hours")) {
+        if (key.equals("scheduled_notification_hours")||key.equals("scheduled_notification_minutes")) {
             updateScheduledNotificationField();
             updateNextNotificationField();
         } else if (key.equals("last_notification_time")) {
