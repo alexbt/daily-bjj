@@ -11,7 +11,7 @@ import com.alexbt.bjj.dailybjj.util.NotificationHelper;
 import org.apache.log4j.Logger;
 
 public class BroadcastService extends Service {
-    private final Logger LOG = Logger.getLogger(BootCompletedReceiver.class);
+    private final Logger LOG = Logger.getLogger(BroadcastService.class);
 
     @Nullable
     @Override

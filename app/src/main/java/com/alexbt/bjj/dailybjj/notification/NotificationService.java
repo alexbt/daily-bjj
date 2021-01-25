@@ -33,7 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class NotificationService extends Service {
-    private final Logger LOG = Logger.getLogger(BootCompletedReceiver.class);
+    private final Logger LOG = Logger.getLogger(NotificationService.class);
     private static final int NOTIFICATION_ID = 1;
     private static final int PENDING_INTENT_REQUEST_CODE = 0;
 

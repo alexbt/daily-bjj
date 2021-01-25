@@ -12,6 +12,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.alexbt.bjj.dailybjj.R;
+import com.alexbt.bjj.dailybjj.util.DateHelper;
 import com.alexbt.bjj.dailybjj.util.FileSystemHelper;
 import com.alexbt.bjj.dailybjj.util.NotificationHelper;
 import com.alexbt.bjj.dailybjj.util.PreferenceHelper;
@@ -76,11 +77,16 @@ public class SettingsFragment extends PreferenceFragmentCompat
                                 + "\n%s: %s"
                                 + "\n%s: %s"
                                 + "\n%s: %s"
+                                + "\n%s: %s"
+                                + "\n%s: %s"
+                                + "\n\n\n%s"
                                 + "\n\nRegards,",
                         "Scheduled Notification", scheduledNotification,
                         "Last Notification", lastNotification,
                         "Next Notification", nextNotification,
-                        getContext().getResources().getString(R.string.build_version_title), buildVersion
+                        "LocalDateTime", DateHelper.getNow(),
+                        getContext().getResources().getString(R.string.build_version_title), buildVersion,
+                        logContent
                 ));
                 //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivityForResult(intent, 1);
