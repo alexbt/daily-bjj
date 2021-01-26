@@ -37,9 +37,21 @@ public class NotificationService extends Service {
     private static final int NOTIFICATION_ID = 1;
     private static final int PENDING_INTENT_REQUEST_CODE = 0;
 
+    public NotificationService(){
+        LOG.info("Performing 'constructor'");
+    }
+
+    @Override
+    public void onCreate() {
+        LOG.info("Entering 'onCreate'");
+        super.onCreate();
+        LOG.info("Exiting 'onCreate'");
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        LOG.info("Performing 'onBind'");
         return null;
     }
 

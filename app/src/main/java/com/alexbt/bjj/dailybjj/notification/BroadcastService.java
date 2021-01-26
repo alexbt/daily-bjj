@@ -13,10 +13,29 @@ import org.apache.log4j.Logger;
 public class BroadcastService extends Service {
     private final Logger LOG = Logger.getLogger(BroadcastService.class);
 
+    public BroadcastService(){
+        LOG.info("Performing 'constructor'");
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        LOG.info("Performing 'onBind'");
         return null;
+    }
+
+    @Override
+    public void onCreate() {
+        LOG.info("Entering 'onCreate'");
+        super.onCreate();
+        LOG.info("Exiting 'onCreate'");
+    }
+
+    @Override
+    public void onDestroy() {
+        LOG.info("Entering 'onCreate'");
+        super.onDestroy();
+        LOG.info("Exiting 'onCreate'");
     }
 
     @Override

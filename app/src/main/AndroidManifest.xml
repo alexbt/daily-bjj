@@ -33,15 +33,16 @@
         </activity>
 
         <receiver
-            android:name=".notification.NotificationReceiver"
-            android:exported="true">
+            android:name="com.alexbt.bjj.dailybjj.notification.NotificationReceiver"
+            android:exported="true"
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.NOTIFY" />
             </intent-filter>
         </receiver>
 
         <receiver
-            android:name=".notification.BootCompletedReceiver"
+            android:name="com.alexbt.bjj.dailybjj.notification.BootCompletedReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">
@@ -55,8 +56,12 @@
             </intent-filter>
         </receiver>
 
-        <service android:enabled="true" android:name=".notification.BroadcastService"></service>
-        <service android:enabled="true" android:name=".notification.NotificationService"></service>
+        <service
+            android:enabled="true"
+            android:name="com.alexbt.bjj.dailybjj.notification.BroadcastService" />
+        <service
+            android:enabled="true"
+            android:name="com.alexbt.bjj.dailybjj.notification.NotificationService" />
     </application>
 
 </manifest>
