@@ -41,7 +41,8 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         LOG.info("Entering 'onStartCommand'");
         try {
-            displayNotification(getApplicationContext());
+            displayNotification("base", getBaseContext());
+            displayNotification("application", getApplicationContext());
         } catch (Exception e) {
             LOG.error("Unexpected error", e);
         }
@@ -49,7 +50,7 @@ public class NotificationService extends Service {
         return Service.START_STICKY;
     }
 
-    private void displayNotification(Context context) {
+    private void displayNotification(String name, Context context) {
         LOG.info("Entering 'displayNotification'");
         String cacheDir = FileSystemHelper.getCacheDir(context);
         LOG.info(String.format("cacheDir=%s", cacheDir));
@@ -76,7 +77,7 @@ public class NotificationService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_dashboard_black_24dp)
                 .setContentIntent(pendingIntent)
-                .setContentTitle(master)
+                .setContentTitle(name + ": " + master)
                 .setContentText(description)
                 .setLargeIcon(youtubeImage)
                 .setAutoCancel(true)
