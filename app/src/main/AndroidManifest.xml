@@ -58,7 +58,7 @@
 
         <service
             android:enabled="true"
-            android:name="com.alexbt.bjj.dailybjj.notification.BroadcastService" />
+            android:name="com.alexbt.bjj.dailybjj.notification.SchedulingService" />
         <service
             android:enabled="true"
             android:name="com.alexbt.bjj.dailybjj.notification.NotificationService" />

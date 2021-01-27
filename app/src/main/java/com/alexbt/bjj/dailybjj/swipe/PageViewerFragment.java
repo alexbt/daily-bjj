@@ -45,15 +45,12 @@ public class PageViewerFragment extends Fragment {
                 DailyEntry today = EntryHelper.getInstance().getVideo(data, DateHelper.getLastWeekPlusDays(i));
                 map.put(i, new SingleImageFragment(today, i));
             }
-            new Thread() {
-                @Override
-                public void run() {
-                    for (int i = 0; i < NUM_ITEMS - 2; i++) {
-                        DailyEntry today = EntryHelper.getInstance().getVideo(data, DateHelper.getLastWeekPlusDays(i));
-                        map.put(i, new SingleImageFragment(today, i));
-                    }
+            new Thread(() -> {
+                for (int i = 0; i < NUM_ITEMS - 2; i++) {
+                    DailyEntry today = EntryHelper.getInstance().getVideo(data, DateHelper.getLastWeekPlusDays(i));
+                    map.put(i, new SingleImageFragment(today, i));
                 }
-            }.start();
+            }).start();
         }
 
         // Returns total number of pages

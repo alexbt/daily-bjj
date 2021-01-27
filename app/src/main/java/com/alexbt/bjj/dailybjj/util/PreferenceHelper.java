@@ -6,22 +6,16 @@ import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class PreferenceHelper {
     private static final Logger LOG = Logger.getLogger(PreferenceHelper.class);
 
 
     public static int getScheduledNotificationHours(SharedPreferences sharedPreferences) {
-        LOG.info("Entering 'getScheduledNotificationHours'");
-        int hours = sharedPreferences.getInt("scheduled_notification_hours", 8);
-        LOG.info("Exiting 'getScheduledNotificationHours'");
-        return hours;
+        return sharedPreferences.getInt("scheduled_notification_hours", 8);
     }
 
     public static LocalDateTime getLastNotification(SharedPreferences sharedPreferences) {
-        LOG.info("Entering 'getLastNotification'");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String lastNotificationTimeStr = sharedPreferences.getString("last_notification_time", null);
         if (lastNotificationTimeStr != null) {
             return LocalDateTime.parse(lastNotificationTimeStr);
@@ -30,17 +24,14 @@ public class PreferenceHelper {
     }
 
     public static int getScheduledNotificationMinutes(SharedPreferences sharedPreferences) {
-        LOG.info("Entering 'getScheduledNotificationMinutes'");
-        int minutes = sharedPreferences.getInt("scheduled_notification_minutes", 0);
-        return minutes;
+        return sharedPreferences.getInt("scheduled_notification_minutes", 0);
     }
 
     public static void saveNotificationTime(SharedPreferences sharedPreferences, int hour, int minutes) {
-        LOG.info("Entering 'saveNotificationTime'");
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("scheduled_notification_hours", hour);
         editor.putInt("scheduled_notification_minutes", minutes);
-        editor.commit();
+        editor.apply();
     }
 
     public static String getNextNotificationText(SharedPreferences sharedPreferences) {
@@ -51,7 +42,7 @@ public class PreferenceHelper {
         String day = "Today";
         if ((lastNotification != null
                 && lastNotification.getDayOfYear() == LocalDate.now().getDayOfYear())
-                || DateHelper.getNow().isAfter(DateHelper.getNow().withHour(hours).withMinute(minutes))) {
+                || DateHelper.getNowWithBuffer().isAfter(DateHelper.getNow().withHour(hours).withMinute(minutes))) {
             day = "Tomorrow";
         }
 
@@ -95,6 +86,6 @@ public class PreferenceHelper {
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putInt("scheduled_notification_hours", hours);
         edit.putInt("scheduled_notification_minutes", minutes);
-        edit.commit();
+        edit.apply();
     }
 }

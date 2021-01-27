@@ -37,24 +37,6 @@ public class NotificationService extends Service {
     private static final int NOTIFICATION_ID = 1;
     private static final int PENDING_INTENT_REQUEST_CODE = 0;
 
-    public NotificationService(){
-        LOG.info("Performing 'constructor'");
-    }
-
-    @Override
-    public void onCreate() {
-        LOG.info("Entering 'onCreate'");
-        super.onCreate();
-        LOG.info("Exiting 'onCreate'");
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        LOG.info("Performing 'onBind'");
-        return null;
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LOG.info("Entering 'onStartCommand'");
@@ -70,9 +52,9 @@ public class NotificationService extends Service {
     private void displayNotification(Context context) {
         LOG.info("Entering 'displayNotification'");
         String cacheDir = FileSystemHelper.getCacheDir(context);
-        LOG.info(String.format("cacheDir={}", cacheDir));
+        LOG.info(String.format("cacheDir=%s", cacheDir));
         DailyEntry today = EntryHelper.getInstance().getTodayVideo(cacheDir);
-        LOG.info(String.format("today's DailyEntry={}", today));
+        LOG.info(String.format("today's DailyEntry=%s", today));
         if (today == null) {
             LOG.warn("Exiting 'displayNotification' with today's DailyEntry={}");
             return;
@@ -85,9 +67,9 @@ public class NotificationService extends Service {
         final String videoUrl = EntryHelper.getInstance().getWebVideoUrl(videoId);
         final String imageUrl = EntryHelper.getInstance().getImageUrl(videoId);
         resultIntent.setData(Uri.parse(videoUrl));
-        LOG.info(String.format("Created resultIntent"));
+        LOG.info("Created resultIntent");
         PendingIntent pendingIntent = PendingIntent.getActivity(context, PENDING_INTENT_REQUEST_CODE, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        LOG.info(String.format("Created pendingIntent"));
+        LOG.info("Created pendingIntent");
 
         Bitmap youtubeImage = getBitmapFromUrl(imageUrl);
         String channelId = createNotificationChannel(context);
@@ -105,20 +87,20 @@ public class NotificationService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        LOG.info(String.format("Before notifying pendingIntent"));
+        LOG.info("Before notifying pendingIntent");
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
         SharedPreferences.Editor edit = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE).edit();
         edit.putString("last_notification_time", DateHelper.getNow().toString());
-        edit.commit();
+        edit.apply();
 
-        LOG.info(String.format("Notified pendingIntent"));
+        LOG.info("Notified pendingIntent");
         LOG.info("Exiting 'displayNotification'");
     }
 
 
     private Bitmap getBitmapFromUrl(String url) {
-        LOG.info(String.format("Entering 'getBitmapFromUrl'"));
+        LOG.info("Entering 'getBitmapFromUrl'");
         Bitmap myBitmap = null;
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -127,18 +109,16 @@ public class NotificationService extends Service {
             InputStream input = connection.getInputStream();
             myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
-        } catch (MalformedURLException e) {
-            LOG.error(String.format("error 'getBitmapFromUrl'"), e);
         } catch (IOException e) {
-            LOG.error(String.format("error 'getBitmapFromUrl'"), e);
+            LOG.error("error 'getBitmapFromUrl'", e);
         }
 
-        LOG.info(String.format("Exiting 'getBitmapFromUrl'"));
+        LOG.info("Exiting 'getBitmapFromUrl'");
         return myBitmap;
     }
 
     private String createNotificationChannel(Context context) {
-        LOG.info(String.format("Entering 'createNotificationChannel'"));
+        LOG.info("Entering 'createNotificationChannel'");
 
         String channelId = null;
         // NotificationChannels are required for Notifications on O (API 26) and above.
@@ -148,7 +128,6 @@ public class NotificationService extends Service {
             channelId = appName + "_ChannelId";
 
             // The user-visible name of the channel.
-            CharSequence channelName = appName;
             // The user-visible description of the channel.
             String channelDescription = appName + " Alert";
             int channelImportance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -156,7 +135,7 @@ public class NotificationService extends Service {
             //            int channelLockscreenVisibility = Notification.;
 
             // Initializes NotificationChannel.
-            NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, channelImportance);
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, appName, channelImportance);
             notificationChannel.setDescription(channelDescription);
             notificationChannel.enableVibration(channelEnableVibrate);
             //            notificationChannel.setLockscreenVisibility(channelLockscreenVisibility);
@@ -171,7 +150,25 @@ public class NotificationService extends Service {
             return channelId;
         }
 
-        LOG.info(String.format("Exiting 'createNotificationChannel' with channelId={}", channelId));
+        LOG.info(String.format("Exiting 'createNotificationChannel' with channelId=%s", channelId));
         return channelId;
+    }
+
+    public NotificationService(){
+        LOG.info("Performing 'constructor'");
+    }
+
+    @Override
+    public void onCreate() {
+        LOG.info("Entering 'onCreate'");
+        super.onCreate();
+        LOG.info("Exiting 'onCreate'");
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        LOG.info("Performing 'onBind'");
+        return null;
     }
 }

@@ -24,7 +24,6 @@ import java.time.LocalDate;
 import jp.wasabeef.picasso.transformations.CropTransformation;
 
 public class SingleImageFragment extends Fragment implements Observer<ImageData>, View.OnClickListener {
-    private String title;
     private int page;
     private View root;
     private DailyEntry dailyEntry;
@@ -44,27 +43,12 @@ public class SingleImageFragment extends Fragment implements Observer<ImageData>
         super.onCreate(savedInstanceState);
         page = getArguments().getInt("someInt", 0);
         localDate = DateHelper.getLastWeekPlusDays(page);
-        title = getArguments().getString("someTitle");
     }
 
     // Inflate the view for the fragment based on layout XML
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_image, container, false);
-       /* ImageButton left = root.findViewById(R.id.left_nav);
-        ImageButton right = root.findViewById(R.id.right_nav);
-        if (getArguments().getInt("someInt", 0) == 0) {
-            left.setVisibility(View.INVISIBLE);
-        } else {
-            left.setVisibility(View.VISIBLE);
-        }
-
-        if (getArguments().getInt("someInt", 0) == SwipeViewerFragment.MyPagerAdapter.NUM_ITEMS-1) {
-            right.setVisibility(View.INVISIBLE);
-        } else {
-            right.setVisibility(View.VISIBLE);
-        }
-        */
 
         TextView notificationDate = root.findViewById(R.id.date);
         notificationDate.setText(localDate.toString());
@@ -90,13 +74,6 @@ public class SingleImageFragment extends Fragment implements Observer<ImageData>
             dDay.setText("D-" + (7 - page));
         }
 
-        /*ImageView imageview = root.findViewById(R.id.left_nav);
-        imageview.setBackgroundColor(getResources().getColor(R.color.white));
-
-        imageview = root.findViewById(R.id.right_nav);
-        imageview.setBackgroundColor(getResources().getColor(R.color.white));
-        */
-
         TextView master = root.findViewById(R.id.masterName);
         master.setText(dailyEntry.getMaster());
 
@@ -116,7 +93,7 @@ public class SingleImageFragment extends Fragment implements Observer<ImageData>
             startActivity(appIntent);
         } catch (ActivityNotFoundException ex) {
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(EntryHelper.getWebVideoUrl(dailyEntry.getYoutubeId())));
+                    Uri.parse(EntryHelper.getInstance().getWebVideoUrl(dailyEntry.getYoutubeId())));
             startActivity(webIntent);
         }
     }

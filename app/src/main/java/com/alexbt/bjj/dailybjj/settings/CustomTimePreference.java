@@ -14,7 +14,6 @@ import com.alexbt.bjj.dailybjj.util.DateHelper;
 import java.time.LocalDateTime;
 
 class CustomTimePreference extends DialogPreference {
-    private CustomTimePicker customTimePicker;
 
     public CustomTimePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -29,7 +28,7 @@ class CustomTimePreference extends DialogPreference {
     public void onDisplayPreferenceDialog(Fragment fragment, TimePickerDialog.OnTimeSetListener listener, FragmentManager fragmentManager, String tag) {
         getPreferenceManager().setSharedPreferencesName("com.alexbt.DailyNotificationPreference");
         LocalDateTime now = DateHelper.getNow();
-        customTimePicker = new CustomTimePicker(getContext(), listener, now.getHour(), now.getMinute());
+        CustomTimePicker customTimePicker = new CustomTimePicker(getContext(), listener, now.getHour(), now.getMinute());
         customTimePicker.show();
     }
 }

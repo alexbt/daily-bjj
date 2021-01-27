@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class EntryHelper {
-    private final Logger LOG = Logger.getLogger(EntryHelper.class);
+    private static final Logger LOG = Logger.getLogger(EntryHelper.class);
     private static final Gson GSON = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapter(LocalDate.class, new DateDeserializer())
@@ -34,14 +34,14 @@ public class EntryHelper {
     private static final String YOUTUBE_PREFIX = "vnd.youtube:";
     private static final String IMAGE_PREFIX = "https://img.youtube.com/vi/";
     private static final String IMAGE_SUFFIX = "/0.jpg";
-    private static EntryHelper INSTANCE = new EntryHelper();
+    private static final EntryHelper INSTANCE = new EntryHelper();
 
     public static EntryHelper getInstance() {
         return INSTANCE;
     }
 
     public Data loadData(String cacheDir) {
-        LOG.info(String.format("Entering 'loadData' with cacheDir={}", cacheDir));
+        LOG.info(String.format("Entering 'loadData' with cacheDir=%s", cacheDir));
         Data data = loadFromCache(cacheDir);
         if (data != null) {
             if (isDataVersionLatest(data) && hasVideoForNextWeek(data)) {
@@ -50,7 +50,7 @@ public class EntryHelper {
         }
         data = fetchFromRemote();
         saveCacheData(data, cacheDir);
-        LOG.info(String.format("Exiting 'loadData' with data={}", data));
+        LOG.info(String.format("Exiting 'loadData' with data=%s", data));
         return data;
     }
 
@@ -65,28 +65,29 @@ public class EntryHelper {
     }
 
     private boolean isDataVersionLatest(Data data) {
-        LOG.info(String.format("Entering 'isDataVersionLatest'"));
+        LOG.info("Entering 'isDataVersionLatest'");
         String currentVersion = fetchCurrentVersion();
-        boolean comparedResult = data.getVersion().compareTo(currentVersion) == 0;
+        boolean comparedResult = Optional.ofNullable(data.getVersion())
+                .map(s -> s.compareTo(s) == 0).orElse(false);
 
-        LOG.info(String.format("Exiting 'isDataVersionLatest' with comparedResult={}", comparedResult));
+        LOG.info(String.format("Exiting 'isDataVersionLatest' with comparedResult=%s", comparedResult));
         return comparedResult;
     }
 
     private boolean hasVideoForNextWeek(Data data) {
-        LOG.info(String.format("Entering 'hasVideoForNextWeek'"));
+        LOG.info("Entering 'hasVideoForNextWeek'");
         boolean hasVideo = getVideo(data, DateHelper.getNextWeek()) != null;
 
-        LOG.info(String.format("Exiting 'hasVideoForNextWeek'"));
+        LOG.info("Exiting 'hasVideoForNextWeek'");
         return hasVideo;
     }
 
     private Data loadFromCache(String cacheDir) {
         Data data = null;
-        LOG.info(String.format("Entering 'loadFromCache'"));
+        LOG.info("Entering 'loadFromCache'");
         File f = new File(cacheDir, DATA_FILE);
         if (!f.exists()) {
-            LOG.error(String.format("Exiting 'loadFromCache' with cacheDir={} not exist", cacheDir));
+            LOG.error(String.format("Exiting 'loadFromCache' with cacheDir=%s not exist", cacheDir));
             return data;
         }
         try {
@@ -95,16 +96,16 @@ public class EntryHelper {
             data = GSON.fromJson(jsonContent, Data.class);
             return data;
         } catch (Exception e) {
-            LOG.error(String.format("Error 'loadFromCache'"), e);
+            LOG.error("Error 'loadFromCache'", e);
         }
 
-        LOG.error(String.format("Exiting 'loadFromCache' with data={}}", data));
+        LOG.error(String.format("Exiting 'loadFromCache' with data=%s", data));
         return data;
     }
 
     private Data fetchFromRemote() {
         Data data = null;
-        LOG.info(String.format("Entering 'fetchFromRemote'"));
+        LOG.info("Entering 'fetchFromRemote'");
         try {
             URL url = new URL("https://raw.githubusercontent.com/alexbt/daily-bjj/master/data/data.json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -113,13 +114,11 @@ public class EntryHelper {
             String jsonContent = new String(ByteStreams.toByteArray(connection.getInputStream()));
 
             data = GSON.fromJson(jsonContent, Data.class);
-            LOG.info(String.format("Exiting 'fetchFromRemote' with data={}", data));
-        } catch (MalformedURLException e) {
-            LOG.error(String.format("Error when 'fetchFromRemote'"), e);
+            LOG.info(String.format("Exiting 'fetchFromRemote' with data=%s", data));
         } catch (IOException e) {
-            LOG.error(String.format("Error when 'fetchFromRemote'"), e);
+            LOG.error("Error when 'fetchFromRemote'", e);
         }
-        LOG.info(String.format("Exiting 'fetchFromRemote' with data={}", data));
+        LOG.info(String.format("Exiting 'fetchFromRemote' with data=%s", data));
         return data;
     }
 
@@ -133,17 +132,17 @@ public class EntryHelper {
             connection.connect();
             currentVersion = new String(ByteStreams.toByteArray(connection.getInputStream()));
         } catch (MalformedURLException e) {
-            LOG.error(String.format("Error when 'fetchCurrentVersion'"), e);
+            LOG.error("Error when 'fetchCurrentVersion'", e);
         } catch (IOException e) {
-            LOG.error(String.format("Error when 'fetchCurrentVersion'"), e);
+            LOG.error("Error when 'fetchCurrentVersion'", e);
         }
 
-        LOG.info(String.format("Exiting 'fetchCurrentVersion' with currentVersion={}", currentVersion));
+        LOG.info(String.format("Exiting 'fetchCurrentVersion' with currentVersion=%s", currentVersion));
         return currentVersion;
     }
 
     private void saveCacheData(Data data, String cacheDir) {
-        LOG.info(String.format("Entering 'saveCacheData' with cacheDir={}", cacheDir));
+        LOG.info(String.format("Entering 'saveCacheData' with cacheDir=%s", cacheDir));
         try {
             String content = GSON.toJson(data);
             File cachedDataFile = new File(cacheDir, DATA_FILE);
@@ -170,7 +169,7 @@ public class EntryHelper {
         return YOUTUBE_PREFIX + videoId;
     }
 
-    public static String getWebVideoUrl(String videoId) {
+    public String getWebVideoUrl(String videoId) {
         return WEBVIDEO_PREFIX + videoId;
     }
 }

@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class DateHelper {
-    private static final int MINUTES_ONE_HOUR = 60;
-    private static final int MINUTES_ONE_DAY = 24 * 60;
 
     public static LocalDate getToday() {
         return LocalDate.now();
@@ -44,5 +42,13 @@ public class DateHelper {
 
     public static LocalDateTime getNowWithBuffer() {
         return LocalDateTime.now().plusMinutes(2);
+    }
+
+    public static boolean isAlreadyNotifiedForToday(LocalDate today, LocalDateTime lastNotificationDay) {
+        return today.equals(lastNotificationDay != null ? lastNotificationDay.toLocalDate() : null);
+    }
+
+    public static boolean isNotificationTimePassed(LocalDateTime now, LocalDateTime notificationTime) {
+        return now.isAfter(notificationTime);
     }
 }

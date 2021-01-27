@@ -36,14 +36,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         setPreferencesFromResource(R.xml.prefs, rootKey);
 
-        CustomTimePreference customScheduledNtificationTime = (CustomTimePreference) findPreference("scheduled_notification_time_2");
-
-        // customScheduledNtificationTime.setOnPreferenceClickListener(preference -> {
-        //     customScheduledNtificationTime.buildTimePicker(this, getFragmentManager(), getTag());
-        //     customScheduledNtificationTime.setOnTimeChangedListener(this);
-        //     return true;
-        // });
-
         SharedPreferences sharedPreferences = preferenceManager.getSharedPreferences();
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
@@ -98,11 +90,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
             return true;
         });
 
-
-        //preferenceManager.findPreference("scheduled_notification_time").setOnPreferenceChangeListener(this);
-        //preferenceManager.findPreference("last_notification_time").setOnPreferenceChangeListener(this);
-        //preferenceManager.findPreference("next_notification_time").setOnPreferenceChangeListener(this);
-
         updateLastNotification();
         updateNextNotificationField();
         updateScheduledNotificationField();
@@ -136,18 +123,17 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference.getKey().equals("scheduled_notification_time")) {
             try {
-                NotificationHelper.scheduleNotification(preference.getContext(), true);
+                NotificationHelper.startServiceToSchedule(preference.getContext());
             } catch (Exception e) {
                 LOG.error("Unexpected error", e);
             }
-            //updateNextNotificationField();
         }
         return true;
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("scheduled_notification_hours")||key.equals("scheduled_notification_minutes")) {
+        if (key.equals("scheduled_notification_hours") || key.equals("scheduled_notification_minutes")) {
             updateScheduledNotificationField();
             updateNextNotificationField();
         } else if (key.equals("last_notification_time")) {
@@ -162,7 +148,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
     public void onTimeSet(TimePicker timePicker, int hours, int minutes) {
         try {
             PreferenceHelper.scheduleNotification(getPreferenceManager().getSharedPreferences(), hours, minutes);
-            NotificationHelper.scheduleNotification(getPreferenceManager().getContext(), true);
+            NotificationHelper.startServiceToSchedule(getContext());
+            //String toastMessage = "Scheduling for " + PreferenceHelper.getNextNotificationText(getContext().getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE));
+            //Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             LOG.error("Unexpected error", e);
         }
