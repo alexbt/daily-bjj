@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.StrictMode;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -41,8 +42,10 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         LOG.info("Entering 'onStartCommand'");
         try {
-            displayNotification("base", getBaseContext());
-            displayNotification("application", getApplicationContext());
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            new Thread(() -> displayNotification("base", getBaseContext())).start();
+            new Thread(() -> displayNotification("application", getApplicationContext()));
         } catch (Exception e) {
             LOG.error("Unexpected error", e);
         }
