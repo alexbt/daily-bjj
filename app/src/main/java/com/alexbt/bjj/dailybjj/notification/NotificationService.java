@@ -44,7 +44,7 @@ public class NotificationService extends Service {
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-            new Thread(() -> displayNotification("base", getBaseContext())).start();
+            //new Thread(() -> displayNotification("base", getBaseContext())).start();
             new Thread(() -> displayNotification("application", getApplicationContext()));
         } catch (Exception e) {
             LOG.error("Unexpected error", e);
