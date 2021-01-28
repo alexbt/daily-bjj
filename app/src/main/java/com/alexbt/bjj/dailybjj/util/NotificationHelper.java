@@ -47,7 +47,7 @@ public class NotificationHelper {
     public static void startServiceToScheduleOnBoot(Context context) {
         try {
             Intent intentService = new Intent(context, SchedulingService.class);
-            intentService.getExtras().putBoolean("isOnBoot", true);
+            intentService.putExtra("isOnBoot", true);
             LOG.info(String.format("Build.VERSION.SDK_INT=%d, Build.VERSION_CODES.O=%d",
                     Build.VERSION.SDK_INT, Build.VERSION_CODES.O));
 

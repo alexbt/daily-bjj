@@ -29,7 +29,7 @@ public class SchedulingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        boolean isOnBoot = Optional.ofNullable(intent.getExtras()).map(b -> b.getBoolean("isOnBoot", false)).orElse(false);
+        boolean isOnBoot = intent.getBooleanExtra("isOnBoot", false);
         LOG.info("Entering 'onStartCommand'");
         try {
             synchronized (MUTEX) {
@@ -48,7 +48,7 @@ public class SchedulingService extends Service {
                         notificationTime, notificationTimePassed, alreadyNotifiedForToday));
 
                 String toastMessage;
-                if (notificationTimePassed && !alreadyNotifiedForToday) {
+                /*if (notificationTimePassed && !alreadyNotifiedForToday) {
                     LOG.info("Schedule time is in the past, showing notification now and scheduling for tomorrow");
                     NotificationHelper.startServiceToNotify(getBaseContext());
                     NotificationHelper.startServiceToNotify(getApplicationContext());
@@ -59,12 +59,21 @@ public class SchedulingService extends Service {
                     notificationTime = notificationTime.plusDays(1);
                     toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
 
-                    //DEPRECATED
-                    NotificationHelper.startServiceToNotify(getBaseContext());
                     NotificationHelper.startServiceToNotify(getApplicationContext());
                 } else {
                     LOG.info("Schedule time is in the future, scheduling for later today");
                     toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceHelper.formatTime(hours, minutes));
+                }*/
+
+                if (notificationTimePassed) {
+                    LOG.info("Schedule time is in the past, showing notification now and scheduling for tomorrow");
+                    NotificationHelper.startServiceToNotify(getApplicationContext());
+                    notificationTime = notificationTime.plusDays(1);
+                    toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
+                } else {
+                    LOG.info("Notification was already sent to user, scheduling for tomorrow");
+                    //notificationTime = notificationTime.plusDays(1);
+                    toastMessage = String.format("Next Daily BJJ scheduled for today at %s", PreferenceHelper.formatTime(hours, minutes));
                 }
 
                 if (!isOnBoot) {

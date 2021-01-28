@@ -33,7 +33,6 @@ public class PageViewerFragment extends Fragment {
         public PagerAdapter(Activity activity, FragmentManager fragmentManager) {
             super(fragmentManager);
             String cacheDir = FileSystemHelper.getCacheDir(activity.getApplicationContext());
-            //Data dataTmp = ((MainActivity)activity).getData(Data.class); //TODO
 
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);

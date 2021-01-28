@@ -40,9 +40,9 @@ public class PreferenceHelper {
         LocalDateTime lastNotification = PreferenceHelper.getLastNotification(sharedPreferences);
 
         String day = "Today";
-        if ((lastNotification != null
+        if (/*(lastNotification != null
                 && lastNotification.getDayOfYear() == LocalDate.now().getDayOfYear())
-                || DateHelper.getNowWithBuffer().isAfter(DateHelper.getNow().withHour(hours).withMinute(minutes))) {
+                || */DateHelper.getNowWithBuffer().isAfter(DateHelper.getNow().withHour(hours).withMinute(minutes))) {
             day = "Tomorrow";
         }
 
