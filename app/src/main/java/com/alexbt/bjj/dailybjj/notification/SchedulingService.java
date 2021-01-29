@@ -21,15 +21,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 
 public class SchedulingService extends Service {
     private final Logger LOG = Logger.getLogger(SchedulingService.class);
     private static final Object MUTEX = new Object();
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        boolean isOnBoot = intent.getBooleanExtra("isOnBoot", false);
+    public int onStartCommand(Intent commandIntent, int flags, int startId) {
+        boolean isOnBoot = commandIntent.getBooleanExtra("isOnBoot", false);
         LOG.info("Entering 'onStartCommand'");
         try {
             synchronized (MUTEX) {
@@ -48,41 +47,25 @@ public class SchedulingService extends Service {
                         notificationTime, notificationTimePassed, alreadyNotifiedForToday));
 
                 String toastMessage;
-                /*if (notificationTimePassed && !alreadyNotifiedForToday) {
-                    LOG.info("Schedule time is in the past, showing notification now and scheduling for tomorrow");
-                    NotificationHelper.startServiceToNotify(getBaseContext());
-                    NotificationHelper.startServiceToNotify(getApplicationContext());
+                if (alreadyNotifiedForToday) {
                     notificationTime = notificationTime.plusDays(1);
-                    toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
-                } else if (alreadyNotifiedForToday) {
                     LOG.info("Notification was already sent to user, scheduling for tomorrow");
-                    notificationTime = notificationTime.plusDays(1);
-                    toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
-
-                    NotificationHelper.startServiceToNotify(getApplicationContext());
-                } else {
-                    LOG.info("Schedule time is in the future, scheduling for later today");
-                    toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceHelper.formatTime(hours, minutes));
-                }*/
-
-                if (notificationTimePassed) {
-                    LOG.info("Schedule time is in the past, showing notification now and scheduling for tomorrow");
-                    NotificationHelper.startServiceToNotify(getApplicationContext());
-                    notificationTime = notificationTime.plusDays(1);
-                    toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
-                } else {
-                    LOG.info("Notification was already sent to user, scheduling for tomorrow");
-                    //notificationTime = notificationTime.plusDays(1);
                     toastMessage = String.format("Next Daily BJJ scheduled for today at %s", PreferenceHelper.formatTime(hours, minutes));
+                } else if (notificationTimePassed) {
+                    toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
+                    NotificationHelper.startServiceToNotify(getApplicationContext());
+                } else {
+                    toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceHelper.formatTime(hours, minutes));
                 }
+                LOG.info(String.format("toast message=%s", toastMessage));
 
                 if (!isOnBoot) {
                     LOG.info(String.format("Showing toast=%s", toastMessage));
                     Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
                 }
 
-                Intent intent2 = new Intent(getApplicationContext(), NotificationReceiver.class);
-                PendingIntent pending = PendingIntent.getBroadcast(getApplicationContext(), 42, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+                Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
+                PendingIntent pending = PendingIntent.getBroadcast(getApplicationContext(), 42, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager manager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 
                 ZonedDateTime zonedDateTime = notificationTime.atZone(ZoneId.systemDefault());
@@ -96,28 +79,10 @@ public class SchedulingService extends Service {
         return Service.START_STICKY;
     }
 
-    public SchedulingService() {
-        LOG.info("Performing 'constructor'");
-    }
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         LOG.info("Performing 'onBind'");
         return null;
-    }
-
-    @Override
-    public void onCreate() {
-        LOG.info("Entering 'onCreate'");
-        super.onCreate();
-        LOG.info("Exiting 'onCreate'");
-    }
-
-    @Override
-    public void onDestroy() {
-        LOG.info("Entering 'onCreate'");
-        super.onDestroy();
-        LOG.info("Exiting 'onCreate'");
     }
 }
