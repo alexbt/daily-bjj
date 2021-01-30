@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -19,18 +18,17 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.alexbt.bjj.dailybjj.R;
-import com.alexbt.bjj.dailybjj.entries.DailyEntry;
+import com.alexbt.bjj.dailybjj.model.DailyEntry;
 import com.alexbt.bjj.dailybjj.util.DateHelper;
 import com.alexbt.bjj.dailybjj.util.EntryHelper;
 import com.alexbt.bjj.dailybjj.util.FileSystemHelper;
-import com.alexbt.bjj.dailybjj.util.NotificationHelper;
+import com.alexbt.bjj.dailybjj.util.PreferenceHelper;
 
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class NotificationService extends Service {
@@ -42,9 +40,9 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         LOG.info("Entering 'onStartCommand'");
         try {
+            //TODO bad code...
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-            //new Thread(() -> displayNotification("base", getBaseContext())).start();
             displayNotification("application", getApplicationContext());
         } catch (Exception e) {
             LOG.error("Unexpected error", e);
@@ -94,9 +92,7 @@ public class NotificationService extends Service {
         LOG.info("Before notifying pendingIntent");
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
-        context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE).edit()
-        .putString("last_notification_time", DateHelper.getNow().toString())
-        .apply();
+        PreferenceHelper.saveLastNotificationTime(getApplicationContext(), DateHelper.getNow());
 
         LOG.info("Notified pendingIntent");
         LOG.info("Exiting 'displayNotification'");
@@ -158,7 +154,7 @@ public class NotificationService extends Service {
         return channelId;
     }
 
-    public NotificationService(){
+    public NotificationService() {
         LOG.info("Performing 'constructor'");
     }
 

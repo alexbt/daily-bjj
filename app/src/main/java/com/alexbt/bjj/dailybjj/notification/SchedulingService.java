@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.alexbt.bjj.dailybjj.util.DateHelper;
-import com.alexbt.bjj.dailybjj.util.NotificationHelper;
 import com.alexbt.bjj.dailybjj.util.PreferenceHelper;
 
 import org.apache.log4j.Logger;
@@ -35,7 +34,7 @@ public class SchedulingService extends Service {
                 LocalDate today = DateHelper.getToday();
                 LocalDateTime now = DateHelper.getNowWithBuffer();
 
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = PreferenceHelper.getSharedPreference(getApplicationContext());
                 LocalDateTime lastNotificationTime = PreferenceHelper.getLastNotification(sharedPreferences);
                 int hours = PreferenceHelper.getScheduledNotificationHours(sharedPreferences);
                 int minutes = PreferenceHelper.getScheduledNotificationMinutes(sharedPreferences);
@@ -53,7 +52,7 @@ public class SchedulingService extends Service {
                     toastMessage = String.format("Next Daily BJJ scheduled for today at %s", PreferenceHelper.formatTime(hours, minutes));
                 } else */
                 if (notificationTimePassed) {
-                        toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
+                    toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
                     //NotificationHelper.startServiceToNotify(getApplicationContext());
                 } else {
                     toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceHelper.formatTime(hours, minutes));

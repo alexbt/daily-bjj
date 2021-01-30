@@ -1,7 +1,7 @@
 package com.alexbt.bjj.dailybjj.util;
 
-import com.alexbt.bjj.dailybjj.entries.DailyEntry;
-import com.alexbt.bjj.dailybjj.entries.Data;
+import com.alexbt.bjj.dailybjj.model.DailyEntry;
+import com.alexbt.bjj.dailybjj.model.Data;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -68,7 +68,7 @@ public class EntryHelper {
         LOG.info("Entering 'isDataVersionLatest'");
         String currentVersion = fetchCurrentVersion();
         boolean comparedResult = Optional.ofNullable(data.getVersion())
-                .map(s -> s.compareTo(s) == 0).orElse(false);
+                .map(s -> s.compareTo(currentVersion) == 0).orElse(false);
 
         LOG.info(String.format("Exiting 'isDataVersionLatest' with comparedResult=%s", comparedResult));
         return comparedResult;

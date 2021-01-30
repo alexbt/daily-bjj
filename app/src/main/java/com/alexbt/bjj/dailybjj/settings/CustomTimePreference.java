@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.DialogPreference;
 
 import com.alexbt.bjj.dailybjj.util.DateHelper;
+import com.alexbt.bjj.dailybjj.util.PreferenceHelper;
 
 import java.time.LocalDateTime;
 
@@ -21,12 +22,11 @@ class CustomTimePreference extends DialogPreference {
 
     @Override
     protected void onSetInitialValue(@Nullable Object defaultValue) {
-        //
-        getPreferenceManager().setSharedPreferencesName("com.alexbt.DailyNotificationPreference");
+        PreferenceHelper.initSharedPreference(getPreferenceManager());
     }
 
     public void onDisplayPreferenceDialog(Fragment fragment, TimePickerDialog.OnTimeSetListener listener, FragmentManager fragmentManager, String tag) {
-        getPreferenceManager().setSharedPreferencesName("com.alexbt.DailyNotificationPreference");
+        PreferenceHelper.initSharedPreference(getPreferenceManager());
         LocalDateTime now = DateHelper.getNow();
         CustomTimePicker customTimePicker = new CustomTimePicker(getContext(), listener, now.getHour(), now.getMinute());
         customTimePicker.show();

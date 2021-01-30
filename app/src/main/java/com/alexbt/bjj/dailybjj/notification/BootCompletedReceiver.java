@@ -3,7 +3,6 @@ package com.alexbt.bjj.dailybjj.notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
 import com.alexbt.bjj.dailybjj.util.NotificationHelper;
 

@@ -1,9 +1,9 @@
-package com.alexbt.bjj.dailybjj.swipe;
+package com.alexbt.bjj.dailybjj.videos;
 
 import android.graphics.Bitmap;
 
-import com.alexbt.bjj.dailybjj.entries.DailyEntry;
-import com.alexbt.bjj.dailybjj.entries.Data;
+import com.alexbt.bjj.dailybjj.model.DailyEntry;
+import com.alexbt.bjj.dailybjj.model.Data;
 
 public class ImageData {
     private Bitmap image;

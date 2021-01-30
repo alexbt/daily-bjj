@@ -1,10 +1,12 @@
 package com.alexbt.bjj.dailybjj.util;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+
+import androidx.preference.PreferenceManager;
 
 import org.apache.log4j.Logger;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -28,8 +30,8 @@ public class PreferenceHelper {
         return sharedPreferences.getInt("scheduled_notification_minutes", 0);
     }
 
-    public static void saveNotificationTime(SharedPreferences sharedPreferences, int hour, int minutes) {
-        sharedPreferences.edit()
+    public static void saveNotificationTime(Context context, int hour, int minutes) {
+        getSharedPreference(context).edit()
                 .putInt("scheduled_notification_hours", hour)
                 .putInt("scheduled_notification_minutes", minutes)
                 .apply();
@@ -116,5 +118,20 @@ public class PreferenceHelper {
         sharedPreferences.edit()
                 .putString("last_time_alarm_updated", LocalDateTime.now().toString())
                 .apply();
+    }
+
+    public static void initSharedPreference(PreferenceManager preferenceManager) {
+        preferenceManager.setSharedPreferencesName("com.alexbt.DailyNotificationPreference");
+    }
+
+    public static SharedPreferences getSharedPreference(Context context) {
+        return context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
+    }
+
+    public static void saveLastNotificationTime(Context context, LocalDateTime now) {
+        getSharedPreference(context).edit()
+                .putString("last_notification_time", now.toString())
+                .apply();
+
     }
 }

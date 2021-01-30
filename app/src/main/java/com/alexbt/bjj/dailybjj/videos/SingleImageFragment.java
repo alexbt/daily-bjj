@@ -1,4 +1,4 @@
-package com.alexbt.bjj.dailybjj.swipe;
+package com.alexbt.bjj.dailybjj.videos;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
 import com.alexbt.bjj.dailybjj.R;
-import com.alexbt.bjj.dailybjj.entries.DailyEntry;
+import com.alexbt.bjj.dailybjj.model.DailyEntry;
 import com.alexbt.bjj.dailybjj.util.DateHelper;
 import com.alexbt.bjj.dailybjj.util.EntryHelper;
 import com.squareup.picasso.Picasso;

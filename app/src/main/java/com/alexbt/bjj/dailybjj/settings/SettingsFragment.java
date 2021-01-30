@@ -36,9 +36,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         PreferenceManager preferenceManager = getPreferenceManager();
-        preferenceManager.setSharedPreferencesName("com.alexbt.DailyNotificationPreference");
+        PreferenceHelper.initSharedPreference(preferenceManager);
 
-        setPreferencesFromResource(R.xml.prefs, rootKey);
+        setPreferencesFromResource(R.xml.settings, rootKey);
 
         SharedPreferences sharedPreferences = preferenceManager.getSharedPreferences();
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
@@ -192,8 +192,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
         try {
             PreferenceHelper.scheduleNotification(getPreferenceManager().getSharedPreferences(), hours, minutes);
             NotificationHelper.startServiceToSchedule(getContext());
-            //String toastMessage = "Scheduling for " + PreferenceHelper.getNextNotificationText(getContext().getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE));
-            //Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             LOG.error("Unexpected error", e);
         }

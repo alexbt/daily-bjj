@@ -1,6 +1,6 @@
 package com.alexbt;
 
-import com.alexbt.bjj.dailybjj.entries.Data;
+import com.alexbt.bjj.dailybjj.model.Data;
 import com.alexbt.bjj.dailybjj.util.DateDeserializer;
 import com.alexbt.bjj.dailybjj.util.DateSerializer;
 import com.google.common.io.ByteStreams;

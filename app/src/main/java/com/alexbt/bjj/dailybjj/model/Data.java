@@ -1,4 +1,4 @@
-package com.alexbt.bjj.dailybjj.entries;
+package com.alexbt.bjj.dailybjj.model;
 
 import com.google.gson.annotations.Expose;
 

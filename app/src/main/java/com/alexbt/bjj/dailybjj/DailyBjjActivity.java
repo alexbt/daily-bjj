@@ -1,6 +1,5 @@
 package com.alexbt.bjj.dailybjj;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,9 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.apache.log4j.Logger;
 
 public class DailyBjjActivity extends AppCompatActivity {
-    //TODO
-    //private Map<Class, Object> cache = new HashMap<>();
-
     private final Logger LOG = Logger.getLogger(DailyBjjActivity.class);
 
     @Override
@@ -41,11 +37,11 @@ public class DailyBjjActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        SharedPreferences preferences = getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
+        SharedPreferences preferences = PreferenceHelper.getSharedPreference(getApplicationContext());
         if (!preferences.contains("scheduled_notification_hours")) {
             int hours = PreferenceHelper.getScheduledNotificationHours(preferences);
             int minutes = PreferenceHelper.getScheduledNotificationMinutes(preferences);
-            PreferenceHelper.saveNotificationTime(preferences, hours, minutes);
+            PreferenceHelper.saveNotificationTime(getApplicationContext(), hours, minutes);
             NotificationHelper.startServiceToScheduleOnBoot(getApplicationContext());
         }
 
@@ -64,14 +60,4 @@ public class DailyBjjActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
     }
-
-    //TODO
-//    public <T> T getData(Class<T> clazz) {
-//        return (T)cache.get(clazz);
-//    }
-
-    //TODO
-//    public <T> void setData(T o) {
-//        cache.put(o.getClass(), o);
-//    }
 }

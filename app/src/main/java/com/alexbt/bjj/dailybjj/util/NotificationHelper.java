@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import com.alexbt.bjj.dailybjj.notification.SchedulingService;
 import com.alexbt.bjj.dailybjj.notification.NotificationService;
+import com.alexbt.bjj.dailybjj.notification.SchedulingService;
 
 import org.apache.log4j.Logger;
 

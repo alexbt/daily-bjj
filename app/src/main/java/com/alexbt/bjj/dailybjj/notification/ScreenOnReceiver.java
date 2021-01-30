@@ -20,7 +20,7 @@ public class ScreenOnReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         LOG.info("Entering 'onReceive'");
-        SharedPreferences sharedPreferences = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceHelper.getSharedPreference(context);
         LocalDateTime lastNotification = PreferenceHelper.getLastNotification(sharedPreferences);
         LocalDateTime lastTimeAlarmUpdated = PreferenceHelper.getLastTimeAlarmUpdated(sharedPreferences);
 
