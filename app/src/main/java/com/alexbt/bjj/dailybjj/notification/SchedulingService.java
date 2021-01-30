@@ -47,13 +47,14 @@ public class SchedulingService extends Service {
                         notificationTime, notificationTimePassed, alreadyNotifiedForToday));
 
                 String toastMessage;
-                if (alreadyNotifiedForToday) {
+                /*if (alreadyNotifiedForToday) {
                     notificationTime = notificationTime.plusDays(1);
                     LOG.info("Notification was already sent to user, scheduling for tomorrow");
                     toastMessage = String.format("Next Daily BJJ scheduled for today at %s", PreferenceHelper.formatTime(hours, minutes));
-                } else if (notificationTimePassed) {
-                    toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
-                    NotificationHelper.startServiceToNotify(getApplicationContext());
+                } else */
+                if (notificationTimePassed) {
+                        toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
+                    //NotificationHelper.startServiceToNotify(getApplicationContext());
                 } else {
                     toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceHelper.formatTime(hours, minutes));
                 }
@@ -71,6 +72,8 @@ public class SchedulingService extends Service {
                 ZonedDateTime zonedDateTime = notificationTime.atZone(ZoneId.systemDefault());
                 LOG.info(String.format("Scheduling notification for notificationTime=%s, zonedDateTime=%s", notificationTime, zonedDateTime));
                 manager.setRepeating(AlarmManager.RTC_WAKEUP, zonedDateTime.toInstant().toEpochMilli(), AlarmManager.INTERVAL_DAY, pending);
+
+                PreferenceHelper.touchLastTimeAlarmUpdated(sharedPreferences);
             }
         } catch (Exception e) {
             LOG.error("Unexpected error", e);

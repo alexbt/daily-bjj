@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 
 import org.apache.log4j.Logger;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -28,25 +29,38 @@ public class PreferenceHelper {
     }
 
     public static void saveNotificationTime(SharedPreferences sharedPreferences, int hour, int minutes) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("scheduled_notification_hours", hour);
-        editor.putInt("scheduled_notification_minutes", minutes);
-        editor.apply();
+        sharedPreferences.edit()
+                .putInt("scheduled_notification_hours", hour)
+                .putInt("scheduled_notification_minutes", minutes)
+                .apply();
     }
 
     public static String getNextNotificationText(SharedPreferences sharedPreferences) {
-        int hours = PreferenceHelper.getScheduledNotificationHours(sharedPreferences);
-        int minutes = PreferenceHelper.getScheduledNotificationMinutes(sharedPreferences);
-        LocalDateTime lastNotification = PreferenceHelper.getLastNotification(sharedPreferences);
+        LocalDateTime nextNotificationTime = getNextNotification(sharedPreferences);
+        LocalDate nextNotificationDay = nextNotificationTime.toLocalDate();
 
-        String day = "Today";
-        if (/*(lastNotification != null
-                && lastNotification.getDayOfYear() == LocalDate.now().getDayOfYear())
-                || */DateHelper.getNowWithBuffer().isAfter(DateHelper.getNow().withHour(hours).withMinute(minutes))) {
+        String day;
+        LocalDate today = DateHelper.getNow().toLocalDate();
+        if (today.equals(nextNotificationDay)) {
+            day = "Today";
+        } else if (today.plusDays(1).equals(nextNotificationDay)) {
             day = "Tomorrow";
+        } else {
+            LOG.warn(String.format("Unexpected with nextNotification=%s", nextNotificationTime));
+            return String.format("At %s", formatTime(nextNotificationTime.getHour(), nextNotificationTime.getMinute()));
         }
 
-        return String.format("%s at %s", day, formatTime(hours, minutes));
+        return String.format("%s at %s", day, formatTime(nextNotificationTime.getHour(), nextNotificationTime.getMinute()));
+    }
+
+    public static LocalDateTime getNextNotification(SharedPreferences sharedPreferences) {
+        int hours = PreferenceHelper.getScheduledNotificationHours(sharedPreferences);
+        int minutes = PreferenceHelper.getScheduledNotificationMinutes(sharedPreferences);
+        LocalDateTime now = DateHelper.getNow().withHour(hours).withMinute(minutes);
+        if (now.isBefore(DateHelper.getNow())) {
+            now = now.plusDays(1);
+        }
+        return now;
     }
 
     public static String getLastNotificationText(SharedPreferences sharedPreferences) {
@@ -55,17 +69,18 @@ public class PreferenceHelper {
             return "Never";
         }
 
-        String day;
-        int nbDays = LocalDate.now().getDayOfYear() - lastNotification.getDayOfYear();
-        if (lastNotification.getDayOfYear() == LocalDate.now().getDayOfYear()) {
-            day = "Today";
-        } else if (nbDays == 1) {
-            day = "Yesterday";
+        LocalDate lastNotificationDay = lastNotification.toLocalDate();
+        LocalDate today = DateHelper.getNow().toLocalDate();
+        String message;
+        if (lastNotificationDay.equals(today)) {
+            message = "Today";
+        } else if (lastNotification.plusDays(1).equals(today)) {
+            message = "Yesterday";
         } else {
-            day = String.format("%d days ago", nbDays);
+            return "Few days ago";
         }
 
-        return String.format("%s at %s", day, formatTime(lastNotification.getHour(), lastNotification.getMinute()));
+        return String.format("%s at %s", message, formatTime(lastNotification.getHour(), lastNotification.getMinute()));
     }
 
     private static String getAmPm(int hours) {
@@ -83,9 +98,23 @@ public class PreferenceHelper {
     }
 
     public static void scheduleNotification(SharedPreferences sharedPreferences, int hours, int minutes) {
-        SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putInt("scheduled_notification_hours", hours);
-        edit.putInt("scheduled_notification_minutes", minutes);
-        edit.apply();
+        sharedPreferences.edit()
+                .putInt("scheduled_notification_hours", hours)
+                .putInt("scheduled_notification_minutes", minutes)
+                .apply();
+    }
+
+    public static LocalDateTime getLastTimeAlarmUpdated(SharedPreferences sharedPreferences) {
+        String lastDaySetScheduleStr = sharedPreferences.getString("last_time_alarm_updated", null);
+        if (lastDaySetScheduleStr != null) {
+            return LocalDateTime.parse(lastDaySetScheduleStr);
+        }
+        return LocalDateTime.now().minusDays(1);
+    }
+
+    public static void touchLastTimeAlarmUpdated(SharedPreferences sharedPreferences) {
+        sharedPreferences.edit()
+                .putString("last_time_alarm_updated", LocalDateTime.now().toString())
+                .apply();
     }
 }

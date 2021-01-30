@@ -94,9 +94,9 @@ public class NotificationService extends Service {
         LOG.info("Before notifying pendingIntent");
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
-        SharedPreferences.Editor edit = context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE).edit();
-        edit.putString("last_notification_time", DateHelper.getNow().toString());
-        edit.apply();
+        context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE).edit()
+        .putString("last_notification_time", DateHelper.getNow().toString())
+        .apply();
 
         LOG.info("Notified pendingIntent");
         LOG.info("Exiting 'displayNotification'");

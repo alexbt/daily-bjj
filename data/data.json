@@ -1,9 +1,43 @@
 {
-  "version": "20210215_01",
+  "version": "20210218_01",
   "videoPrefix": "https://www.youtube.com/watch?v\u003d",
   "imagePrefix": "https://img.youtube.com/vi/",
   "imageSuffix": "/0.jpg",
   "dailyEntries": {
+    "2021-02-18": {
+      "master": "Lachlan Giles \u0026 Ariel tabak",
+      "notificationDate": "2021-02-18",
+      "videoDate": "2020-09-26",
+      "title": "Why the hip escape is bad for guard retention",
+      "description": "Why the hip escape is bad for guard retention",
+      "youtubeId": "hZ57SQhS9AU",
+      "tags": [
+        "guard-retention"
+      ]
+    },
+    "2021-02-17": {
+      "master": "Keenan Cornelius",
+      "notificationDate": "2021-02-17",
+      "videoDate": "2020-04-02",
+      "title": "Pattern Of Guard Passing",
+      "description": "The up down left right Jiu-Jitsu Methodology - The underlying pattern of guard passing",
+      "youtubeId": "6xQ7y9mnps4",
+      "tags": [
+        "concept",
+        "guard-pass"
+      ]
+    },
+    "2021-02-16": {
+      "master": "Jedi",
+      "notificationDate": "2021-02-16",
+      "videoDate": "2020-11-06",
+      "title": "First 10 Submissions To Learn",
+      "description": "The First 10 Bjj Submissions You Should Learn",
+      "youtubeId": "ALEeReC3u5Y",
+      "tags": [
+        "submissions"
+      ]
+    },
     "2021-02-15": {
       "master": "Stephan Kesting",
       "notificationDate": "2021-02-15",

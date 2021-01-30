@@ -1,11 +1,13 @@
 package com.alexbt.bjj.dailybjj.settings;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -23,6 +25,8 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class SettingsFragment extends PreferenceFragmentCompat
         implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener, TimePickerDialog.OnTimeSetListener {
@@ -41,50 +45,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         Preference button = findPreference("sendLogsByEmail");
         button.setOnPreferenceClickListener(preference -> {
-            String scheduledNotification = PreferenceHelper.getScheduledNotificationText(sharedPreferences);
-            String lastNotification = PreferenceHelper.getLastNotificationText(sharedPreferences);
-            String nextNotification = PreferenceHelper.getNextNotificationText(sharedPreferences);
-            String buildVersion = getContext().getResources().getString(R.string.build_version);
-            LOG.info(String.format("Sending email with logs for buildVersion=%s, scheduledNotification=%s, lastNotification=%s, nextNotification=%s",
-                    buildVersion, scheduledNotification, lastNotification, nextNotification));
             try {
-                File logFile = new File(FileSystemHelper.getCacheDir(getContext()) + "/dailybjj.log");
-                String logContent = new String(ByteStreams.toByteArray(new FileInputStream(logFile)));
-                File tempFile = File.createTempFile(String.format("DailyBJJ-%s_", buildVersion), ".log", getContext().getExternalCacheDir());
-                FileWriter fw = new FileWriter(tempFile);
-                fw.write(logContent);
-                fw.flush();
-                fw.close();
-
-                Uri logFileUri = Uri.fromFile(tempFile);
-
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"alex.belisleturcot@gmail.com"});
-                intent.setData(Uri.parse("mailto:"));
-                intent.putExtra(Intent.EXTRA_SUBJECT, "DailyBJJ Logs");
-                intent.putExtra(Intent.EXTRA_STREAM, logFileUri);
-                intent.putExtra(Intent.EXTRA_TEXT, String.format("Hi Alex,"
-                                + "\n\nPlease find attached my DailyBJJ logs!\n"
-                                + "\n%s: %s"
-                                + "\n%s: %s"
-                                + "\n%s: %s"
-                                + "\n%s: %s"
-                                + "\n%s: %s"
-                                + "\n\n\n%s"
-                                + "\n\nRegards,",
-                        "Scheduled Notification", scheduledNotification,
-                        "Last Notification", lastNotification,
-                        "Next Notification", nextNotification,
-                        "LocalDateTime", DateHelper.getNow(),
-                        getContext().getResources().getString(R.string.build_version_title), buildVersion,
-                        logContent
-                ));
-                //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivityForResult(intent, 1);
-
+                sendEmail(getContext(), sharedPreferences);
             } catch (Exception e) {
-                LOG.error("Unexpected error", e);
+                Toast.makeText(getContext(), "Issue Sending email: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
 
             return true;
@@ -95,9 +59,88 @@ public class SettingsFragment extends PreferenceFragmentCompat
         updateScheduledNotificationField();
     }
 
+    private void sendEmail(Context context, SharedPreferences sharedPreferences) throws IOException {
+        String scheduledText = PreferenceHelper.getScheduledNotificationText(sharedPreferences);
+        int scheduledHours = PreferenceHelper.getScheduledNotificationHours(sharedPreferences);
+        int scheduleMinutes = PreferenceHelper.getScheduledNotificationMinutes(sharedPreferences);
+        String lastNotificationText = PreferenceHelper.getLastNotificationText(sharedPreferences);
+        LocalDateTime lastNotification = PreferenceHelper.getLastNotification(sharedPreferences);
+        String nextNotificationText = PreferenceHelper.getNextNotificationText(sharedPreferences);
+        LocalDateTime nextNotification = PreferenceHelper.getNextNotification(sharedPreferences);
+        LocalDateTime lastTimeAlarmUpdated = PreferenceHelper.getLastTimeAlarmUpdated(sharedPreferences);
+        String buildVersion = getContext().getResources().getString(R.string.build_version);
+        LOG.info(String.format("Sending email with logs for buildVersion=%s, scheduledNotificationText=%s, lastNotificationText=%s, nextNotification=%s",
+                buildVersion, scheduledText, lastNotificationText, nextNotification));
+        File logFile = new File(FileSystemHelper.getCacheDir(getContext()) + "/dailybjj.log");
+        String logContent = new String(ByteStreams.toByteArray(new FileInputStream(logFile)));
+        File tempFile = File.createTempFile(String.format("DailyBJJ-%s_", buildVersion), ".log", getContext().getExternalCacheDir());
+        FileWriter fw = new FileWriter(tempFile);
+        fw.write(logContent);
+        fw.flush();
+        fw.close();
+
+        Uri logFileUri = Uri.fromFile(tempFile);
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"alex.belisleturcot+dailybjj@gmail.com"});
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, "DailyBJJ Logs");
+        intent.putExtra(Intent.EXTRA_STREAM, logFileUri);
+        intent.putExtra(Intent.EXTRA_TEXT, String.format("Hi Alex,"
+                        + "\n\nPlease find attached my DailyBJJ logs!\n"
+
+                        + "\nscheduledText: %s\nscheduledHours: %s\nscheduledMinutes: %s"
+                        + "\nlastNotification: %s\nlastNotificationText: %s"
+                        + "\nnextNotification: %s\nnextNotificationText: %s"
+                        + "\nlastDayAlarmUpdated: %s"
+                        + "\nDateHelper.getNow(): %s\nDateHelper.getNowWithBuffer(): %s"
+                        + "\nBuildVersion: %s"
+
+                        + "\n\n\nLogContent:\n%s"
+                        + "\n\nRegards,",
+                scheduledText, scheduledHours, scheduleMinutes,
+                lastNotification, lastNotificationText,
+                nextNotification, nextNotificationText,
+                lastTimeAlarmUpdated,
+                DateHelper.getNow(), DateHelper.getNowWithBuffer(),
+                buildVersion,
+                logContent
+        ));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivityForResult(intent, 1);
+    }
+
+    private void sendSimpleEmail(Context context, SharedPreferences sharedPreferences) {
+        try {
+            File logFile = new File(FileSystemHelper.getCacheDir(getContext()) + "/dailybjj.log");
+            String logContent = new String(ByteStreams.toByteArray(new FileInputStream(logFile)));
+            File tempFile = File.createTempFile(String.format("DailyBJJ-tmp"), ".log", getContext().getExternalCacheDir());
+            FileWriter fw = new FileWriter(tempFile);
+            fw.write(logContent);
+
+            fw.flush();
+            fw.close();
+
+            Uri logFileUri = Uri.fromFile(tempFile);
+
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"alex.belisleturcot@gmail.com"});
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_SUBJECT, "DailyBJJ Logs");
+            intent.putExtra(Intent.EXTRA_STREAM, logFileUri);
+            intent.putExtra(Intent.EXTRA_TEXT, String.format("%s", logContent));
+            startActivityForResult(intent, 1);
+        } catch (Exception e) {
+            Toast.makeText(context, "issue Sending email " + e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
+
     private void updateScheduledNotificationField() {
         String message = PreferenceHelper.getScheduledNotificationText(getPreferenceManager().getSharedPreferences());
-        getPreferenceManager().findPreference("scheduled_notification_time_2").setSummary(message);
+        getPreferenceManager().findPreference("scheduled_notification_time").setSummary(message);
     }
 
     private void updateNextNotificationField() {
@@ -112,7 +155,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     @Override
     public void onDisplayPreferenceDialog(Preference preference) {
-        if (preference.getKey().equals("scheduled_notification_time_2")) {
+        if (preference.getKey().equals("scheduled_notification_time")) {
             ((CustomTimePreference) preference).onDisplayPreferenceDialog(this, this, getFragmentManager(), getTag());
         } else {
             super.onDisplayPreferenceDialog(preference);
