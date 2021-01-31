@@ -1,9 +1,23 @@
 {
-  "version": "20210218_01",
+  "version": "20210219_01",
   "videoPrefix": "https://www.youtube.com/watch?v\u003d",
   "imagePrefix": "https://img.youtube.com/vi/",
   "imageSuffix": "/0.jpg",
   "dailyEntries": {
+    "2021-02-19": {
+      "master": "Stephan Kesting",
+      "notificationDate": "2021-02-19",
+      "videoDate": "2018-07-22",
+      "title": "Leg Weave Guard Pass Counter",
+      "description": "Leg Weave Guard Pass Counter",
+      "youtubeId": "7gcVk4flYHo",
+      "tags": [
+        "guard-retention",
+        "counter",
+        "legs-smash",
+        "omoplata"
+      ]
+    },
     "2021-02-18": {
       "master": "Lachlan Giles \u0026 Ariel tabak",
       "notificationDate": "2021-02-18",

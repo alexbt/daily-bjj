@@ -17,6 +17,8 @@ import com.alexbt.bjj.dailybjj.R;
 import com.alexbt.bjj.dailybjj.model.DailyEntry;
 import com.alexbt.bjj.dailybjj.util.DateHelper;
 import com.alexbt.bjj.dailybjj.util.EntryHelper;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDate;
@@ -49,6 +51,12 @@ public class SingleImageFragment extends Fragment implements Observer<ImageData>
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_image, container, false);
+
+        AdView mAdView = (AdView) root.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        if (!mAdView.isActivated()) {
+            mAdView.loadAd(adRequest);
+        }
 
         TextView notificationDate = root.findViewById(R.id.date);
         notificationDate.setText(localDate.toString());

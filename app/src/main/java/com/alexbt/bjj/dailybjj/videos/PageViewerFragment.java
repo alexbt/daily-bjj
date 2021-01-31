@@ -18,6 +18,8 @@ import com.alexbt.bjj.dailybjj.model.Data;
 import com.alexbt.bjj.dailybjj.util.DateHelper;
 import com.alexbt.bjj.dailybjj.util.EntryHelper;
 import com.alexbt.bjj.dailybjj.util.FileSystemHelper;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,6 +94,7 @@ public class PageViewerFragment extends Fragment {
         PagerAdapter adapterViewPager = new PagerAdapter(getActivity(), getChildFragmentManager());
         vpPager.setAdapter(adapterViewPager);
         vpPager.setCurrentItem(PagerAdapter.NUM_ITEMS - 1);
+
         return root;
     }
 }
