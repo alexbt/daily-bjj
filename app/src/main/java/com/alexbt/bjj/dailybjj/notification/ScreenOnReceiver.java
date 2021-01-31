@@ -22,11 +22,11 @@ public class ScreenOnReceiver extends BroadcastReceiver {
         LOG.info("Entering 'onReceive'");
         SharedPreferences sharedPreferences = PreferenceHelper.getSharedPreference(context);
         LocalDateTime lastNotification = PreferenceHelper.getLastNotification(sharedPreferences);
-        LocalDateTime lastTimeAlarmUpdated = PreferenceHelper.getLastTimeAlarmUpdated(sharedPreferences);
+        LocalDateTime lastTimeAlarmScheduled = PreferenceHelper.getLastTimeAlarmScheduled(sharedPreferences);
 
         LocalDate today = DateHelper.getNow().toLocalDate();
-        if (!lastTimeAlarmUpdated.toLocalDate().equals(today)) {
-            LOG.warn(String.format("Re-scheduling with lastNotification: %s, now: %s, lastDayAlarmUpdated=%s", lastNotification, today, lastTimeAlarmUpdated));
+        if (!lastTimeAlarmScheduled.toLocalDate().equals(today)) {
+            LOG.warn(String.format("Re-scheduling with lastNotification: %s, now: %s, lastDayAlarmUpdated=%s", lastNotification, today, lastTimeAlarmScheduled));
             NotificationHelper.startServiceToScheduleOnBoot(context);
         }
         LOG.info("Exiting 'onReceive'");

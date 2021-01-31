@@ -1,7 +1,6 @@
 package com.alexbt.bjj.dailybjj.notification;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.StrictMode;
 
@@ -22,6 +20,7 @@ import com.alexbt.bjj.dailybjj.model.DailyEntry;
 import com.alexbt.bjj.dailybjj.util.DateHelper;
 import com.alexbt.bjj.dailybjj.util.EntryHelper;
 import com.alexbt.bjj.dailybjj.util.FileSystemHelper;
+import com.alexbt.bjj.dailybjj.util.NotificationHelper;
 import com.alexbt.bjj.dailybjj.util.PreferenceHelper;
 
 import org.apache.log4j.Logger;
@@ -35,6 +34,7 @@ public class NotificationService extends Service {
     private final Logger LOG = Logger.getLogger(NotificationService.class);
     private static final int NOTIFICATION_ID = 1;
     private static final int PENDING_INTENT_REQUEST_CODE = 0;
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -62,6 +62,7 @@ public class NotificationService extends Service {
             return;
         }
 
+        stopForeground(true);
         Intent resultIntent = new Intent(Intent.ACTION_VIEW);
         final String master = today.getMaster();
         final String description = today.getDescription();
@@ -74,7 +75,7 @@ public class NotificationService extends Service {
         LOG.info("Created pendingIntent");
 
         Bitmap youtubeImage = getBitmapFromUrl(imageUrl);
-        String channelId = createNotificationChannel(context);
+        String channelId = NotificationHelper.createNotificationChannel(context);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_dashboard_black_24dp)
                 .setContentIntent(pendingIntent)
@@ -92,7 +93,7 @@ public class NotificationService extends Service {
         LOG.info("Before notifying pendingIntent");
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
-        PreferenceHelper.saveLastNotificationTime(getApplicationContext(), DateHelper.getNow());
+        PreferenceHelper.updateLastNotificationTime(getApplicationContext(), DateHelper.getNow());
 
         LOG.info("Notified pendingIntent");
         LOG.info("Exiting 'displayNotification'");
@@ -117,52 +118,16 @@ public class NotificationService extends Service {
         return myBitmap;
     }
 
-    private String createNotificationChannel(Context context) {
-        LOG.info("Entering 'createNotificationChannel'");
-
-        String channelId = null;
-        // NotificationChannels are required for Notifications on O (API 26) and above.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String appName = context.getResources().getString(R.string.app_name);
-            // The id of the channel.
-            channelId = appName + "_ChannelId";
-
-            // The user-visible name of the channel.
-            // The user-visible description of the channel.
-            String channelDescription = appName + " Alert";
-            int channelImportance = NotificationManager.IMPORTANCE_DEFAULT;
-            boolean channelEnableVibrate = true;
-            //            int channelLockscreenVisibility = Notification.;
-
-            // Initializes NotificationChannel.
-            NotificationChannel notificationChannel = new NotificationChannel(channelId, appName, channelImportance);
-            notificationChannel.setDescription(channelDescription);
-            notificationChannel.enableVibration(channelEnableVibrate);
-            //            notificationChannel.setLockscreenVisibility(channelLockscreenVisibility);
-
-            // Adds NotificationChannel to system. Attempting to create an existing notification
-            // channel with its original values performs no operation, so it's safe to perform the
-            // below sequence.
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            assert notificationManager != null;
-            notificationManager.createNotificationChannel(notificationChannel);
-
-            return channelId;
-        }
-
-        LOG.info(String.format("Exiting 'createNotificationChannel' with channelId=%s", channelId));
-        return channelId;
-    }
-
     public NotificationService() {
         LOG.info("Performing 'constructor'");
     }
 
     @Override
     public void onCreate() {
-        LOG.info("Entering 'onCreate'");
         super.onCreate();
-        LOG.info("Exiting 'onCreate'");
+        String channel = NotificationHelper.createNotificationChannel(getApplicationContext());
+        Notification notification = new NotificationCompat.Builder(this, channel).build();
+        startForeground(1, notification);
     }
 
     @Nullable

@@ -67,7 +67,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         LocalDateTime lastNotification = PreferenceHelper.getLastNotification(sharedPreferences);
         String nextNotificationText = PreferenceHelper.getNextNotificationText(sharedPreferences);
         LocalDateTime nextNotification = PreferenceHelper.getNextNotification(sharedPreferences);
-        LocalDateTime lastTimeAlarmUpdated = PreferenceHelper.getLastTimeAlarmUpdated(sharedPreferences);
+        LocalDateTime lastTimeAlarmScheduled = PreferenceHelper.getLastTimeAlarmScheduled(sharedPreferences);
         String buildVersion = getContext().getResources().getString(R.string.build_version);
         LOG.info(String.format("Sending email with logs for buildVersion=%s, scheduledNotificationText=%s, lastNotificationText=%s, nextNotification=%s",
                 buildVersion, scheduledText, lastNotificationText, nextNotification));
@@ -102,7 +102,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 scheduledText, scheduledHours, scheduleMinutes,
                 lastNotification, lastNotificationText,
                 nextNotification, nextNotificationText,
-                lastTimeAlarmUpdated,
+                lastTimeAlarmScheduled,
                 DateHelper.getNow(), DateHelper.getNowWithBuffer(),
                 buildVersion,
                 logContent

@@ -106,17 +106,17 @@ public class PreferenceHelper {
                 .apply();
     }
 
-    public static LocalDateTime getLastTimeAlarmUpdated(SharedPreferences sharedPreferences) {
-        String lastDaySetScheduleStr = sharedPreferences.getString("last_time_alarm_updated", null);
+    public static LocalDateTime getLastTimeAlarmScheduled(SharedPreferences sharedPreferences) {
+        String lastDaySetScheduleStr = sharedPreferences.getString("last_time_alarm_scheduled", null);
         if (lastDaySetScheduleStr != null) {
             return LocalDateTime.parse(lastDaySetScheduleStr);
         }
         return LocalDateTime.now().minusDays(1);
     }
 
-    public static void touchLastTimeAlarmUpdated(SharedPreferences sharedPreferences) {
+    public static void updateLastTimeAlarmScheduled(SharedPreferences sharedPreferences) {
         sharedPreferences.edit()
-                .putString("last_time_alarm_updated", LocalDateTime.now().toString())
+                .putString("last_time_alarm_scheduled", LocalDateTime.now().toString())
                 .apply();
     }
 
@@ -128,7 +128,7 @@ public class PreferenceHelper {
         return context.getSharedPreferences("com.alexbt.DailyNotificationPreference", Context.MODE_PRIVATE);
     }
 
-    public static void saveLastNotificationTime(Context context, LocalDateTime now) {
+    public static void updateLastNotificationTime(Context context, LocalDateTime now) {
         getSharedPreference(context).edit()
                 .putString("last_notification_time", now.toString())
                 .apply();

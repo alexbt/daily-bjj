@@ -1,6 +1,7 @@
 package com.alexbt.bjj.dailybjj.notification;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -10,8 +11,10 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.alexbt.bjj.dailybjj.util.DateHelper;
+import com.alexbt.bjj.dailybjj.util.NotificationHelper;
 import com.alexbt.bjj.dailybjj.util.PreferenceHelper;
 
 import org.apache.log4j.Logger;
@@ -25,10 +28,19 @@ public class SchedulingService extends Service {
     private final Logger LOG = Logger.getLogger(SchedulingService.class);
     private static final Object MUTEX = new Object();
 
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        String channel = NotificationHelper.createNotificationChannel(getApplicationContext());
+        Notification notification = new NotificationCompat.Builder(this, channel).build();
+        startForeground(1, notification);
+    }
+
     @Override
     public int onStartCommand(Intent commandIntent, int flags, int startId) {
-        boolean isOnBoot = commandIntent.getBooleanExtra("isOnBoot", false);
         LOG.info("Entering 'onStartCommand'");
+        boolean isOnBoot = commandIntent.getBooleanExtra("isOnBoot", false);
         try {
             synchronized (MUTEX) {
                 LocalDate today = DateHelper.getToday();
@@ -64,6 +76,7 @@ public class SchedulingService extends Service {
                     Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
                 }
 
+                stopForeground(true);
                 Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
                 PendingIntent pending = PendingIntent.getBroadcast(getApplicationContext(), 42, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager manager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -72,7 +85,7 @@ public class SchedulingService extends Service {
                 LOG.info(String.format("Scheduling notification for notificationTime=%s, zonedDateTime=%s", notificationTime, zonedDateTime));
                 manager.setRepeating(AlarmManager.RTC_WAKEUP, zonedDateTime.toInstant().toEpochMilli(), AlarmManager.INTERVAL_DAY, pending);
 
-                PreferenceHelper.touchLastTimeAlarmUpdated(sharedPreferences);
+                PreferenceHelper.updateLastTimeAlarmScheduled(sharedPreferences);
             }
         } catch (Exception e) {
             LOG.error("Unexpected error", e);
