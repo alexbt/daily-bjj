@@ -42,8 +42,8 @@ public class DailyBjjActivity extends AppCompatActivity {
             int hours = PreferenceHelper.getScheduledNotificationHours(preferences);
             int minutes = PreferenceHelper.getScheduledNotificationMinutes(preferences);
             PreferenceHelper.saveNotificationTime(getApplicationContext(), hours, minutes);
-            NotificationHelper.startServiceToScheduleOnBoot(getApplicationContext());
         }
+        NotificationHelper.startServiceToScheduleOnBoot(getApplicationContext());
 
         LOG.info("Exiting 'onCreate'");
 

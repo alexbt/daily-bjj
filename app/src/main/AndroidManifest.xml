@@ -37,6 +37,7 @@
             android:exported="true"
             android:enabled="true">
             <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="android.intent.action.NOTIFY" />
             </intent-filter>
         </receiver>
@@ -46,6 +47,7 @@
             android:exported="true"
             android:enabled="true">
             <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="android.intent.action.SCREEN_ON" />
             </intent-filter>
         </receiver>
