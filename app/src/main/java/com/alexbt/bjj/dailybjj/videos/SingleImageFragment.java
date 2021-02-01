@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer;
 import com.alexbt.bjj.dailybjj.R;
 import com.alexbt.bjj.dailybjj.model.DailyEntry;
 import com.alexbt.bjj.dailybjj.util.DateHelper;
-import com.alexbt.bjj.dailybjj.util.EntryHelper;
+import com.alexbt.bjj.dailybjj.util.RemoteHelper;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
@@ -64,7 +64,7 @@ public class SingleImageFragment extends Fragment implements Observer<ImageData>
         ImageView imageView = root.findViewById(R.id.image_view);
         imageView.setOnClickListener(this);
 
-        Picasso.get().load(EntryHelper.getInstance().getImageUrl(dailyEntry.getYoutubeId()))
+        Picasso.get().load(RemoteHelper.getInstance().getImageUrl(dailyEntry.getYoutubeId()))
                 .resize(480, 935)
                 .transform(new CropTransformation(480, 700, CropTransformation.GravityHorizontal.CENTER, CropTransformation.GravityVertical.CENTER))
                 //.transform(new CropTransformation(480,300,  CropTransformation.GravityHorizontal.CENTER, CropTransformation.GravityVertical.TOP))
@@ -96,12 +96,12 @@ public class SingleImageFragment extends Fragment implements Observer<ImageData>
 
     @Override
     public void onClick(View view) {
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(EntryHelper.getInstance().getYoutubeVideoUrl(dailyEntry.getYoutubeId())));
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(RemoteHelper.getInstance().getYoutubeVideoUrl(dailyEntry.getYoutubeId())));
         try {
             startActivity(appIntent);
         } catch (ActivityNotFoundException ex) {
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(EntryHelper.getInstance().getWebVideoUrl(dailyEntry.getYoutubeId())));
+                    Uri.parse(RemoteHelper.getInstance().getWebVideoUrl(dailyEntry.getYoutubeId())));
             startActivity(webIntent);
         }
     }

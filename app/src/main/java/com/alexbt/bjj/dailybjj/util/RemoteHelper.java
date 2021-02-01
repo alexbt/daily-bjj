@@ -1,5 +1,9 @@
 package com.alexbt.bjj.dailybjj.util;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.StrictMode;
+
 import com.alexbt.bjj.dailybjj.model.DailyEntry;
 import com.alexbt.bjj.dailybjj.model.Data;
 import com.google.common.io.ByteStreams;
@@ -12,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,23 +26,47 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 
-public class EntryHelper {
-    private static final Logger LOG = Logger.getLogger(EntryHelper.class);
+public class RemoteHelper {
+    private static final Logger LOG = Logger.getLogger(RemoteHelper.class);
     private static final Gson GSON = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapter(LocalDate.class, new DateDeserializer())
             .registerTypeAdapter(LocalDate.class, new DateSerializer())
             .create();
 
+    private static final StrictMode.ThreadPolicy THREAD_POLICY = new StrictMode.ThreadPolicy.Builder()
+            .permitAll()
+            .build();
+
     private static final String WEBVIDEO_PREFIX = "https://www.youtube.com/watch?v=";
     private static final String DATA_FILE = "/data.json";
     private static final String YOUTUBE_PREFIX = "vnd.youtube:";
     private static final String IMAGE_PREFIX = "https://img.youtube.com/vi/";
     private static final String IMAGE_SUFFIX = "/0.jpg";
-    private static final EntryHelper INSTANCE = new EntryHelper();
+    private static final RemoteHelper INSTANCE = new RemoteHelper();
 
-    public static EntryHelper getInstance() {
+    public static RemoteHelper getInstance() {
         return INSTANCE;
+    }
+
+    public static Bitmap getBitmapFromUrl(String url) {
+        LOG.info("Entering 'getBitmapFromUrl'");
+        StrictMode.setThreadPolicy(THREAD_POLICY);
+
+        Bitmap myBitmap = null;
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            LOG.error("error 'getBitmapFromUrl'", e);
+        }
+
+        LOG.info("Exiting 'getBitmapFromUrl'");
+        return myBitmap;
     }
 
     public Data loadData(String cacheDir) {
@@ -104,6 +133,8 @@ public class EntryHelper {
     }
 
     private Data fetchFromRemote() {
+        StrictMode.setThreadPolicy(THREAD_POLICY);
+
         Data data = null;
         LOG.info("Entering 'fetchFromRemote'");
         try {
@@ -123,7 +154,8 @@ public class EntryHelper {
     }
 
     private String fetchCurrentVersion() {
-        LOG.info(String.format("Entering 'fetchCurrentVersion'"));
+        StrictMode.setThreadPolicy(THREAD_POLICY);
+
         String currentVersion = null;
         try {
             URL url = new URL("https://raw.githubusercontent.com/alexbt/daily-bjj/master/data/current_version.txt");

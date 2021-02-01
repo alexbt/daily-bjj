@@ -2,7 +2,6 @@ package com.alexbt.bjj.dailybjj.videos;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,8 @@ import com.alexbt.bjj.dailybjj.R;
 import com.alexbt.bjj.dailybjj.model.DailyEntry;
 import com.alexbt.bjj.dailybjj.model.Data;
 import com.alexbt.bjj.dailybjj.util.DateHelper;
-import com.alexbt.bjj.dailybjj.util.EntryHelper;
+import com.alexbt.bjj.dailybjj.util.RemoteHelper;
 import com.alexbt.bjj.dailybjj.util.FileSystemHelper;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,22 +34,20 @@ public class PageViewerFragment extends Fragment {
             String cacheDir = FileSystemHelper.getCacheDir(activity.getApplicationContext());
 
             //TODO bad code...
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
             if (data == null) {
-                data = EntryHelper.getInstance().loadData(cacheDir);
+                data = RemoteHelper.getInstance().loadData(cacheDir);
             }
 
             //Trying to optimise.. loading first 2 page..
             for (int i = NUM_ITEMS - 2; i < NUM_ITEMS; i++) {
-                DailyEntry today = EntryHelper.getInstance().getVideo(data, DateHelper.getLastWeekPlusDays(i));
+                DailyEntry today = RemoteHelper.getInstance().getVideo(data, DateHelper.getLastWeekPlusDays(i));
                 map.put(i, new SingleImageFragment(today, i));
             }
 
             //Then, rest of pages async..
             new Thread(() -> {
                 for (int i = 0; i < NUM_ITEMS - 2; i++) {
-                    DailyEntry today = EntryHelper.getInstance().getVideo(data, DateHelper.getLastWeekPlusDays(i));
+                    DailyEntry today = RemoteHelper.getInstance().getVideo(data, DateHelper.getLastWeekPlusDays(i));
                     map.put(i, new SingleImageFragment(today, i));
                 }
             }).start();

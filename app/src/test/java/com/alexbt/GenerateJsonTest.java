@@ -29,7 +29,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class GenerateJson {
+public class GenerateJsonTest {
     private static final String IMAGE_PREFIX = "https://img.youtube.com/vi/";
     private static final String IMAGE_SUFFIX = "/0.jpg";
     private static final String VIDEO_PREFIX = "https://www.youtube.com/watch?v=";

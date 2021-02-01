@@ -6,10 +6,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.IBinder;
-import android.os.StrictMode;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -18,17 +16,12 @@ import androidx.core.app.NotificationManagerCompat;
 import com.alexbt.bjj.dailybjj.R;
 import com.alexbt.bjj.dailybjj.model.DailyEntry;
 import com.alexbt.bjj.dailybjj.util.DateHelper;
-import com.alexbt.bjj.dailybjj.util.EntryHelper;
+import com.alexbt.bjj.dailybjj.util.RemoteHelper;
 import com.alexbt.bjj.dailybjj.util.FileSystemHelper;
 import com.alexbt.bjj.dailybjj.util.NotificationHelper;
 import com.alexbt.bjj.dailybjj.util.PreferenceHelper;
 
 import org.apache.log4j.Logger;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class NotificationService extends Service {
     private final Logger LOG = Logger.getLogger(NotificationService.class);
@@ -41,9 +34,10 @@ public class NotificationService extends Service {
         LOG.info("Entering 'onStartCommand'");
         try {
             //TODO bad code...
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            displayNotification("application", getApplicationContext());
+            stopForeground(true);
+            new Thread(() -> {
+                displayNotification("application", getApplicationContext());
+            }).start();
         } catch (Exception e) {
             LOG.error("Unexpected error", e);
         }
@@ -55,26 +49,25 @@ public class NotificationService extends Service {
         LOG.info("Entering 'displayNotification'");
         String cacheDir = FileSystemHelper.getCacheDir(context);
         LOG.info(String.format("cacheDir=%s", cacheDir));
-        DailyEntry today = EntryHelper.getInstance().getTodayVideo(cacheDir);
+        DailyEntry today = RemoteHelper.getInstance().getTodayVideo(cacheDir);
         LOG.info(String.format("today's DailyEntry=%s", today));
         if (today == null) {
             LOG.warn("Exiting 'displayNotification' with today's DailyEntry={}");
             return;
         }
 
-        stopForeground(true);
         Intent resultIntent = new Intent(Intent.ACTION_VIEW);
         final String master = today.getMaster();
         final String description = today.getDescription();
         final String videoId = today.getYoutubeId();
-        final String videoUrl = EntryHelper.getInstance().getWebVideoUrl(videoId);
-        final String imageUrl = EntryHelper.getInstance().getImageUrl(videoId);
+        final String videoUrl = RemoteHelper.getInstance().getWebVideoUrl(videoId);
+        final String imageUrl = RemoteHelper.getInstance().getImageUrl(videoId);
         resultIntent.setData(Uri.parse(videoUrl));
         LOG.info("Created resultIntent");
         PendingIntent pendingIntent = PendingIntent.getActivity(context, PENDING_INTENT_REQUEST_CODE, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         LOG.info("Created pendingIntent");
 
-        Bitmap youtubeImage = getBitmapFromUrl(imageUrl);
+        Bitmap youtubeImage = RemoteHelper.getBitmapFromUrl(imageUrl);
         String channelId = NotificationHelper.createNotificationChannel(context);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_dashboard_black_24dp)
@@ -97,25 +90,6 @@ public class NotificationService extends Service {
 
         LOG.info("Notified pendingIntent");
         LOG.info("Exiting 'displayNotification'");
-    }
-
-
-    private Bitmap getBitmapFromUrl(String url) {
-        LOG.info("Entering 'getBitmapFromUrl'");
-        Bitmap myBitmap = null;
-        try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            LOG.error("error 'getBitmapFromUrl'", e);
-        }
-
-        LOG.info("Exiting 'getBitmapFromUrl'");
-        return myBitmap;
     }
 
     public NotificationService() {
