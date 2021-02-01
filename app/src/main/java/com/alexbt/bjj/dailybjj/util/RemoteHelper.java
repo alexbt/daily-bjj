@@ -138,7 +138,7 @@ public class RemoteHelper {
         Data data = null;
         LOG.info("Entering 'fetchFromRemote'");
         try {
-            URL url = new URL("https://raw.githubusercontent.com/alexbt/daily-bjj/master/data/data.json");
+            URL url = new URL("https://raw.githubusercontent.com/alexbt/daily-bjj-android/master/data/data.json");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.connect();
@@ -158,7 +158,7 @@ public class RemoteHelper {
 
         String currentVersion = null;
         try {
-            URL url = new URL("https://raw.githubusercontent.com/alexbt/daily-bjj/master/data/current_version.txt");
+            URL url = new URL("https://raw.githubusercontent.com/alexbt/daily-bjj-android/master/data/current_version.txt");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.connect();

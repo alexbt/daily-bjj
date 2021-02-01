@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Daily BJJ</string>
     <string name="build_version_title">Build Version</string>
-    <string name="cache_dir">DailyBJJ</string>
+    <string name="cache_dir">daily-bjj</string>
     <string name="settings">Settings</string>
     <string name="videos">Videos</string>
     <string name="notificationTime">Daily notification time</string>

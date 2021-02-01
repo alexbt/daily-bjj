@@ -80,11 +80,11 @@ task generateVersion() {
 }
 
 task copyReport(dependsOn: build, type: Copy) {
-    project.logger.lifecycle("blah: $buildDir/outputs/apk/release/DailyBJJ_debug_${buildVersion}.apk")
-    from file("$buildDir/outputs/apk/build/DailyBJJ_debug_${buildVersion}.apk")
+    project.logger.lifecycle("blah: $buildDir/outputs/apk/release/daily-bjj_debug_${buildVersion}.apk")
+    from file("$buildDir/outputs/apk/build/daily-bjj_debug_${buildVersion}.apk")
     into file("../release")
     rename { String fileName ->
-        fileName.replace("DailyBJJ_debug_${buildVersion}.apk", "DailyBJJ.apk")
+        fileName.replace("daily-bjj_debug_${buildVersion}.apk", "daily-bjj.apk")
     }
 }
 

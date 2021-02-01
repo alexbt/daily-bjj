@@ -71,9 +71,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
         String buildVersion = getContext().getResources().getString(R.string.build_version);
         LOG.info(String.format("Sending email with logs for buildVersion=%s, scheduledNotificationText=%s, lastNotificationText=%s, nextNotification=%s",
                 buildVersion, scheduledText, lastNotificationText, nextNotification));
-        File logFile = new File(FileSystemHelper.getCacheDir(getContext()) + "/dailybjj.log");
+        File logFile = new File(FileSystemHelper.getCacheDir(getContext()) + "/daily-bjj.log");
         String logContent = new String(ByteStreams.toByteArray(new FileInputStream(logFile)));
-        File tempFile = File.createTempFile(String.format("DailyBJJ-%s_", buildVersion), ".log", getContext().getExternalCacheDir());
+        File tempFile = File.createTempFile(String.format("daily-bjj-%s_", buildVersion), ".log", getContext().getExternalCacheDir());
         FileWriter fw = new FileWriter(tempFile);
         fw.write(logContent);
         fw.flush();
@@ -109,33 +109,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
         ));
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, 1);
-    }
-
-    private void sendSimpleEmail(Context context, SharedPreferences sharedPreferences) {
-        try {
-            File logFile = new File(FileSystemHelper.getCacheDir(getContext()) + "/dailybjj.log");
-            String logContent = new String(ByteStreams.toByteArray(new FileInputStream(logFile)));
-            File tempFile = File.createTempFile(String.format("DailyBJJ-tmp"), ".log", getContext().getExternalCacheDir());
-            FileWriter fw = new FileWriter(tempFile);
-            fw.write(logContent);
-
-            fw.flush();
-            fw.close();
-
-            Uri logFileUri = Uri.fromFile(tempFile);
-
-            Intent intent = new Intent(Intent.ACTION_SENDTO);
-            intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"alex.belisleturcot@gmail.com"});
-            intent.setData(Uri.parse("mailto:"));
-            intent.putExtra(Intent.EXTRA_SUBJECT, "DailyBJJ Logs");
-            intent.putExtra(Intent.EXTRA_STREAM, logFileUri);
-            intent.putExtra(Intent.EXTRA_TEXT, String.format("%s", logContent));
-            startActivityForResult(intent, 1);
-        } catch (Exception e) {
-            Toast.makeText(context, "issue Sending email " + e.getMessage(), Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
     }
 
     private void updateScheduledNotificationField() {

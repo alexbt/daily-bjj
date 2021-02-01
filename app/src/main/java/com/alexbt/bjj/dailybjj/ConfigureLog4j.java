@@ -14,7 +14,7 @@ public class ConfigureLog4j {
     public static void configure(Context applicationContext) {
         final LogConfigurator logConfigurator = new LogConfigurator();
 
-        logConfigurator.setFileName(FileSystemHelper.getCacheDir(applicationContext) + "/dailybjj.log");
+        logConfigurator.setFileName(FileSystemHelper.getCacheDir(applicationContext) + "/daily-bjj.log");
         logConfigurator.setRootLevel(Level.DEBUG);
         // Set log level of a specific logger
         logConfigurator.setLevel("org.apache", Level.ERROR);

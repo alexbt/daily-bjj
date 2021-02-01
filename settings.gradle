@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = 'DailyBJJ'
+rootProject.name = 'daily-bjj'
