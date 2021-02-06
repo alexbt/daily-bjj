@@ -44,7 +44,7 @@ public class SchedulingService extends Service {
             stopForeground(true);
             new Thread(() -> {
                 try {
-                    dd(commandIntent);
+                    schedule(commandIntent);
                 } catch (Exception e) {
                     LOG.error("Unexpected error", e);
                 }
@@ -54,7 +54,7 @@ public class SchedulingService extends Service {
         }
     }
 
-    private void dd(Intent commandIntent) {
+    private void schedule(Intent commandIntent) {
         boolean isOnBoot = commandIntent.getBooleanExtra("isOnBoot", false);
         LocalDate today = DateHelper.getToday();
         LocalDateTime now = DateHelper.getNowWithBuffer();

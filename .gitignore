@@ -13,10 +13,10 @@
 /captures
 .externalNativeBuild
 .cxx
-/build.gradle
 /app/alexbt.keystore
 
 /app/build/
+/app/gradle.properties
 /app/debug/
 /app/release/
 /app/src/.gradle/

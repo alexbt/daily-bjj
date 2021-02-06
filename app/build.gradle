@@ -79,17 +79,18 @@ task generateVersion() {
 </resources>"""
 }
 
-task copyReport(dependsOn: build, type: Copy) {
-    project.logger.lifecycle("blah: $buildDir/outputs/apk/release/daily-bjj_debug_${buildVersion}.apk")
-    from file("$buildDir/outputs/apk/build/daily-bjj_debug_${buildVersion}.apk")
-    into file("../release")
+task release(dependsOn: build, type: Copy) {
+    from file("$buildDir/outputs/apk/release/app-release-unsigned.apk")
+    into file("$rootDir/release")
     rename { String fileName ->
-        fileName.replace("daily-bjj_debug_${buildVersion}.apk", "daily-bjj.apk")
+        fileName.replace("app-release-unsigned.apk", "release.apk")
     }
 }
 
 allprojects {
     build.dependsOn('generateVersion')
+    release.dependsOn('build')
+    release.dependsOn('generateVersion')
     repositories {
         google()
         jcenter()
@@ -100,37 +101,35 @@ allprojects {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //implementation 'com.google.android.gms:play-services-ads:19.6.0'
-    //implementation 'com.google.android.gms:play-services-ads-base:19.6.0'
     implementation 'de.mindpipe.android:android-logging-log4j:1.0.3'
     implementation 'log4j:log4j:1.2.17'
-    //implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'jp.wasabeef:picasso-transformations:2.2.0'
     implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
     implementation 'org.jsoup:jsoup:1.13.1'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.preference:preference:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
-    implementation 'androidx.navigation:navigation-fragment:2.0.0'
-    implementation 'androidx.navigation:navigation-ui:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
+    implementation 'androidx.navigation:navigation-fragment:2.3.3'
+    implementation 'androidx.navigation:navigation-runtime:2.3.3'
+    implementation 'androidx.navigation:navigation-common:2.3.3'
+    implementation 'androidx.navigation:navigation-ui:2.3.3'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'com.google.firebase:firebase-ads:19.1.0'
     implementation 'com.google.android.gms:play-services-ads-base:19.1.0'
     implementation 'com.google.android.gms:play-services-ads-lite:19.1.0'
     implementation 'com.google.android.gms:play-services-gass:19.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.api-client:google-api-client-android:1.30.2'
-    implementation 'com.google.gms:google-services:3.3.0'
+    implementation 'com.google.gms:google-services:4.3.5'
     implementation 'com.android.volley:volley:1.1.1'
-    implementation 'com.google.code.gson:gson:2.2.4'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.sufficientlysecure:html-textview:3.6'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
 }

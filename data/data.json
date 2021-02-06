@@ -1,9 +1,96 @@
 {
-  "version": "20210219_01",
+  "version": "20210226_01",
   "videoPrefix": "https://www.youtube.com/watch?v\u003d",
   "imagePrefix": "https://img.youtube.com/vi/",
   "imageSuffix": "/0.jpg",
   "dailyEntries": {
+    "2021-02-26": {
+      "master": "Pedro Sauer",
+      "notificationDate": "2021-02-26",
+      "videoDate": "2015-08-31",
+      "title": "Closed Guard Retention and Guard Pass",
+      "description": "Retaining Closed Guard and SICK Guard Pass Submission!",
+      "youtubeId": "PLIPc1F2qmc",
+      "tags": [
+        "closed-guard",
+        "guard-retention",
+        "guard-pass"
+      ]
+    },
+    "2021-02-25": {
+      "master": "Stephan Kesting",
+      "notificationDate": "2021-02-25",
+      "videoDate": "2019-09-18",
+      "title": "The Near Side Kimura",
+      "description": "The Near Side Kimura, A Forgotten Position",
+      "youtubeId": "62oLRT_Sar4",
+      "tags": [
+        "side-control",
+        "near-side",
+        "kimura"
+      ]
+    },
+    "2021-02-24": {
+      "master": "Stephan Kesting",
+      "notificationDate": "2021-02-24",
+      "videoDate": "2017-03-26",
+      "title": "An Easy Wristlock from the Guard",
+      "description": "An Easy Wristlock from the Guard",
+      "youtubeId": "Ifpm9Wfnt2k",
+      "tags": [
+        "submissions",
+        "wrist-lock",
+        "guard"
+      ]
+    },
+    "2021-02-23": {
+      "master": "Stephan Kesting",
+      "notificationDate": "2021-02-23",
+      "videoDate": "2018-05-14",
+      "title": "Five Wristlocks that Really Work in BJJ",
+      "description": "Five Wristlocks that Really Work in BJJ",
+      "youtubeId": "I0MN4sIiXME",
+      "tags": [
+        "submissions",
+        "wrist-lock"
+      ]
+    },
+    "2021-02-22": {
+      "master": "BJJ World",
+      "notificationDate": "2021-02-22",
+      "videoDate": "2019-02-05",
+      "title": "3 Guard Passes Using Long Step Grips",
+      "description": "3 Guard Passes Using Long Step Grips",
+      "youtubeId": "rQoBiJtOPxg",
+      "tags": [
+        "guard-pass",
+        "long-step"
+      ]
+    },
+    "2021-02-21": {
+      "master": "Pedro Sauer \u0026 Bernardo Faria",
+      "notificationDate": "2021-02-21",
+      "videoDate": "2021-01-01",
+      "title": "An Easy Jiu Jitsu Side Control Escape",
+      "description": "An Easy Jiu Jitsu Side Control Escape That You Have Never Seen",
+      "youtubeId": "sh1otABRuEc",
+      "tags": [
+        "side-control",
+        "escape"
+      ]
+    },
+    "2021-02-20": {
+      "master": "Stuart Tomlinson",
+      "notificationDate": "2021-02-20",
+      "videoDate": "2018-01-06",
+      "title": "Escape side control every time",
+      "description": "BJJ How to escape side control EVERY TIME Tutorial",
+      "youtubeId": "xD6Q_Mc0iXg",
+      "tags": [
+        "side-control",
+        "escape"
+      ]
+    },
     "2021-02-19": {
       "master": "Stephan Kesting",
       "notificationDate": "2021-02-19",
