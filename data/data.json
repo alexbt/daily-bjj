@@ -1,9 +1,21 @@
 {
-  "version": "20210227_01",
+  "version": "20210228_01",
   "videoPrefix": "https://www.youtube.com/watch?v\u003d",
   "imagePrefix": "https://img.youtube.com/vi/",
   "imageSuffix": "/0.jpg",
   "dailyEntries": {
+    "2021-02-28": {
+      "master": "Brandon Quick",
+      "notificationDate": "2021-02-28",
+      "videoDate": "2020-07-18",
+      "title": "Long Step Guard Pass",
+      "description": "Long Step Guard Pass Drill",
+      "youtubeId": "Rjtnv8wgCvc",
+      "tags": [
+        "guard-pass",
+        "long-step"
+      ]
+    },
     "2021-02-27": {
       "master": "Rory Van Vliet \u0026 Stephan Kesting",
       "notificationDate": "2021-02-27",

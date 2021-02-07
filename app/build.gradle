@@ -14,7 +14,7 @@ android {
         abortOnError false
     }
     defaultConfig {
-        applicationId "com.alexbt.bjj"
+        applicationId "com.alexbt.bjj.dailybjj"
         multiDexEnabled true
         minSdkVersion 26
         targetSdkVersion 29
@@ -25,34 +25,28 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(project.gradle.gradleUserHomeDir.parent + "/.gradle/alexbt.keystore")
-            storePassword PASSWORD
-            keyAlias "signFiles"
-            keyPassword PASSWORD
+            storeFile file(project.gradle.gradleUserHomeDir.parent + STORE_FILE)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
 
             v1SigningEnabled true
             v2SigningEnabled true
         }
         debug {
-            storeFile file(project.gradle.gradleUserHomeDir.parent + "/.gradle/alexbt.keystore")
-            storePassword PASSWORD
-            keyAlias "signFiles"
-            keyPassword PASSWORD
+            storeFile file(project.gradle.gradleUserHomeDir.parent + STORE_FILE)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
         }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
+            signingConfig signingConfigs.release
         }
     }
-
-//    applicationVariants.all { variant ->
-//        variant.outputs.all {
-//            outputFileName = "DailyBJJ_${variant.buildType.name}_${buildVersion}.apk"
-//        }
-//    }
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -68,35 +62,52 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-
 }
 
 task generateVersion() {
-    new File(projectDir, "src/main/res/values/version.xml").text =
-            """<resources>
-    <string name="build_version">${buildVersion}</string>
-</resources>"""
+    println ""
+    def versionFile = "src/main/res/values/version.xml"
+    new File(projectDir, versionFile).text =
+            """
+        <resources>
+            <string name="build_version">${buildVersion}</string>
+        </resources>
+        """
+    println 'Updated ' + versionFile + ' to ' + buildVersion
+    println 'Performed generateVersion'
 }
 
-task release(dependsOn: build, type: Copy) {
-    from file("$buildDir/outputs/apk/release/app-release-unsigned.apk")
-    into file("$rootDir/release")
+task copyRelease(dependsOn: build, type: Copy) {
+    println ""
+    def sourceApkFile = "app-release.apk"
+    def destApkFile = "release.apk"
+    def destApkPath = "release"
+    def sourceApkPath = "outputs/apk/release"
+    from file("$buildDir/${sourceApkPath}/${sourceApkFile}")
+    into file("$rootDir/${destApkPath}")
     rename { String fileName ->
-        fileName.replace("app-release-unsigned.apk", "release.apk")
+        fileName.replace(sourceApkFile, destApkFile)
     }
+    println 'Copied ' + sourceApkPath + '/' + sourceApkFile + ' to ' + destApkPath + '/' + destApkFile
+    println 'Performed copyRelease'
+}
+
+task release() {
+    println ""
+    println 'Performed release'
 }
 
 allprojects {
     build.dependsOn('generateVersion')
-    release.dependsOn('build')
-    release.dependsOn('generateVersion')
+    copyRelease.dependsOn('build')
+    release.dependsOn('copyRelease')
     repositories {
         google()
         jcenter()
         mavenCentral()
     }
 }
+
 
 
 dependencies {

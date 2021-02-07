@@ -76,7 +76,10 @@ public class SchedulingService extends Service {
                     LOG.info("Notification was already sent to user, scheduling for tomorrow");
                     toastMessage = String.format("Next Daily BJJ scheduled for today at %s", PreferenceHelper.formatTime(hours, minutes));
                 } else */
-        if (notificationTimePassed) {
+        if (alreadyNotifiedForToday) {
+            notificationTime = notificationTime.plusDays(1);
+            toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceHelper.formatTime(hours, minutes));
+        } else if (notificationTimePassed) {
             toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
             //NotificationHelper.startServiceToNotify(getApplicationContext());
         } else {
