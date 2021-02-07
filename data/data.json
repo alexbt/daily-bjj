@@ -1,9 +1,21 @@
 {
-  "version": "20210226_01",
+  "version": "20210227_01",
   "videoPrefix": "https://www.youtube.com/watch?v\u003d",
   "imagePrefix": "https://img.youtube.com/vi/",
   "imageSuffix": "/0.jpg",
   "dailyEntries": {
+    "2021-02-27": {
+      "master": "Rory Van Vliet \u0026 Stephan Kesting",
+      "notificationDate": "2021-02-27",
+      "videoDate": "2019-11-13",
+      "title": "The Turtle Cheat Code",
+      "description": "The Turtle Cheat Code - How to Shut Down Chokes and Back Takes from the Bottom",
+      "youtubeId": "pmz1ID3VgGU",
+      "tags": [
+        "turtle",
+        "guard-retention"
+      ]
+    },
     "2021-02-26": {
       "master": "Pedro Sauer",
       "notificationDate": "2021-02-26",

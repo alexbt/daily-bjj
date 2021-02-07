@@ -25,7 +25,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("alexbt.keystore")
+            storeFile file(project.gradle.gradleUserHomeDir.parent + "/.gradle/alexbt.keystore")
             storePassword PASSWORD
             keyAlias "signFiles"
             keyPassword PASSWORD
@@ -34,7 +34,7 @@ android {
             v2SigningEnabled true
         }
         debug {
-            storeFile file("alexbt.keystore")
+            storeFile file(project.gradle.gradleUserHomeDir.parent + "/.gradle/alexbt.keystore")
             storePassword PASSWORD
             keyAlias "signFiles"
             keyPassword PASSWORD
