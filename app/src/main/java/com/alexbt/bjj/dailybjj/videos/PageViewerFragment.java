@@ -2,6 +2,8 @@ package com.alexbt.bjj.dailybjj.videos;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,12 +47,12 @@ public class PageViewerFragment extends Fragment {
             }
 
             //Then, rest of pages async..
-            new Thread(() -> {
+            new Handler(Looper.getMainLooper()).post(new Thread(() -> {
                 for (int i = 0; i < NUM_ITEMS - 2; i++) {
                     DailyEntry today = RemoteHelper.getInstance().getVideo(data, DateHelper.getLastWeekPlusDays(i));
                     map.put(i, new SingleImageFragment(today, i));
                 }
-            }).start();
+            }));
         }
 
         // Returns total number of pages

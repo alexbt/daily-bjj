@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -35,9 +37,7 @@ public class NotificationService extends Service {
         try {
             //TODO bad code...
             stopForeground(true);
-            new Thread(() -> {
-                displayNotification("application", getApplicationContext());
-            }).start();
+            new Handler(Looper.getMainLooper()).post(new Thread(() -> displayNotification("application", getApplicationContext())));
         } catch (Exception e) {
             LOG.error("Unexpected error", e);
         }

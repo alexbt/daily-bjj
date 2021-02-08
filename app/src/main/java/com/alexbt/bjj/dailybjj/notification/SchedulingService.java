@@ -7,7 +7,9 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -42,13 +44,13 @@ public class SchedulingService extends Service {
         LOG.info("Entering 'onStartCommand'");
         synchronized (MUTEX) {
             stopForeground(true);
-            new Thread(() -> {
+            new Handler(Looper.getMainLooper()).post(new Thread(() -> {
                 try {
                     schedule(commandIntent);
                 } catch (Exception e) {
                     LOG.error("Unexpected error", e);
                 }
-            }).start();
+            }));
             LOG.info("Exiting 'onStartCommand'");
             return Service.START_STICKY;
         }
@@ -78,18 +80,18 @@ public class SchedulingService extends Service {
                 } else */
         if (alreadyNotifiedForToday) {
             notificationTime = notificationTime.plusDays(1);
-            toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceHelper.formatTime(hours, minutes));
+            toastMessage = String.format("Next Daily BJJ scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
         } else if (notificationTimePassed) {
             toastMessage = String.format("Upcoming Daily BJJ in few seconds and next scheduled for tomorrow at %s", PreferenceHelper.formatTime(hours, minutes));
-            //NotificationHelper.startServiceToNotify(getApplicationContext());
         } else {
-            toastMessage = String.format("Next Daily BJJ scheduled today at %s", PreferenceHelper.formatTime(hours, minutes));
+            toastMessage = String.format("Next Daily BJJ scheduled for today at %s", PreferenceHelper.formatTime(hours, minutes));
         }
         LOG.info(String.format("toast message=%s", toastMessage));
 
         if (!isOnBoot) {
             LOG.info(String.format("Showing toast=%s", toastMessage));
-            Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
+            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show());
+
         }
 
         Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
